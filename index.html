@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1NNOV8</title>
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+</head>
+<body>
+
+<script>
+    var body = d3.select("body")
+            .attr("bgcolor", "grey");
+
+    var scale = 2;
+
+    var dimensions = {
+        width: scale * 360,
+        height: scale * 225
+    }
+
+    var lineThickness = dimensions.width*0.005;
+
+    var svg = body.append("svg")
+            .attr("width", dimensions.width)
+            .attr("height", dimensions.height)
+            .attr("align", "center");
+
+    var field = svg.append("rect")
+            .attr("width", dimensions.width)
+            .attr("height", dimensions.height)
+            .attr("fill", "green");
+
+    var topLine = svg.append("rect")
+            .attr("width", dimensions.width - 10*lineThickness)
+            .attr("height", lineThickness)
+            .attr("x", 5*lineThickness)
+            .attr("y", 5*lineThickness)
+            .attr("fill", "white");
+
+    var bottomLine = svg.append("rect")
+            .attr("width", dimensions.width - 10*lineThickness)
+            .attr("height", lineThickness)
+            .attr("x", 5*lineThickness)
+            .attr("y", dimensions.height - 6*lineThickness)
+            .attr("fill", "white");
+
+
+    var leftLine = svg.append("rect")
+            .attr("width", lineThickness)
+            .attr("height", dimensions.height - 10*lineThickness)
+            .attr("x", 5*lineThickness)
+            .attr("y", 5*lineThickness)
+            .attr("fill", "white");
+
+    var rightLine = svg.append("rect")
+            .attr("width", lineThickness)
+            .attr("height", dimensions.height - 10*lineThickness)
+            .attr("x", dimensions.width - 6*lineThickness)
+            .attr("y", 5*lineThickness)
+            .attr("fill", "white");
+
+    var middleCircle = svg.append("circle")
+            .attr("cx", dimensions.width * 0.5)
+            .attr("cy", dimensions.height * 0.5)
+            .attr("r", dimensions.width * 0.075)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var middleLine = svg.append("rect")
+            .attr("width", lineThickness)
+            .attr("height", dimensions.height - 10*lineThickness)
+            .attr("x", (dimensions.width -lineThickness) * 0.5)
+            .attr("y", 5*lineThickness)
+            .attr("fill", "white");
+
+    var middleStip = svg.append("circle")
+            .attr("cx", dimensions.width * 0.5)
+            .attr("cy", dimensions.height * 0.5)
+            .attr("r", lineThickness*1.5)
+            .attr("stroke", "white")
+            .attr("fill", "white");
+
+    var leftBigBak = svg.append("rect")
+            .attr("width", dimensions.width/6)
+            .attr("height", dimensions.height*0.5)
+            .attr("x", 5.5*lineThickness)
+            .attr("y", dimensions.height*0.25)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var rightBigBak = svg.append("rect")
+            .attr("width", dimensions.width/6)
+            .attr("height", dimensions.height*0.5)
+            .attr("x", dimensions.width - dimensions.width/6 - 5.5*lineThickness)
+            .attr("y", dimensions.height*0.25)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var leftSmallBak = svg.append("rect")
+            .attr("width", dimensions.width/14)
+            .attr("height", dimensions.height*0.2)
+            .attr("x", 5.5*lineThickness)
+            .attr("y", dimensions.height*0.4)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var rightSmallBak = svg.append("rect")
+            .attr("width", dimensions.width/14)
+            .attr("height", dimensions.height*0.2)
+            .attr("x", dimensions.width - dimensions.width/14 - 5.5*lineThickness)
+            .attr("y", dimensions.height*0.4)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+</script>
+
+
+</body>
+</html>
