@@ -32,32 +32,20 @@
             .attr("height", dimensions.height)
             .attr("fill", "green");
 
-    var topLine = svg.append("rect")
+    var fieldRect = svg.append("rect")
             .attr("width", dimensions.width - 10*lineThickness)
-            .attr("height", lineThickness)
-            .attr("x", 5*lineThickness)
-            .attr("y", 5*lineThickness)
-            .attr("fill", "white");
-
-    var bottomLine = svg.append("rect")
-            .attr("width", dimensions.width - 10*lineThickness)
-            .attr("height", lineThickness)
-            .attr("x", 5*lineThickness)
-            .attr("y", dimensions.height - 6*lineThickness)
-            .attr("fill", "white");
-
-
-    var leftLine = svg.append("rect")
-            .attr("width", lineThickness)
             .attr("height", dimensions.height - 10*lineThickness)
             .attr("x", 5*lineThickness)
             .attr("y", 5*lineThickness)
-            .attr("fill", "white");
+            .attr("fill", "green")
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("onmouseover", "hideOptions()");
 
-    var rightLine = svg.append("rect")
+    var middleLine = svg.append("rect")
             .attr("width", lineThickness)
             .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", dimensions.width - 6*lineThickness)
+            .attr("x", (dimensions.width -lineThickness) * 0.5)
             .attr("y", 5*lineThickness)
             .attr("fill", "white");
 
@@ -69,24 +57,18 @@
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
-    var middleLine = svg.append("rect")
-            .attr("width", lineThickness)
-            .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", (dimensions.width -lineThickness) * 0.5)
-            .attr("y", 5*lineThickness)
-            .attr("fill", "white");
-
     var middleStip = svg.append("circle")
             .attr("cx", dimensions.width * 0.5)
             .attr("cy", dimensions.height * 0.5)
-            .attr("r", lineThickness*1.5)
+            .attr("r", lineThickness*4)
             .attr("stroke", "white")
-            .attr("fill", "white");
+            .attr("fill", "white")
+            .attr("onmouseover", "showOptions()");
 
     var leftBigBak = svg.append("rect")
             .attr("width", dimensions.width/6)
             .attr("height", dimensions.height*0.5)
-            .attr("x", 5.5*lineThickness)
+            .attr("x", 5*lineThickness)
             .attr("y", dimensions.height*0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
@@ -95,7 +77,7 @@
     var rightBigBak = svg.append("rect")
             .attr("width", dimensions.width/6)
             .attr("height", dimensions.height*0.5)
-            .attr("x", dimensions.width - dimensions.width/6 - 5.5*lineThickness)
+            .attr("x", dimensions.width - dimensions.width/6 - 5*lineThickness)
             .attr("y", dimensions.height*0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
@@ -104,7 +86,7 @@
     var leftSmallBak = svg.append("rect")
             .attr("width", dimensions.width/14)
             .attr("height", dimensions.height*0.2)
-            .attr("x", 5.5*lineThickness)
+            .attr("x", 5*lineThickness)
             .attr("y", dimensions.height*0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
@@ -113,11 +95,38 @@
     var rightSmallBak = svg.append("rect")
             .attr("width", dimensions.width/14)
             .attr("height", dimensions.height*0.2)
-            .attr("x", dimensions.width - dimensions.width/14 - 5.5*lineThickness)
+            .attr("x", dimensions.width - dimensions.width/14 - 5*lineThickness)
             .attr("y", dimensions.height*0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
+
+    var menuItems = ["Teams", "Referees", "Something else"];
+
+    var options = [];
+
+    for(i = 0; i<menuItems.length; i++){
+        var circle = svg.append("circle")
+                .attr("cx", Math.sin(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
+                .attr("cy", Math.cos(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
+                .attr("r", lineThickness*4)
+                .attr("stroke", "white")
+                .attr("fill", "white")
+                .attr("visibility", "hidden");
+        options.push(circle);
+    }
+
+    function showOptions(){
+        for(i=0; i < options.length; i++){
+            options[i].attr("visibility", "visible");
+        }
+    }
+
+    function hideOptions(){
+        for(i=0; i < options.length; i++){
+            options[i].attr("visibility", "hidden");
+        }
+    }
 
 </script>
 
