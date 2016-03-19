@@ -10,10 +10,13 @@
 <body>
 
 <script>
+
+    getData();
+
     var body = d3.select("body")
             .attr("bgcolor", "grey");
 
-    var scale = 2;
+    var scale = 2.6;
 
     var dimensions = {
         width: scale * 360,
@@ -101,7 +104,9 @@
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
-    var menuItems = ["Teams", "Referees", "Something else"];
+    var activeMenu = "none";
+    var activeReferee = "none";
+    var menuItems = ["teams", "referees", "something else", "eijfao", "fee","teams", "referees", "something else", "eijfao", "fee",];
 
     var options = [];
 
@@ -112,7 +117,8 @@
                 .attr("r", lineThickness*4)
                 .attr("stroke", "white")
                 .attr("fill", "white")
-                .attr("visibility", "hidden");
+                .attr("visibility", "hidden")
+                .on("click", function(){showMenu(menuItems[i+1]);});
         options.push(circle);
     }
 
@@ -126,6 +132,13 @@
         for(i=0; i < options.length; i++){
             options[i].attr("visibility", "hidden");
         }
+    }
+
+    function getData(){
+        d3.text("http://www.football-data.co.uk/mmz4281/1516/E0.csv", "text/csv", function (unParsedData) {
+            Data = d3.csv.parse(unParsedData);
+            console.log(Data);
+        });
     }
 
 </script>
