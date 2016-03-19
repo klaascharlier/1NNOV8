@@ -11,8 +11,6 @@
 
 <script>
 
-    getData();
-
     var body = d3.select("body")
             .attr("bgcolor", "grey");
 
@@ -134,12 +132,25 @@
         }
     }
 
-    function getData(){
-        d3.text("http://www.football-data.co.uk/mmz4281/1516/E0.csv", "text/csv", function (unParsedData) {
-            Data = d3.csv.parse(unParsedData);
-            console.log(Data);
+    d3.text("1516.csv", "text/csv", function (unParsedData) {  //Alles met data binnen deze scope
+        Data = d3.csv.parse(unParsedData);
+
+        //gets the unique teams
+        var teams = [];
+        Data.forEach(function(d) {
+            var found = false;
+            for(var i = 0; i<teams.length; i++){
+                if(teams[i] == d.HomeTeam){
+                    found = true;
+                }
+            }
+            if(!found){
+                teams.push(d.HomeTeam);
+            }
         });
-    }
+        console.log(teams);
+
+    });
 
 </script>
 
