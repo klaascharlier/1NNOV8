@@ -18,21 +18,32 @@
 
     document.addEventListener("dataReady", function (e) {
         var referees = getReferees();
-        /*for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeFaults(getReferees()[i]));
+
+        var div = document.getElementById("isotope");
+
+        for(var i = 0; i<referees.length; i++){
+            div.innerHTML = div.innerHTML + "<div class='element-item transition' data-category='transition'>" +
+                        "<h3 class='name'>" + referees[i] + "</h3>" +
+                        "<p class='symbol'>M</p>" +
+                    "</div>";
         }
 
+
         for(var i = 0; i< referees.length; i++){
+            console.log(getFaults(referees[i]));
+        }
+
+        /*for(var i = 0; i< referees.length; i++){
             console.log(referees[i] + " --- " + getRatioOfRefereeWins(getReferees()[i]));
         }
 
         for(var i = 0; i< referees.length; i++){
             console.log(referees[i] + " --- " + getRatioOfRefereeRed(getReferees()[i]));
-        }*/
+        }
 
         for(var i = 0; i< referees.length; i++){
             console.log(referees[i] + " --- " + getRatioOfRefereeYellow(getReferees()[i]));
-        }
+        }*/
 
 
     });
@@ -189,7 +200,8 @@
             var sortByValue = $(this).attr('data-sort-by');
             $container.isotope({ sortBy: sortByValue });
         });
-    });
+
+        });
 </script>
 
 <div id="sorts" class="button-group">
@@ -198,7 +210,7 @@
     <button class="button" data-sort-by="symbol">Rangschikking</button>
 </div>
 
-<div class="isotope">
+<div class="isotope" id="isotope">
     <div class="element-item transition" data-category="transition">
         <h3 class="name">Clattenburg</h3>
         <p class="symbol">M</p>
