@@ -148,17 +148,48 @@
     var tempData = {
         "referee1": {"name":"John", "ratio": 0.5},
         "referee2": {"name":"Hugh", "ratio": 0.6},
-        "referee3": {"name":"Victor", "ratio": 0.1},
+        "referee3": {"name":"Victor", "ratio": 0.45},
         "referee4": {"name":"Klaas", "ratio": 0.8},
         "referee5": {"name":"Jean", "ratio": 0.55},
         "referee6": {"name":"John", "ratio": 0.4},
         "referee7": {"name":"Hugh", "ratio": 0.44},
         "referee8": {"name":"Victor", "ratio": 0.59},
         "referee9": {"name":"Klaas", "ratio": 0.42},
-        "referee10": {"name":"Jean", "ratio": 0.49}
+        "referee10": {"name":"Jean", "ratio": 0.49},
+        "referee11": {"name":"John", "ratio": 0.35},
+        "referee12": {"name":"Hugh", "ratio": 0.6},
+        "referee13": {"name":"Victor", "ratio": 0.1},
+        "referee14": {"name":"Klaas", "ratio": 0.8},
+        "referee15": {"name":"Jean", "ratio": 0.55},
+        "referee16": {"name":"John", "ratio": 0.4},
+        "referee17": {"name":"Hugh", "ratio": 0.44},
+        "referee18": {"name":"Victor", "ratio": 0.59},
+        "referee19": {"name":"Klaas", "ratio": 0.42},
+        "referee20": {"name":"Jean", "ratio": 0.49},
+        "referee21": {"name":"John", "ratio": 0.35},
+        "referee22": {"name":"Hugh", "ratio": 0.6},
+        "referee23": {"name":"Victor", "ratio": 0.1},
+        "referee24": {"name":"Klaas", "ratio": 0.8},
+        "referee25": {"name":"Jean", "ratio": 0.55},
+        "referee26": {"name":"John", "ratio": 0.4},
+        "referee27": {"name":"Hugh", "ratio": 0.44},
+        "referee28": {"name":"Victor", "ratio": 0.59},
+        "referee29": {"name":"Klaas", "ratio": 0.42},
+        "referee30": {"name":"Jean", "ratio": 0.49}
     };
+    var refereeCircles = [];
+
+    function clearRefCirclesFromSVG() {
+        if (Object.keys(refereeCircles).length > 0) {
+            refereeCircles.forEach(function (obj) {
+                obj.remove();
+            });
+            refereeCircles = [];
+        }
+    }
 
     function drawRefereeData(data){
+        clearRefCirclesFromSVG();
         var index = 0;
         for(var i in data){
             var name = data[i].name;
@@ -189,7 +220,8 @@
                         d3.select(this).transition().attr("r", lineThickness*3);
                     })
                     .on('click', function () {
-                        console.log(tooltipInfo);
+                        //clearRefCirclesFromSVG();
+                        console.log("Hihi you clicked a circle");
                     });
 
             circle.append("svg:title").text(function () {
@@ -201,8 +233,8 @@
                     .duration(3000)
                     .ease("elastic")
                     .delay(0);
+            refereeCircles[index] = circle;
             index++;
-            console.log(name + ' ' + ratio);
         }
     }
 
@@ -219,10 +251,12 @@
                     drawRefereeData(tempData);
                 })
                 .on("mouseover", function(){
-                    d3.select(this).attr("fill", "red");
+                    d3.select(this).attr("fill", "red")
+                            .attr("stroke", "red");
                 })
                 .on("mouseout", function(){
-                    d3.select(this).attr("fill", "white");
+                    d3.select(this).attr("fill", "white")
+                            .attr("stroke", "white");
                 });
         options.push(circle);
     }
@@ -238,6 +272,27 @@
             options[i].attr("visibility", "hidden");
         }
     }
+
+    var homeText = svg.append("text")
+            .attr("x", dimensions.width * 0.05)
+            .attr("y", dimensions.height * 0.1)
+            .text(function(){
+                return "HOME";
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "40px")
+            .attr("font-weight", "bold")
+            .attr("fill", "white");
+    var awayText = svg.append("text")
+            .attr("x", dimensions.width * 0.83)
+            .attr("y", dimensions.height * 0.1)
+            .text(function(){
+                return "AWAY";
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "40px")
+            .attr("font-weight", "bold")
+            .attr("fill", "white");
 
 
 
