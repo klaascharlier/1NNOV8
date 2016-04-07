@@ -1,93 +1,173 @@
-var data1516 = [];
-var teams = [];
-var referees = [];
+var selectedData = [];
 
-function getData() {
-    d3.csv("1516.csv", function (data) {
-        data1516 = data;
+function getData(start, end) {
+    if (start != end + 1) {
+        var j = start + 1;
+        d3.csv("" + start + j + ".csv", function (data) {
+                var dataObject = {};
+                dataObject.data = data;
+                dataObject.year = "" + start + j;
+                selectedData.push(dataObject);
+                getData(j, end);
+            }
+        );
+    }
+    else {
         var event = new CustomEvent("dataReady");
         document.dispatchEvent(event);
+    }
+}
+
+function getDataOfYear(season) {
+    selectedData.forEach(function (d) {
+        if (d.year == season) {
+            return d.data;
+        }
     });
 }
 
-function getTeams(){
-    data1516.forEach(function(d){
-        var found = false;
-        for (var i = 0; i < teams.length; i++) {
-            if (teams[i] == d.HomeTeam) {
-                found = true;
+function getReferees() {
+    var referees = [];
+    selectedData.forEach(function (d) {
+        d.data.forEach(function (e) {
+            var found = false;
+            for (var i = 0; i < referees.length; i++) {
+                if (referees[i] == e.Referee) {
+                    found = true;
+                }
             }
-        }
-        if (!found) {
-            teams.push(d.HomeTeam);
-        }
-    });
-    return teams;
-}
-
-function getReferees(){
-    data1516.forEach(function(d){
-        var found = false;
-        for (var i = 0; i < referees.length; i++) {
-            if (referees[i] == d.Referee) {
-                found = true;
+            if (!found) {
+                referees.push(e.Referee);
             }
-        }
-        if (!found) {
-            referees.push(d.Referee);
-        }
+        });
     });
     return referees;
 }
 
-function getRatioOfRefereeFaults(referee){
-    var home = 0;
-    var away = 0;
-    data1516.forEach(function(d){
-        if(d.Referee == referee){
-            home += parseInt(d.HF);
-            away += parseInt(d.AF);
-        }
-    })
-    return home/away;
-}
 
-function getRatioOfRefereeWins(referee){
-    var home = 0;
-    var away = 0;
-    data1516.forEach(function(d){
-        if(d.Referee == referee){
-            if(d.FTR == 'H'){
-                home++;
+function getDataOfReferee(referee) {
+    var data = [];
+    selectedData.forEach(function (d) {
+        yearObject = {};
+        yearObject.year = d.year;
+        yearObject.data = [];
+        d.data.forEach(function (e) {
+            if (e.Referee == referee) {
+                yearObject.data.push(e);
             }
-            else if (d.FTR == 'A'){
-                away++;
-            }
-        }
-    })
-    return home/away;
+        });
+        data.push(yearObject);
+    });
+    return data;
 }
 
-function getRatioOfRefereeRed(referee){
-    var home = 0;
-    var away = 0;
-    data1516.forEach(function(d){
-        if(d.Referee == referee){
-            home += parseInt(d.HR);
-            away += parseInt(d.AR);
-        }
-    })
-    return home/away;
+function getFaults(referee) {
+    var data = [];
+    var dataOfReferee = getDataOfReferee(referee);
+    data.referee = referee;
+    dataOfReferee.forEach(function (d) {
+        yearObject = {};
+        yearObject.year = d.year;
+        yearObject.ratio = d3.sum(d.data, function (d) {
+                return parseInt(d.HF);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AF);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HF);
+            }));
+        yearObject.maxHome = d3.max(d.data, function (d) {
+            return parseInt(d.HF);
+        });
+        yearObject.maxAway = d3.max(d.data, function (d) {
+            return parseInt(d.AF);
+        });
+        yearObject.minHome = d3.min(d.data, function (d) {
+            return parseInt(d.HF);
+        });
+        yearObject.minAway = d3.min(d.data, function (d) {
+            return parseInt(d.AF);
+        });
+        yearObject.avgHome = d3.mean(d.data, function (d) {
+            return parseInt(d.HF);
+        });
+        yearObject.avgAway = d3.mean(d.data, function (d) {
+            return parseInt(d.AF);
+        });
+        data.push(yearObject);
+    });
+    return data;
 }
 
-function getRatioOfRefereeYellow(referee){
-    var home = 0;
-    var away = 0;
-    data1516.forEach(function(d){
-        if(d.Referee == referee){
-            home += parseInt(d.HY);
-            away += parseInt(d.AY);
-        }
-    })
-    return home/away;
+function getRedCards(referee) {
+    var data = [];
+    var dataOfReferee = getDataOfReferee(referee);
+    data.referee = referee;
+    dataOfReferee.forEach(function (d) {
+        yearObject = {};
+        yearObject.year = d.year;
+        yearObject.ratio = d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AR);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }));
+        yearObject.maxHome = d3.max(d.data, function (d) {
+            return parseInt(d.HR);
+        });
+        yearObject.maxAway = d3.max(d.data, function (d) {
+            return parseInt(d.AR);
+        });
+        yearObject.minHome = d3.min(d.data, function (d) {
+            return parseInt(d.HR);
+        });
+        yearObject.minAway = d3.min(d.data, function (d) {
+            return parseInt(d.AR);
+        });
+        yearObject.avgHome = d3.mean(d.data, function (d) {
+            return parseInt(d.HR);
+        });
+        yearObject.avgAway = d3.mean(d.data, function (d) {
+            return parseInt(d.AR);
+        });
+        data.push(yearObject);
+    });
+    return data;
+}
+
+function getYellowCards(referee) {
+    var data = [];
+    var dataOfReferee = getDataOfReferee(referee);
+    data.referee = referee;
+    dataOfReferee.forEach(function (d) {
+        yearObject = {};
+        yearObject.year = d.year;
+        yearObject.ratio = d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AY);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }));
+        yearObject.maxHome = d3.max(d.data, function (d) {
+            return parseInt(d.HY);
+        });
+        yearObject.maxAway = d3.max(d.data, function (d) {
+            return parseInt(d.AY);
+        });
+        yearObject.minHome = d3.min(d.data, function (d) {
+            return parseInt(d.HY);
+        });
+        yearObject.minAway = d3.min(d.data, function (d) {
+            return parseInt(d.AY);
+        });
+        yearObject.avgHome = d3.mean(d.data, function (d) {
+            return parseInt(d.HY);
+        });
+        yearObject.avgAway = d3.mean(d.data, function (d) {
+            return parseInt(d.AY);
+        });
+        data.push(yearObject);
+    });
+    return data;
 }

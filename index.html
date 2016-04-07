@@ -6,11 +6,36 @@
     <title>1NNOV8</title>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="data.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
+    <link rel="stylesheet" type="text/css" href="filter.css">
+
 
 </head>
 <body>
 
 <script>
+    var count = 0;
+
+    document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
+        var referees = getReferees();
+
+        var div = document.getElementById("isotope");
+
+        for (var i = 0; i < referees.length; i++) {
+            div.innerHTML = div.innerHTML + "<div class='element-item transition' data-category='transition'>" +
+                "<h3 class='name'>" + referees[i] + "</h3>" +
+                "<p class='symbol'>M</p>" +
+                "</div>";
+        }
+
+        console.log(getFaults("M Atkinson"));
+    });
+
+    getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
+
+
     var body = d3.select("body")
             .attr("bgcolor", "grey");
 
@@ -21,7 +46,7 @@
         height: scale * 225
     };
 
-    var lineThickness = dimensions.width*0.005;
+    var lineThickness = dimensions.width * 0.005;
 
     var svg = body.append("svg")
             .attr("width", dimensions.width)
@@ -34,10 +59,10 @@
             .attr("fill", "green");
 
     var fieldRect = svg.append("rect")
-            .attr("width", dimensions.width - 10*lineThickness)
-            .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", 5*lineThickness)
-            .attr("y", 5*lineThickness)
+            .attr("width", dimensions.width - 10 * lineThickness)
+            .attr("height", dimensions.height - 10 * lineThickness)
+            .attr("x", 5 * lineThickness)
+            .attr("y", 5 * lineThickness)
             .attr("fill", "green")
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
@@ -45,9 +70,9 @@
 
     var middleLine = svg.append("rect")
             .attr("width", lineThickness)
-            .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", (dimensions.width -lineThickness) * 0.5)
-            .attr("y", 5*lineThickness)
+            .attr("height", dimensions.height - 10 * lineThickness)
+            .attr("x", (dimensions.width - lineThickness) * 0.5)
+            .attr("y", 5 * lineThickness)
             .attr("fill", "white");
 
     var middleCircle = svg.append("circle")
@@ -77,50 +102,50 @@
     var middleStip = svg.append("circle")
             .attr("cx", dimensions.width * 0.5)
             .attr("cy", dimensions.height * 0.5)
-            .attr("r", lineThickness*4)
+            .attr("r", lineThickness * 4)
             .attr("stroke", "white")
             .attr("fill", "white")
             .attr("onmouseover", "showOptions()");
 
     var leftBigBak = svg.append("rect")
-            .attr("width", dimensions.width/6)
-            .attr("height", dimensions.height*0.5)
-            .attr("x", 5*lineThickness)
-            .attr("y", dimensions.height*0.25)
+            .attr("width", dimensions.width / 6)
+            .attr("height", dimensions.height * 0.5)
+            .attr("x", 5 * lineThickness)
+            .attr("y", dimensions.height * 0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var rightBigBak = svg.append("rect")
-            .attr("width", dimensions.width/6)
-            .attr("height", dimensions.height*0.5)
-            .attr("x", dimensions.width - dimensions.width/6 - 5*lineThickness)
-            .attr("y", dimensions.height*0.25)
+            .attr("width", dimensions.width / 6)
+            .attr("height", dimensions.height * 0.5)
+            .attr("x", dimensions.width - dimensions.width / 6 - 5 * lineThickness)
+            .attr("y", dimensions.height * 0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var leftSmallBak = svg.append("rect")
-            .attr("width", dimensions.width/14)
-            .attr("height", dimensions.height*0.2)
-            .attr("x", 5*lineThickness)
-            .attr("y", dimensions.height*0.4)
+            .attr("width", dimensions.width / 14)
+            .attr("height", dimensions.height * 0.2)
+            .attr("x", 5 * lineThickness)
+            .attr("y", dimensions.height * 0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var rightSmallBak = svg.append("rect")
-            .attr("width", dimensions.width/14)
-            .attr("height", dimensions.height*0.2)
-            .attr("x", dimensions.width - dimensions.width/14 - 5*lineThickness)
-            .attr("y", dimensions.height*0.4)
+            .attr("width", dimensions.width / 14)
+            .attr("height", dimensions.height * 0.2)
+            .attr("x", dimensions.width - dimensions.width / 14 - 5 * lineThickness)
+            .attr("y", dimensions.height * 0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var activeMenu = "none";
     var activeReferee = "none";
-    var menuItems = ["teams", "referees", "something else", "eijfao", "fee","teams", "referees", "something else", "eijfao", "fee",];
+    var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
 
     var options = [];
 
@@ -240,9 +265,9 @@
 
     for(i = 0; i<10; i++){
         var circle = svg.append("circle")
-                .attr("cx", Math.sin(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
-                .attr("cy", Math.cos(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
-                .attr("r", lineThickness*3)
+                .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
+                .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
+                .attr("r", lineThickness * 3)
                 .attr("stroke", "white")
                 .attr("fill", "white")
                 .attr("visibility", "hidden")
@@ -261,14 +286,14 @@
         options.push(circle);
     }
 
-    function showOptions(){
-        for(i=0; i < options.length; i++){
+    function showOptions() {
+        for (i = 0; i < options.length; i++) {
             options[i].attr("visibility", "visible");
         }
     }
 
-    function hideOptions(){
-        for(i=0; i < options.length; i++){
+    function hideOptions() {
+        for (i = 0; i < options.length; i++) {
             options[i].attr("visibility", "hidden");
         }
     }
@@ -293,10 +318,77 @@
             .attr("font-size", "40px")
             .attr("font-weight", "bold")
             .attr("fill", "white");
+    $(document).ready(function () {
+        // init Isotope
+        var $container = $('.isotope').isotope({
+            itemSelector: '.element-item',
+            layoutMode: 'fitRows',
+            getSortData: {
+                name: '.name',
+                symbol: '.symbol',
+                category: '[data-category]',
+                weight: function (itemElem) {
+                    var weight = $(itemElem).find('.weight').text();
+                    return parseFloat(weight.replace(/[\(\)]/g, ''));
+                }
+            }
+        });
 
+        // bind sort button click
+        $('#sorts').on('click', 'button', function () {
+            var sortByValue = $(this).attr('data-sort-by');
+            $container.isotope({sortBy: sortByValue});
+        });
+
+    });
 
 
 </script>
+
+<div id="sorts" class="button-group">
+    <button class="button is-checked" data-sort-by="original-order">Standaard</button>
+    <button class="button" data-sort-by="name">Alfabetisch</button>
+    <button class="button" data-sort-by="symbol">Rangschikking</button>
+</div>
+
+<div class="isotope" id="isotope">
+    <div class="element-item transition" data-category="transition">
+        <h3 class="name">Clattenburg</h3>
+        <p class="symbol">M</p>
+    </div>
+    <div class="element-item metalloid " data-category="metalloid">
+        <h3 class="name">Oliver</h3>
+        <p class="symbol">M</p>
+    </div>
+    <div class="element-item transition metal " data-category="transition">
+        <h3 class="name">Moss</h3>
+        <p class="symbol">J</p>
+    </div>
+    <div class="element-item alkali metal " data-category="alkali">
+        <h3 class="name">Hooper</h3>
+        <p class="symbol">S</p>
+    </div>
+    <div class="element-item alkaline-earth metal " data-category="alkaline-earth">
+        <h3 class="name">Taylor</h3>
+        <p class="symbol">A</p>
+    </div>
+    <div class="element-item lanthanoid metal inner-transition " data-category="lanthanoid">
+        <h3 class="name">Stroud</h3>
+        <p class="symbol">K</p>
+    </div>
+    <div class="element-item noble-gas nonmetal " data-category="noble-gas">
+        <h3 class="name">Swarbrick</h3>
+        <p class="symbol">N</p>
+    </div>
+    <div class="element-item diatomic nonmetal " data-category="diatomic">
+        <h3 class="name">Marriner</h3>
+        <p class="symbol">A</p>
+    </div>
+    <div class="element-item actinoid metal inner-transition " data-category="actinoid">
+        <h3 class="name">Attwel</h3>
+        <p class="symbol">S</p>
+    </div>
+</div>
 
 
 </body>
