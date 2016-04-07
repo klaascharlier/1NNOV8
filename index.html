@@ -7,6 +7,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="data.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
+    <link rel="stylesheet" type="text/css" href="filter.css">
+
+
 </head>
 <body>
 
@@ -171,9 +175,74 @@
         }
     }
 
+    $( document ).ready( function() {
+        // init Isotope
+        var $container = $('.isotope').isotope({
+            itemSelector: '.element-item',
+            layoutMode: 'fitRows',
+            getSortData: {
+                name: '.name',
+                symbol: '.symbol',
+                category: '[data-category]',
+                weight: function( itemElem ) {
+                    var weight = $( itemElem ).find('.weight').text();
+                    return parseFloat( weight.replace( /[\(\)]/g, '') );
+                }
+            }
+        });
 
-
+        // bind sort button click
+        $('#sorts').on( 'click', 'button', function() {
+            var sortByValue = $(this).attr('data-sort-by');
+            $container.isotope({ sortBy: sortByValue });
+        });
+    });
 </script>
+
+<div id="sorts" class="button-group">
+    <button class="button is-checked" data-sort-by="original-order">Standaard</button>
+    <button class="button" data-sort-by="name">Alfabetisch</button>
+    <button class="button" data-sort-by="symbol">Rangschikking</button>
+</div>
+
+<div class="isotope">
+    <div class="element-item transition" data-category="transition">
+        <h3 class="name">Clattenburg</h3>
+        <p class="symbol">M</p>
+    </div>
+    <div class="element-item metalloid " data-category="metalloid">
+        <h3 class="name">Oliver</h3>
+        <p class="symbol">M</p>
+    </div>
+    <div class="element-item transition metal " data-category="transition">
+        <h3 class="name">Moss</h3>
+        <p class="symbol">J</p>
+    </div>
+    <div class="element-item alkali metal " data-category="alkali">
+        <h3 class="name">Hooper</h3>
+        <p class="symbol">S</p>
+    </div>
+    <div class="element-item alkaline-earth metal " data-category="alkaline-earth">
+        <h3 class="name">Taylor</h3>
+        <p class="symbol">A</p>
+    </div>
+    <div class="element-item lanthanoid metal inner-transition " data-category="lanthanoid">
+        <h3 class="name">Stroud</h3>
+        <p class="symbol">K</p>
+    </div>
+    <div class="element-item noble-gas nonmetal " data-category="noble-gas">
+        <h3 class="name">Swarbrick</h3>
+        <p class="symbol">N</p>
+    </div>
+    <div class="element-item diatomic nonmetal " data-category="diatomic">
+        <h3 class="name">Marriner</h3>
+        <p class="symbol">A</p>
+    </div>
+    <div class="element-item actinoid metal inner-transition " data-category="actinoid">
+        <h3 class="name">Attwel</h3>
+        <p class="symbol">S</p>
+    </div>
+</div>
 
 
 </body>
