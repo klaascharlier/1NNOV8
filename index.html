@@ -118,15 +118,44 @@
 
     var options = [];
 
-    for(i = 0; i<menuItems.length; i++){
+    var teamsList = [];
+    d3.text("1516.csv", "text/csv", function (unParsedData) {  //Alles met data binnen deze scope
+        Data = d3.csv.parse(unParsedData);
+
+        //gets the unique teams
+        var teams = [];
+        Data.forEach(function(d) {
+            var found = false;
+            for(var i = 0; i<teams.length; i++){
+                if(teams[i] == d.HomeTeam){
+                    found = true;
+                }
+            }
+            if(!found){
+                teams.push(d.HomeTeam);
+            }
+        });
+        teamsList = teams;
+        console.log(teams);
+    });
+
+    for(i = 0; i<10; i++){
         var circle = svg.append("circle")
                 .attr("cx", Math.sin(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
                 .attr("cy", Math.cos(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
-                .attr("r", lineThickness*4)
+                .attr("r", lineThickness*3)
                 .attr("stroke", "white")
                 .attr("fill", "white")
                 .attr("visibility", "hidden")
-                .on("click", function(){showMenu(menuItems[i+1]);});
+                .on("click", function(){
+                    console.log(teamsList[i]);
+                })
+                .on("mouseover", function(){
+                    d3.select(this).attr("fill", "red");
+                })
+                .on("mouseout", function(){
+                    d3.select(this).attr("fill", "white");
+                });
         options.push(circle);
     }
 
@@ -141,6 +170,7 @@
             options[i].attr("visibility", "hidden");
         }
     }
+
 
 
 </script>
