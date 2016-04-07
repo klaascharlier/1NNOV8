@@ -15,39 +15,24 @@
 <body>
 
 <script>
+    var count = 0;
 
-    document.addEventListener("dataReady", function (e) {
+    document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
 
         var div = document.getElementById("isotope");
 
-        for(var i = 0; i<referees.length; i++){
+        for (var i = 0; i < referees.length; i++) {
             div.innerHTML = div.innerHTML + "<div class='element-item transition' data-category='transition'>" +
-                        "<h3 class='name'>" + referees[i] + "</h3>" +
-                        "<p class='symbol'>M</p>" +
-                    "</div>";
+                "<h3 class='name'>" + referees[i] + "</h3>" +
+                "<p class='symbol'>M</p>" +
+                "</div>";
         }
 
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(getFaults(referees[i]));
-        }
-
-        /*for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeWins(getReferees()[i]));
-        }
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeRed(getReferees()[i]));
-        }
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeYellow(getReferees()[i]));
-        }*/
-
-
+        console.log(getFaults("M Atkinson"));
     });
-    getData();
+
+    getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
 
     var body = d3.select("body")
@@ -60,7 +45,7 @@
         height: scale * 225
     };
 
-    var lineThickness = dimensions.width*0.005;
+    var lineThickness = dimensions.width * 0.005;
 
     var svg = body.append("svg")
             .attr("width", dimensions.width)
@@ -73,10 +58,10 @@
             .attr("fill", "green");
 
     var fieldRect = svg.append("rect")
-            .attr("width", dimensions.width - 10*lineThickness)
-            .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", 5*lineThickness)
-            .attr("y", 5*lineThickness)
+            .attr("width", dimensions.width - 10 * lineThickness)
+            .attr("height", dimensions.height - 10 * lineThickness)
+            .attr("x", 5 * lineThickness)
+            .attr("y", 5 * lineThickness)
             .attr("fill", "green")
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
@@ -84,9 +69,9 @@
 
     var middleLine = svg.append("rect")
             .attr("width", lineThickness)
-            .attr("height", dimensions.height - 10*lineThickness)
-            .attr("x", (dimensions.width -lineThickness) * 0.5)
-            .attr("y", 5*lineThickness)
+            .attr("height", dimensions.height - 10 * lineThickness)
+            .attr("x", (dimensions.width - lineThickness) * 0.5)
+            .attr("y", 5 * lineThickness)
             .attr("fill", "white");
 
     var middleCircle = svg.append("circle")
@@ -100,86 +85,86 @@
     var middleStip = svg.append("circle")
             .attr("cx", dimensions.width * 0.5)
             .attr("cy", dimensions.height * 0.5)
-            .attr("r", lineThickness*4)
+            .attr("r", lineThickness * 4)
             .attr("stroke", "white")
             .attr("fill", "white")
             .attr("onmouseover", "showOptions()");
 
     var leftBigBak = svg.append("rect")
-            .attr("width", dimensions.width/6)
-            .attr("height", dimensions.height*0.5)
-            .attr("x", 5*lineThickness)
-            .attr("y", dimensions.height*0.25)
+            .attr("width", dimensions.width / 6)
+            .attr("height", dimensions.height * 0.5)
+            .attr("x", 5 * lineThickness)
+            .attr("y", dimensions.height * 0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var rightBigBak = svg.append("rect")
-            .attr("width", dimensions.width/6)
-            .attr("height", dimensions.height*0.5)
-            .attr("x", dimensions.width - dimensions.width/6 - 5*lineThickness)
-            .attr("y", dimensions.height*0.25)
+            .attr("width", dimensions.width / 6)
+            .attr("height", dimensions.height * 0.5)
+            .attr("x", dimensions.width - dimensions.width / 6 - 5 * lineThickness)
+            .attr("y", dimensions.height * 0.25)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var leftSmallBak = svg.append("rect")
-            .attr("width", dimensions.width/14)
-            .attr("height", dimensions.height*0.2)
-            .attr("x", 5*lineThickness)
-            .attr("y", dimensions.height*0.4)
+            .attr("width", dimensions.width / 14)
+            .attr("height", dimensions.height * 0.2)
+            .attr("x", 5 * lineThickness)
+            .attr("y", dimensions.height * 0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var rightSmallBak = svg.append("rect")
-            .attr("width", dimensions.width/14)
-            .attr("height", dimensions.height*0.2)
-            .attr("x", dimensions.width - dimensions.width/14 - 5*lineThickness)
-            .attr("y", dimensions.height*0.4)
+            .attr("width", dimensions.width / 14)
+            .attr("height", dimensions.height * 0.2)
+            .attr("x", dimensions.width - dimensions.width / 14 - 5 * lineThickness)
+            .attr("y", dimensions.height * 0.4)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
 
     var activeMenu = "none";
     var activeReferee = "none";
-    var menuItems = ["teams", "referees", "something else", "eijfao", "fee","teams", "referees", "something else", "eijfao", "fee",];
+    var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
 
     var options = [];
 
-    for(i = 0; i<10; i++){
+    for (i = 0; i < 10; i++) {
         var circle = svg.append("circle")
-                .attr("cx", Math.sin(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
-                .attr("cy", Math.cos(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
-                .attr("r", lineThickness*3)
+                .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
+                .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
+                .attr("r", lineThickness * 3)
                 .attr("stroke", "white")
                 .attr("fill", "white")
                 .attr("visibility", "hidden")
-                .on("click", function(){
+                .on("click", function () {
                     console.log(teamsList[i]);
                 })
-                .on("mouseover", function(){
+                .on("mouseover", function () {
                     d3.select(this).attr("fill", "red");
                 })
-                .on("mouseout", function(){
+                .on("mouseout", function () {
                     d3.select(this).attr("fill", "white");
                 });
         options.push(circle);
     }
 
-    function showOptions(){
-        for(i=0; i < options.length; i++){
+    function showOptions() {
+        for (i = 0; i < options.length; i++) {
             options[i].attr("visibility", "visible");
         }
     }
 
-    function hideOptions(){
-        for(i=0; i < options.length; i++){
+    function hideOptions() {
+        for (i = 0; i < options.length; i++) {
             options[i].attr("visibility", "hidden");
         }
     }
 
-    $( document ).ready( function() {
+    $(document).ready(function () {
         // init Isotope
         var $container = $('.isotope').isotope({
             itemSelector: '.element-item',
@@ -188,20 +173,20 @@
                 name: '.name',
                 symbol: '.symbol',
                 category: '[data-category]',
-                weight: function( itemElem ) {
-                    var weight = $( itemElem ).find('.weight').text();
-                    return parseFloat( weight.replace( /[\(\)]/g, '') );
+                weight: function (itemElem) {
+                    var weight = $(itemElem).find('.weight').text();
+                    return parseFloat(weight.replace(/[\(\)]/g, ''));
                 }
             }
         });
 
         // bind sort button click
-        $('#sorts').on( 'click', 'button', function() {
+        $('#sorts').on('click', 'button', function () {
             var sortByValue = $(this).attr('data-sort-by');
-            $container.isotope({ sortBy: sortByValue });
+            $container.isotope({sortBy: sortByValue});
         });
 
-        });
+    });
 </script>
 
 <div id="sorts" class="button-group">
