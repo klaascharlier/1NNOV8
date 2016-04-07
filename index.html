@@ -5,11 +5,21 @@
     <title>1NNOV8</title>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="data.js"></script>
 
 </head>
 <body>
 
 <script>
+
+    document.addEventListener("dataReady", function (e) {
+        //Here comes everything that needs the data;
+
+        console.log(getTeams());
+        console.log(getReferees());
+    });
+    getData();
+
 
     var body = d3.select("body")
             .attr("bgcolor", "grey");
@@ -132,25 +142,6 @@
         }
     }
 
-    d3.text("1516.csv", "text/csv", function (unParsedData) {  //Alles met data binnen deze scope
-        Data = d3.csv.parse(unParsedData);
-
-        //gets the unique teams
-        var teams = [];
-        Data.forEach(function(d) {
-            var found = false;
-            for(var i = 0; i<teams.length; i++){
-                if(teams[i] == d.HomeTeam){
-                    found = true;
-                }
-            }
-            if(!found){
-                teams.push(d.HomeTeam);
-            }
-        });
-        console.log(teams);
-
-    });
 
 </script>
 
