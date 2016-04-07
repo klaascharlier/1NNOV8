@@ -1,44 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>1NNOV8</title>
-    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="data.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
-    <link rel="stylesheet" type="text/css" href="filter.css">
-
 
 </head>
 <body>
 
 <script>
-
-    document.addEventListener("dataReady", function (e) {
-        var referees = getReferees();
-        /*for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeFaults(getReferees()[i]));
-        }
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeWins(getReferees()[i]));
-        }
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeRed(getReferees()[i]));
-        }*/
-
-        for(var i = 0; i< referees.length; i++){
-            console.log(referees[i] + " --- " + getRatioOfRefereeYellow(getReferees()[i]));
-        }
-
-
-    });
-    getData();
-
-
     var body = d3.select("body")
             .attr("bgcolor", "grey");
 
@@ -82,6 +54,22 @@
             .attr("cx", dimensions.width * 0.5)
             .attr("cy", dimensions.height * 0.5)
             .attr("r", dimensions.width * 0.075)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var leftBackCircle = svg.append("circle")
+            .attr("cx", dimensions.width - dimensions.width * 0.15)
+            .attr("cy", dimensions.height * 0.5)
+            .attr("r", dimensions.width * 0.08)
+            .attr("stroke", "white")
+            .attr("stroke-width", lineThickness)
+            .attr("fill", "green");
+
+    var rightBackCircle = svg.append("circle")
+            .attr("cx", dimensions.width - dimensions.width * 0.85)
+            .attr("cy", dimensions.height * 0.5)
+            .attr("r", dimensions.width * 0.08)
             .attr("stroke", "white")
             .attr("stroke-width", lineThickness)
             .attr("fill", "green");
@@ -136,6 +124,88 @@
 
     var options = [];
 
+    var teamsList = [];
+    d3.text("1516.csv", "text/csv", function (unParsedData) {  //Alles met data binnen deze scope
+        Data = d3.csv.parse(unParsedData);
+
+        //gets the unique teams
+        var teams = [];
+        Data.forEach(function(d) {
+            var found = false;
+            for(var i = 0; i<teams.length; i++){
+                if(teams[i] == d.HomeTeam){
+                    found = true;
+                }
+            }
+            if(!found){
+                teams.push(d.HomeTeam);
+            }
+        });
+        teamsList = teams;
+        console.log(teams);
+    });
+
+    var tempData = {
+        "referee1": {"name":"John", "ratio": 0.5},
+        "referee2": {"name":"Hugh", "ratio": 0.6},
+        "referee3": {"name":"Victor", "ratio": 0.1},
+        "referee4": {"name":"Klaas", "ratio": 0.8},
+        "referee5": {"name":"Jean", "ratio": 0.55},
+        "referee6": {"name":"John", "ratio": 0.4},
+        "referee7": {"name":"Hugh", "ratio": 0.44},
+        "referee8": {"name":"Victor", "ratio": 0.59},
+        "referee9": {"name":"Klaas", "ratio": 0.42},
+        "referee10": {"name":"Jean", "ratio": 0.49}
+    };
+
+    function drawRefereeData(data){
+        var index = 0;
+        for(var i in data){
+            var name = data[i].name;
+            var ratio = data[i].ratio;
+            var verdict = "";
+            if(ratio > 0.55){
+                verdict = "Away whistler";
+            } else if (ratio < 0.45){
+                verdict = "Home whistler";
+            } else if (ratio == 0.5){
+                verdict = "Fair as square";
+            } else {
+                verdict = "Reasonably fair";
+            }
+            var tooltipInfo = "Referee: " + name + "\nRatio: " + ratio + "\nVerdict: " + verdict;
+
+            var circle = svg.append("circle")
+                    .attr("cx", dimensions.width * 0.5)
+                    .attr("cy", (index * (dimensions.height* 0.8) / (Object.keys(data).length - 1)) + 0.1*dimensions.height)
+                    .attr("r", 0)
+                    .attr("stroke", "black")
+                    .attr("stroke-width", lineThickness/4)
+                    .attr("fill", "yellow")
+                    .on('mouseover', function () {
+                        d3.select(this).transition().attr("r", lineThickness*4).ease("elastic");
+                    })
+                    .on('mouseout', function () {
+                        d3.select(this).transition().attr("r", lineThickness*3);
+                    })
+                    .on('click', function () {
+                        console.log(tooltipInfo);
+                    });
+
+            circle.append("svg:title").text(function () {
+                return tooltipInfo;
+            });
+            circle.transition()
+                    .attr("r", lineThickness*3)
+                    .attr("cx", dimensions.width * ratio)
+                    .duration(3000)
+                    .ease("elastic")
+                    .delay(0);
+            index++;
+            console.log(name + ' ' + ratio);
+        }
+    }
+
     for(i = 0; i<10; i++){
         var circle = svg.append("circle")
                 .attr("cx", Math.sin(360*i/menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
@@ -145,7 +215,8 @@
                 .attr("fill", "white")
                 .attr("visibility", "hidden")
                 .on("click", function(){
-                    console.log(teamsList[i]);
+                    //console.log(teamsList[i]);
+                    drawRefereeData(tempData);
                 })
                 .on("mouseover", function(){
                     d3.select(this).attr("fill", "red");
@@ -168,74 +239,9 @@
         }
     }
 
-    $( document ).ready( function() {
-        // init Isotope
-        var $container = $('.isotope').isotope({
-            itemSelector: '.element-item',
-            layoutMode: 'fitRows',
-            getSortData: {
-                name: '.name',
-                symbol: '.symbol',
-                category: '[data-category]',
-                weight: function( itemElem ) {
-                    var weight = $( itemElem ).find('.weight').text();
-                    return parseFloat( weight.replace( /[\(\)]/g, '') );
-                }
-            }
-        });
 
-        // bind sort button click
-        $('#sorts').on( 'click', 'button', function() {
-            var sortByValue = $(this).attr('data-sort-by');
-            $container.isotope({ sortBy: sortByValue });
-        });
-    });
+
 </script>
-
-<div id="sorts" class="button-group">
-    <button class="button is-checked" data-sort-by="original-order">Standaard</button>
-    <button class="button" data-sort-by="name">Alfabetisch</button>
-    <button class="button" data-sort-by="symbol">Rangschikking</button>
-</div>
-
-<div class="isotope">
-    <div class="element-item transition" data-category="transition">
-        <h3 class="name">Clattenburg</h3>
-        <p class="symbol">M</p>
-    </div>
-    <div class="element-item metalloid " data-category="metalloid">
-        <h3 class="name">Oliver</h3>
-        <p class="symbol">M</p>
-    </div>
-    <div class="element-item transition metal " data-category="transition">
-        <h3 class="name">Moss</h3>
-        <p class="symbol">J</p>
-    </div>
-    <div class="element-item alkali metal " data-category="alkali">
-        <h3 class="name">Hooper</h3>
-        <p class="symbol">S</p>
-    </div>
-    <div class="element-item alkaline-earth metal " data-category="alkaline-earth">
-        <h3 class="name">Taylor</h3>
-        <p class="symbol">A</p>
-    </div>
-    <div class="element-item lanthanoid metal inner-transition " data-category="lanthanoid">
-        <h3 class="name">Stroud</h3>
-        <p class="symbol">K</p>
-    </div>
-    <div class="element-item noble-gas nonmetal " data-category="noble-gas">
-        <h3 class="name">Swarbrick</h3>
-        <p class="symbol">N</p>
-    </div>
-    <div class="element-item diatomic nonmetal " data-category="diatomic">
-        <h3 class="name">Marriner</h3>
-        <p class="symbol">A</p>
-    </div>
-    <div class="element-item actinoid metal inner-transition " data-category="actinoid">
-        <h3 class="name">Attwel</h3>
-        <p class="symbol">S</p>
-    </div>
-</div>
 
 
 </body>
