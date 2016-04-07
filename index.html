@@ -5,11 +5,21 @@
     <title>1NNOV8</title>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="data.js"></script>
 
 </head>
 <body>
 
 <script>
+
+    document.addEventListener("dataReady", function (e) {
+        //Here comes everything that needs the data;
+
+        console.log(getTeams());
+        console.log(getReferees());
+    });
+    getData();
+
 
     var body = d3.select("body")
             .attr("bgcolor", "grey");
