@@ -39,3 +39,55 @@ function getReferees(){
     });
     return referees;
 }
+
+function getRatioOfRefereeFaults(referee){
+    var home = 0;
+    var away = 0;
+    data1516.forEach(function(d){
+        if(d.Referee == referee){
+            home += parseInt(d.HF);
+            away += parseInt(d.AF);
+        }
+    })
+    return home/away;
+}
+
+function getRatioOfRefereeWins(referee){
+    var home = 0;
+    var away = 0;
+    data1516.forEach(function(d){
+        if(d.Referee == referee){
+            if(d.FTR == 'H'){
+                home++;
+            }
+            else if (d.FTR == 'A'){
+                away++;
+            }
+        }
+    })
+    return home/away;
+}
+
+function getRatioOfRefereeRed(referee){
+    var home = 0;
+    var away = 0;
+    data1516.forEach(function(d){
+        if(d.Referee == referee){
+            home += parseInt(d.HR);
+            away += parseInt(d.AR);
+        }
+    })
+    return home/away;
+}
+
+function getRatioOfRefereeYellow(referee){
+    var home = 0;
+    var away = 0;
+    data1516.forEach(function(d){
+        if(d.Referee == referee){
+            home += parseInt(d.HY);
+            away += parseInt(d.AY);
+        }
+    })
+    return home/away;
+}
