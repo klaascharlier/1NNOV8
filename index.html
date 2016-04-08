@@ -1,43 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>1NNOV8</title>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="data.js"></script>
-
+    <script src="field.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
     <link rel="stylesheet" type="text/css" href="filter.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
 
 </head>
 <body>
 
+<div id="wrapper">
+    <div id="soccerfield">
+    </div>
+    <div id="menucolumn">
+        <div id="sorts" class="button-group">
+            <button class="button is-checked" data-sort-by="original-order">Referees</button>
+            <button class="button" data-sort-by="symbol">Teams</button>
+            <button class="button" data-sort-by="name">Alfabetisch</button>
+
+        </div>
+
+        <div class="isotope" id="isotope">
+        </div>
+
+    </div>
+</div>
+
+</body>
+
 <script>
-    var count = 0;
+
+    drawField()
+    getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
 
+        var activeReferee = "none";
+
+        function setActiveRef(d){
+            activeReferee = d;
+            console.log(activeReferee);
+        }
+
         var div = document.getElementById("isotope");
 
         for (var i = 0; i < referees.length; i++) {
-            div.innerHTML = div.innerHTML + "<div class='element-item transition' data-category='transition'>" +
-                "<h3 class='name'>" + referees[i] + "</h3>" +
-                "<p class='symbol'>M</p>" +
-                "</div>";
+            div.innerHTML = div.innerHTML + "<div class='element-item transition' onclick='"+ setActiveRef(referees[i]) +"' data-category='transition'>" +
+                    "<h3 class='name'>" + referees[i] + "</h3>" +
+                    "<p class='symbol'>R</p>" +
+                    "</div>";
         }
 
         console.log(getFaults("M Atkinson"));
     });
 
-    getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
+        var teams = getTeams();
 
+        for(var i = 0; i< teams.length; i++){
+            div.innerHTML = div.innerHTML + "<div class='element-item diatomic' data-category='diatomic'>" +
+                    "<h3 class='name'>" + teams[i] + "</h3>" +
+                    "<p class='symbol'>T</p>" +
+                    "</div>";
+        }
 
-    var body = d3.select("body")
-            .attr("bgcolor", "grey");
+        sortInit();
 
     var scale = 2.6;
 
@@ -285,6 +318,7 @@
                 });
         options.push(circle);
     }
+    });
 
     function showOptions() {
         for (i = 0; i < options.length; i++) {
@@ -319,6 +353,7 @@
             .attr("font-weight", "bold")
             .attr("fill", "white");
     $(document).ready(function () {
+    function sortInit() {
         // init Isotope
         var $container = $('.isotope').isotope({
             itemSelector: '.element-item',
@@ -343,53 +378,8 @@
     });
 
 
+    };
+
 </script>
 
-<div id="sorts" class="button-group">
-    <button class="button is-checked" data-sort-by="original-order">Standaard</button>
-    <button class="button" data-sort-by="name">Alfabetisch</button>
-    <button class="button" data-sort-by="symbol">Rangschikking</button>
-</div>
-
-<div class="isotope" id="isotope">
-    <div class="element-item transition" data-category="transition">
-        <h3 class="name">Clattenburg</h3>
-        <p class="symbol">M</p>
-    </div>
-    <div class="element-item metalloid " data-category="metalloid">
-        <h3 class="name">Oliver</h3>
-        <p class="symbol">M</p>
-    </div>
-    <div class="element-item transition metal " data-category="transition">
-        <h3 class="name">Moss</h3>
-        <p class="symbol">J</p>
-    </div>
-    <div class="element-item alkali metal " data-category="alkali">
-        <h3 class="name">Hooper</h3>
-        <p class="symbol">S</p>
-    </div>
-    <div class="element-item alkaline-earth metal " data-category="alkaline-earth">
-        <h3 class="name">Taylor</h3>
-        <p class="symbol">A</p>
-    </div>
-    <div class="element-item lanthanoid metal inner-transition " data-category="lanthanoid">
-        <h3 class="name">Stroud</h3>
-        <p class="symbol">K</p>
-    </div>
-    <div class="element-item noble-gas nonmetal " data-category="noble-gas">
-        <h3 class="name">Swarbrick</h3>
-        <p class="symbol">N</p>
-    </div>
-    <div class="element-item diatomic nonmetal " data-category="diatomic">
-        <h3 class="name">Marriner</h3>
-        <p class="symbol">A</p>
-    </div>
-    <div class="element-item actinoid metal inner-transition " data-category="actinoid">
-        <h3 class="name">Attwel</h3>
-        <p class="symbol">S</p>
-    </div>
-</div>
-
-
-</body>
 </html>
