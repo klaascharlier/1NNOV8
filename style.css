@@ -1,0 +1,32 @@
+#soccerfield {
+    float: left;
+    padding: 0;
+}
+
+#menucolumn {
+    float: right;
+    width: 100px;
+}
+
+#sorts {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    height: 34px;
+}
+
+#isotopeWrapper {
+    overflow: auto;
+    position:absolute;
+    top:50px;
+}
+
+#sliderDiv {
+    width: 90%;
+    margin-left: 5%;
+    bottom: 20px;
+    position: absolute;
+
+}
+
+
