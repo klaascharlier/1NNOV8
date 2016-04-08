@@ -30,7 +30,9 @@ function drawField() {
         .attr("fill", "green")
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("onmouseover", "hideOptions()");
+        .on("mouseover", function () {
+            hideOptions();
+        });
 
     var middleLine = svg.append("rect")
         .attr("width", lineThickness)
@@ -53,7 +55,9 @@ function drawField() {
         .attr("r", lineThickness * 4)
         .attr("stroke", "white")
         .attr("fill", "white")
-        .attr("onmouseover", "showOptions()");
+        .on("mouseover", function () {
+            showOptions();
+        });
 
     var leftBigBak = svg.append("rect")
         .attr("width", dimensions.width / 6)
@@ -91,10 +95,7 @@ function drawField() {
         .attr("stroke-width", lineThickness)
         .attr("fill", "green");
 
-    var activeMenu = "none";
-    var activeReferee = "none";
     var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
-
     var options = [];
 
     for (i = 0; i < 10; i++) {
@@ -106,7 +107,7 @@ function drawField() {
             .attr("fill", "white")
             .attr("visibility", "hidden")
             .on("click", function () {
-                console.log(teamsList[i]);
+                console.log(getTeams());
             })
             .on("mouseover", function () {
                 d3.select(this).attr("fill", "red");
