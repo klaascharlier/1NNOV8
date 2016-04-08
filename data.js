@@ -26,6 +26,24 @@ function getDataOfYear(season) {
     });
 }
 
+function getTeams() {
+    var teams = [];
+    selectedData.forEach(function (d) {
+        d.data.forEach(function (e) {
+            var found = false;
+            for (var i = 0; i < teams.length; i++) {
+                if (teams[i] == e.HomeTeam) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                teams.push(e.HomeTeam);
+            }
+        });
+    });
+    return teams;
+}
+
 function getReferees() {
     var referees = [];
     selectedData.forEach(function (d) {
