@@ -207,7 +207,7 @@ function drawRefereeData(data){
 
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
-                .attr("cy", (index * (dimensions.height * 0.8) / (Object.keys(data).length - 2)) + 0.1 * dimensions.height)
+                .attr("cy", ((data.length - 1 - index) * (dimensions.height * 0.8) / (Object.keys(data).length - 2)) + 0.1 * dimensions.height)
                 .attr("r", 0)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
