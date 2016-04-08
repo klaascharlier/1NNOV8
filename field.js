@@ -189,8 +189,9 @@ function changeReferee(referee){ //TODO
 function drawRefereeData(data){
     clearRefCirclesFromSVG();
     var index = 0;
+    console.log(data.length);
     for(var i in data){
-        if(index < data.length) {
+        if(index < data.length ) {
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 100)/100;
             var verdict = "";
@@ -207,7 +208,7 @@ function drawRefereeData(data){
 
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
-                .attr("cy", ((data.length - 1 - index) * (dimensions.height * 0.8) / (Object.keys(data).length - 2)) + 0.1 * dimensions.height)
+                .attr("cy", ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
                 .attr("r", 0)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)

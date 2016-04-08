@@ -82,6 +82,8 @@ function getDataOfReferee(referee) {
 function getFaults(referee) {
     var data = [];
     var dataOfReferee = getDataOfReferee(referee);
+    var averageRatio = 0;
+    var count = 0;
     data.referee = referee;
     dataOfReferee.forEach(function (d) {
         var yearObject = {};
@@ -111,8 +113,14 @@ function getFaults(referee) {
         yearObject.avgAway = d3.mean(d.data, function (d) {
             return parseInt(d.AF);
         });
+        if(yearObject.ratio != NaN) {
+            averageRatio += yearObject.ratio;
+            count++;
+        }
         data.push(yearObject);
     });
+    averageRatio = averageRatio/count;
+    data.avgRatio = averageRatio;
     return data;
 }
 
