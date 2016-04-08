@@ -1,6 +1,6 @@
 function drawField() {
 
-    var body = d3.select("body")
+    var body = d3.select("#soccerfield")
         .attr("bgcolor", "grey");
 
     var scale = 2.6;
