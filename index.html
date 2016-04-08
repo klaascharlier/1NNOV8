@@ -16,12 +16,12 @@
 
 
 </head>
-<body>
+<body bgcolor="gray">
 
 <div id="wrapper">
     <div id="soccerfield">
     </div>
-    <div id="menucolumn">
+    <div id="menucolumn" style="background-color: lightgray">
         <div id="sorts" class="button-group">
             <button class="button is-checked" data-sort-by="original-order">Referees</button>
             <button class="button" data-sort-by="symbol">Teams</button>
@@ -60,6 +60,7 @@
         var soccerWidth = (window.innerHeight - 80) * 360/225;
         var wrapperWidth = (window.innerWidth - 16);
         $("#menucolumn").css("width", wrapperWidth - soccerWidth - 8);
+        $("#menucolumn").css("height", window.innerHeight - 80);
         $("#isotopeWrapper").css("width", wrapperWidth - soccerWidth - 8);
         $("#sorts").css("width", wrapperWidth - soccerWidth - 8);
         drawRefereeData(getFaults("L Mason"));
