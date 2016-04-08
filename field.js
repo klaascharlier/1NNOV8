@@ -98,7 +98,104 @@ function drawField() {
     var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
     var options = [];
 
-    for (i = 0; i < 10; i++) {
+    var tempData = {
+        "referee1": {"name":"John", "ratio": 0.5},
+        "referee2": {"name":"Hugh", "ratio": 0.6},
+        "referee3": {"name":"Victor", "ratio": 0.45},
+        "referee4": {"name":"Klaas", "ratio": 0.8},
+        "referee5": {"name":"Jean", "ratio": 0.55},
+        "referee6": {"name":"John", "ratio": 0.4},
+        "referee7": {"name":"Hugh", "ratio": 0.44},
+        "referee8": {"name":"Victor", "ratio": 0.59},
+        "referee9": {"name":"Klaas", "ratio": 0.42},
+        "referee10": {"name":"Jean", "ratio": 0.49},
+        "referee11": {"name":"John", "ratio": 0.35},
+        "referee12": {"name":"Hugh", "ratio": 0.6},
+        "referee13": {"name":"Victor", "ratio": 0.1},
+        "referee14": {"name":"Klaas", "ratio": 0.8},
+        "referee15": {"name":"Jean", "ratio": 0.55},
+        "referee16": {"name":"John", "ratio": 0.4},
+        "referee17": {"name":"Hugh", "ratio": 0.44},
+        "referee18": {"name":"Victor", "ratio": 0.59},
+        "referee19": {"name":"Klaas", "ratio": 0.42},
+        "referee20": {"name":"Jean", "ratio": 0.49},
+        "referee21": {"name":"John", "ratio": 0.35},
+        "referee22": {"name":"Hugh", "ratio": 0.6},
+        "referee23": {"name":"Victor", "ratio": 0.1},
+        "referee24": {"name":"Klaas", "ratio": 0.8},
+        "referee25": {"name":"Jean", "ratio": 0.55},
+        "referee26": {"name":"John", "ratio": 0.4},
+        "referee27": {"name":"Hugh", "ratio": 0.44},
+        "referee28": {"name":"Victor", "ratio": 0.59},
+        "referee29": {"name":"Klaas", "ratio": 0.42},
+        "referee30": {"name":"Jean", "ratio": 0.49}
+    };
+    var refereeCircles = [];
+
+    function clearRefCirclesFromSVG() {
+        if (Object.keys(refereeCircles).length > 0) {
+            refereeCircles.forEach(function (obj) {
+                obj.remove();
+            });
+            refereeCircles = [];
+        }
+    }
+
+    function changeReferee(referee){ //TODO
+        //could just be the drawRefereeData() function
+    }
+
+    function drawRefereeData(data){
+        clearRefCirclesFromSVG();
+        var index = 0;
+        for(var i in data){
+            var name = data[i].name;
+            var ratio = data[i].ratio;
+            var verdict = "";
+            if(ratio > 0.55){
+                verdict = "Away whistler";
+            } else if (ratio < 0.45){
+                verdict = "Home whistler";
+            } else if (ratio == 0.5){
+                verdict = "Fair as square";
+            } else {
+                verdict = "Reasonably fair";
+            }
+            var tooltipInfo = "Referee: " + name + "\nRatio: " + ratio + "\nVerdict: " + verdict;
+
+            var circle = svg.append("circle")
+                .attr("cx", dimensions.width * 0.5)
+                .attr("cy", (index * (dimensions.height* 0.8) / (Object.keys(data).length - 1)) + 0.1*dimensions.height)
+                .attr("r", 0)
+                .attr("stroke", "black")
+                .attr("stroke-width", lineThickness/4)
+                .attr("fill", "yellow")
+                .on('mouseover', function () {
+                    d3.select(this).transition().attr("r", lineThickness*4).ease("elastic");
+                })
+                .on('mouseout', function () {
+                    d3.select(this).transition().attr("r", lineThickness*3);
+                })
+                .on('click', function () {
+                    //clearRefCirclesFromSVG();
+                    console.log("Hihi you clicked a circle " + name);
+                });
+
+            circle.append("svg:title").text(function () {
+                return tooltipInfo;
+            });
+            circle.transition()
+                .attr("r", lineThickness*3)
+                .attr("cx", dimensions.width * ratio)
+                .duration(3000)
+                .ease("elastic")
+                .delay(0);
+            refereeCircles[index] = circle;
+            index++;
+        }
+    }
+
+    for(i = 0; i<10; i++) {
         var circle = svg.append("circle")
             .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
             .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
@@ -107,13 +204,16 @@ function drawField() {
             .attr("fill", "white")
             .attr("visibility", "hidden")
             .on("click", function () {
-                console.log(getTeams());
+                //console.log(teamsList[i]);
+                drawRefereeData(tempData);
             })
             .on("mouseover", function () {
-                d3.select(this).attr("fill", "red");
+                d3.select(this).attr("fill", "red")
+                    .attr("stroke", "red");
             })
             .on("mouseout", function () {
-                d3.select(this).attr("fill", "white");
+                d3.select(this).attr("fill", "white")
+                    .attr("stroke", "white");
             });
         options.push(circle);
     }

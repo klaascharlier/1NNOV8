@@ -59,6 +59,10 @@
         }
 
         console.log(getFaults("M Atkinson"));
+
+        console.log(getDataOfReferee("M Atkinson"));
+
+        //drawRefereeData(getDataOfReferee("M Atkinson"));
     });
 
         var teams = getTeams();
@@ -246,6 +250,10 @@
         }
     }
 
+    function changeReferee(referee){ //TODO
+        //could just be the drawRefereeData() function
+    }
+
     function drawRefereeData(data){
         clearRefCirclesFromSVG();
         var index = 0;
@@ -279,7 +287,7 @@
                     })
                     .on('click', function () {
                         //clearRefCirclesFromSVG();
-                        console.log("Hihi you clicked a circle");
+                        console.log("Hihi you clicked a circle " + name);
                     });
 
             circle.append("svg:title").text(function () {
@@ -296,7 +304,7 @@
         }
     }
 
-    for(i = 0; i<10; i++){
+    for(i = 0; i<10; i++) {
         var circle = svg.append("circle")
                 .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
                 .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
@@ -304,21 +312,21 @@
                 .attr("stroke", "white")
                 .attr("fill", "white")
                 .attr("visibility", "hidden")
-                .on("click", function(){
+                .on("click", function () {
                     //console.log(teamsList[i]);
                     drawRefereeData(tempData);
                 })
-                .on("mouseover", function(){
+                .on("mouseover", function () {
                     d3.select(this).attr("fill", "red")
                             .attr("stroke", "red");
                 })
-                .on("mouseout", function(){
+                .on("mouseout", function () {
                     d3.select(this).attr("fill", "white")
                             .attr("stroke", "white");
                 });
         options.push(circle);
     }
-    });
+
 
     function showOptions() {
         for (i = 0; i < options.length; i++) {
@@ -352,7 +360,7 @@
             .attr("font-size", "40px")
             .attr("font-weight", "bold")
             .attr("fill", "white");
-    $(document).ready(function () {
+
     function sortInit() {
         // init Isotope
         var $container = $('.isotope').isotope({
@@ -375,10 +383,7 @@
             $container.isotope({sortBy: sortByValue});
         });
 
-    });
-
-
-    };
+    }
 
 </script>
 
