@@ -84,7 +84,7 @@ function getFaults(referee) {
     var dataOfReferee = getDataOfReferee(referee);
     data.referee = referee;
     dataOfReferee.forEach(function (d) {
-        yearObject = {};
+        var yearObject = {};
         yearObject.year = d.year;
         yearObject.ratio = d3.sum(d.data, function (d) {
                 return parseInt(d.HF);

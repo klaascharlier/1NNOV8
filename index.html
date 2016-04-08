@@ -36,23 +36,16 @@
 
 <script>
 
-    drawField()
+    drawField();
     getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
 
-        var activeReferee = "none";
-
-        function setActiveRef(d){
-            activeReferee = d;
-            console.log(activeReferee);
-        }
-
         var div = document.getElementById("isotope");
 
         for (var i = 0; i < referees.length; i++) {
-            div.innerHTML = div.innerHTML + "<div class='element-item transition' onclick='"+ setActiveRef(referees[i]) +"' data-category='transition'>" +
+            div.innerHTML = div.innerHTML + "<div class='element-item transition' onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "<p class='symbol'>R</p>" +
                     "</div>";
@@ -72,6 +65,8 @@
                     "<p class='symbol'>T</p>" +
                     "</div>";
         }
+
+        console.log(getFaults("M Atkinson"));
 
         sortInit();
 
