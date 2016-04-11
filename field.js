@@ -130,14 +130,14 @@ function drawField() {
         .attr("stroke-width", lineThickness)
         .attr("fill", "green");
 
-    var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
+    var menuItems = ["teams", "referees", "something else"];
     var options = [];
 
 
 
 
 
-    for(i = 0; i<10; i++) {
+    for(i = 0; i<menuItems.length; i++) {
         var circle = svg.append("circle")
             .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
             .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
@@ -189,22 +189,22 @@ function changeReferee(referee){ //TODO
 function drawRefereeData(data){
     clearRefCirclesFromSVG();
     var index = 0;
-    console.log(data.length);
     for(var i in data){
-        if(index < data.length ) {
+        if(index < data.length) {
             var name = data.referee;
-            var ratio = Math.round(data[i].ratio * 100)/100;
-            var verdict = "";
-            if (ratio > 0.55) {
-                verdict = "Away whistler";
-            } else if (ratio < 0.45) {
-                verdict = "Home whistler";
-            } else if (ratio == 0.5) {
-                verdict = "Fair as square";
-            } else {
-                verdict = "Reasonably fair";
-            }
-            var tooltipInfo = "Referee: " + name + "\nSeason: " + data[i].year + "\nRatio: " + ratio + "\nVerdict: " + verdict;
+            var ratio = Math.round(data[i].ratio * 1000)/1000;
+            if(!isNaN(ratio)) {
+                var verdict = "";
+                if (ratio > 0.53) {
+                    verdict = "Away whistler";
+                } else if (ratio < 0.47) {
+                    verdict = "Home whistler";
+                } else if (ratio == 0.5) {
+                    verdict = "Fair as square";
+                } else {
+                    verdict = "Reasonably fair";
+                }
+                var tooltipInfo = "Referee: " + name + "\nSeason: " + data[i].year + "\nRatio: " + ratio + "\nPersonal avg: " + Math.round(data.avgRatio * 1000)/1000+ "\nVerdict: " + verdict;
 
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
@@ -224,16 +224,39 @@ function drawRefereeData(data){
                     console.log("Hihi you clicked a circle " + name);
                 });
 
-            circle.append("svg:title").text(function () {
-                return tooltipInfo;
-            });
-            circle.transition()
-                .attr("r", lineThickness * 3)
-                .attr("cx", dimensions.width * ratio)
-                .duration(3000)
-                .ease("elastic")
-                .delay(0);
-            refereeCircles[index] = circle;
+                circle.append("svg:title").text(function () {
+                    return tooltipInfo;
+                });
+                circle.transition()
+                    .attr("r", lineThickness * 3)
+                    .attr("cx", dimensions.width * ratio)
+                    .duration(3000)
+                    .ease("elastic")
+                    .delay(0);
+                refereeCircles[index] = circle;
+            }
+            else {
+                var rect = svg.append("rect")
+                    .attr("x", dimensions.width * 0.5 - 1.5*lineThickness)
+                    .attr("y", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height + 1.5*lineThickness )
+                    .attr("width", 3 * lineThickness)
+                    .attr("height", 3 * lineThickness)
+                    .attr("fill", "red")
+                    .attr("stroke", "yellow")
+                    .attr("stroke-width", lineThickness/4);
+                rect.transition()
+                    .attr("x", dimensions.width * 0.5 - 3*lineThickness)
+                    .attr("y", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
+                    .attr("width", 6 * lineThickness)
+                    .attr("height", 6 * lineThickness)
+                    .duration(3000)
+                    .ease("elastic")
+                    .delay(0);
+                rect.append("svg:title").text(function () {
+                    return "Referee: " + name + "\nHas not lead a match in the season " + data[i].year;
+                });
+                refereeCircles[index] = rect;
+            }
             index++;
         }
     }

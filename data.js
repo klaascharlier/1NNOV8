@@ -113,7 +113,7 @@ function getFaults(referee) {
         yearObject.avgAway = d3.mean(d.data, function (d) {
             return parseInt(d.AF);
         });
-        if(yearObject.ratio != NaN) {
+        if(!isNaN(yearObject.ratio)) {
             averageRatio += yearObject.ratio;
             count++;
         }
