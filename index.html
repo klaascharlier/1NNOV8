@@ -8,36 +8,71 @@
     <script src="data.js"></script>
     <script src="field.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
+    <script src="ion.rangeSlider-2.1.2/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
     <link rel="stylesheet" type="text/css" href="filter.css">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.css">
+    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinFlat.css">
 
 
 </head>
-<body>
+<body bgcolor="gray">
 
 <div id="wrapper">
     <div id="soccerfield">
     </div>
-    <div id="menucolumn">
+    <div id="menucolumn" style="background-color: lightgray">
         <div id="sorts" class="button-group">
             <button class="button is-checked" data-sort-by="original-order">Referees</button>
             <button class="button" data-sort-by="symbol">Teams</button>
             <button class="button" data-sort-by="name">Alfabetisch</button>
 
         </div>
-
-        <div class="isotope" id="isotope">
+        <div id="isotopeWrapper">
+            <div class="isotope" id="isotope">
+        </div>
         </div>
 
     </div>
 </div>
-
+<div id="sliderDiv">
+    <input type="text" id="example_id" name="example_name" value="" />
+</div>
 </body>
 
 <script>
 
-    drawField();
+    var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
+
+    drawField(window.innerHeight - 80);
     getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
+
+    $(document).ready(function (){
+        $(window).trigger('resize');
+    });
+
+    $(window).on('resize', function(){
+        drawField(window.innerHeight - 80);
+        $("#isotopeWrapper").css("height", window.innerHeight - 80 - 34 - 8);
+        $("#soccerfield").css("height", window.innerHeight - 80);
+        $("#soccerfield").css("width", (window.innerHeight - 80) * 360/225);
+        $("#wrapper").css("width", (window.innerWidth - 16));
+        var soccerWidth = (window.innerHeight - 80) * 360/225;
+        var wrapperWidth = (window.innerWidth - 16);
+        $("#menucolumn").css("width", wrapperWidth - soccerWidth - 8);
+        $("#menucolumn").css("height", window.innerHeight - 80);
+        $("#isotopeWrapper").css("width", wrapperWidth - soccerWidth - 8);
+        $("#sorts").css("width", wrapperWidth - soccerWidth - 8);
+        drawRefereeData(getFaults("L Mason"));
+    });
+
+    $("#example_id").ionRangeSlider({
+        type: "double",
+        min: 2011,
+        max: 2015,
+        from: 2011,
+        to: 2015
+    });
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
@@ -67,7 +102,6 @@
 
         sortInit();
     });
-
 
 
     var activeMenu = "none";

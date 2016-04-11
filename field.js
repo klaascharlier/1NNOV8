@@ -32,25 +32,28 @@ var tempData = {
 };
 var refereeCircles = [];
 var body;
-var scale = 2.6;
 var dimensions = {
-    width: scale * 360,
-    height: scale * 225
+    width: 360,
+    height: 225
 };
 var lineThickness = dimensions.width * 0.005;
 var svg;
 
-function drawField() {
+function drawField(height) {
+
+    svg.selectAll("*").remove();
+
+    dimensions.height = height;
+    dimensions.width = 360/225*height;
+
+    svg = d3.select("#svg")
+        .attr("width", dimensions.width)
+        .attr("height", dimensions.height)
+        .attr("align", "center");
 
     var body = d3.select("#soccerfield")
         .attr("bgcolor", "grey");
     this.body = body;
-
-    var svg = body.append("svg")
-        .attr("width", dimensions.width)
-        .attr("height", dimensions.height)
-        .attr("align", "center")
-    this.svg = svg;
 
     var field = svg.append("rect")
         .attr("width", dimensions.width)
