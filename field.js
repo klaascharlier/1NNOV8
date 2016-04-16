@@ -67,10 +67,7 @@ function drawField(height) {
         .attr("y", 5 * lineThickness)
         .attr("fill", "green")
         .attr("stroke", "white")
-        .attr("stroke-width", lineThickness)
-        .on("mouseover", function () {
-            hideOptions();
-        });
+        .attr("stroke-width", lineThickness);
 
     var middleLine = svg.append("rect")
         .attr("width", lineThickness)
@@ -137,43 +134,6 @@ function drawField(height) {
     var options = [];
 
 
-
-
-
-    for(i = 0; i<menuItems.length; i++) {
-        var circle = svg.append("circle")
-            .attr("cx", Math.sin(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.width * 0.5)
-            .attr("cy", Math.cos(360 * i / menuItems.length * Math.PI / 180) * dimensions.width * 0.075 + dimensions.height * 0.5)
-            .attr("r", lineThickness * 3)
-            .attr("stroke", "white")
-            .attr("fill", "white")
-            .attr("visibility", "hidden")
-            .on("click", function () {
-                //console.log(teamsList[i]);
-                drawRefereeData(tempData);
-            })
-            .on("mouseover", function () {
-                d3.select(this).attr("fill", "red")
-                    .attr("stroke", "red");
-            })
-            .on("mouseout", function () {
-                d3.select(this).attr("fill", "white")
-                    .attr("stroke", "white");
-            });
-        options.push(circle);
-    }
-
-    function showOptions() {
-        for (i = 0; i < options.length; i++) {
-            options[i].attr("visibility", "visible");
-        }
-    }
-
-    function hideOptions() {
-        for (i = 0; i < options.length; i++) {
-            options[i].attr("visibility", "hidden");
-        }
-    }
 }
 
 function clearRefCirclesFromSVG() {
@@ -215,7 +175,7 @@ function drawRefereeData(data){
                 .attr("r", 0)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "yellow")
+                .attr("fill", "#004B4B")
                 .on('mouseover', function () {
                     d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
                 })

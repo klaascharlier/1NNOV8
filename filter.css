@@ -21,7 +21,9 @@
     background-color: #8CF;
     text-shadow: 0 1px hsla(0, 0%, 100%, 0.5);
     color: #222;
+
 }
+
 
 .button:active,
 .button.is-checked {
@@ -44,7 +46,6 @@
     display: block;
     clear: both;
 }
-
 .button-group .button {
     float: left;
     border-radius: 0;
@@ -76,9 +77,10 @@
     color: #262524;
 }
 
-.element-item > * {
+.element-item * {
     margin: 0;
     padding: 0;
+    cursor: pointer;
 }
 
 .element-item .name {
@@ -119,7 +121,7 @@
 .element-item.alkaline-earth  { background: #A04800; }
 .element-item.lanthanoid      { background: #649500; }
 .element-item.actinoid        { background: #008000; }
-.element-item.transition      { background: #004B4B; }
+.element-item.transition      { background: #004B4B;  cursor: pointer}
 .element-item.post-transition { background: #4D7400; }
 .element-item.metalloid       { background: #C06112; }
 .element-item.diatomic        { background: #E08337; }
