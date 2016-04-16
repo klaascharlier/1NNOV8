@@ -23,12 +23,12 @@
     </div>
     <div id="menucolumn" style="background-color: lightgray">
         <div id="sorts" class="button-group">
-            <button class="button is-checked" data-sort-by="original-order">Referees</button>
+         <button class="button is-checked" data-sort-by="original-order">Referees</button>
             <button class="button" data-sort-by="symbol">Teams</button>
             <button class="button" data-sort-by="name">Alfabetisch</button>
 
         </div>
-        <div id="isotopeWrapper">
+       <div id="isotopeWrapper">
             <div class="isotope" id="isotope">
         </div>
         </div>
@@ -42,7 +42,7 @@
 
 <script>
 
-    var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
+      var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
 
     drawField(window.innerHeight - 80);
     getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
@@ -66,14 +66,14 @@
         drawRefereeData(getFaults("L Mason"));
     });
 
-    $("#example_id").ionRangeSlider({
-        type: "double",
-        min: 2011,
-        max: 2015,
-        from: 2011,
-        to: 2015
-    });
-
+      $("#example_id").ionRangeSlider({
+          type: "double",
+          min: 2011,
+          max: 2015,
+          from: 2011,
+          to: 2015,
+          prettify_enabled: false
+      });
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
 

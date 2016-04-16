@@ -1,3 +1,9 @@
+
+html * {
+    font-family: sans-serif !important;
+}
+
+
 #soccerfield {
     float: left;
     padding: 0;
@@ -29,5 +35,22 @@
     position: absolute;
 
 }
+
+#p.sansserif {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#p.serif {
+    font-family: "Times New Roman", Times, serif;
+}
+
+/*
+body p
+{
+    font-size: 20px !important;
+    color: #000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+}*/
+
 
 
