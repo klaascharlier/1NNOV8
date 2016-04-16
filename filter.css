@@ -22,9 +22,8 @@
     text-shadow: 0 1px hsla(0, 0%, 100%, 0.5);
     color: #222;
 
+
 }
-
-
 .button:active,
 .button.is-checked {
     background-color: #28F;
@@ -80,8 +79,9 @@
 .element-item * {
     margin: 0;
     padding: 0;
-    cursor: pointer;
+
 }
+
 
 .element-item .name {
     position: absolute;
@@ -122,6 +122,11 @@
 .element-item.lanthanoid      { background: #649500; }
 .element-item.actinoid        { background: #008000; }
 .element-item.transition      { background: #004B4B;  cursor: pointer}
+.element-item.transition:active,
+.element-item.transition.is-checked{
+    background-color: #7C0000;
+
+}
 .element-item.post-transition { background: #4D7400; }
 .element-item.metalloid       { background: #C06112; }
 .element-item.diatomic        { background: #E08337; }

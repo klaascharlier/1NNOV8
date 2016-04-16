@@ -44,6 +44,7 @@
 
     var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
 
+
     drawField(window.innerHeight - 80);
     getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
@@ -75,23 +76,21 @@
         prettify_enabled: false
     });
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
-        var referees = getReferees();
-
         var div = document.getElementById("isotope");
 
+        var referees = getReferees();
         for (var i = 0; i < referees.length; i++) {
-            div.innerHTML = div.innerHTML + "<div class='element-item transition'  onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))' data-category='transition'>" +
+            div.innerHTML = div.innerHTML +
+                    "<div class='element-item transition' onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
-                    "<p class='symbol'>R</p>" +
+                    "<p class='symbol'>R</p>"+
                     "</div>";
-
         }
 
         console.log(getFaults("M Atkinson"));
         drawRefereeData(getFaults("M Atkinson"));
 
         var teams = getTeams();
-
         for(var i = 0; i< teams.length; i++){
             div.innerHTML = div.innerHTML + "<div class='element-item diatomic' data-category='diatomic'>" +
                     "<h3 class='name'>" + teams[i] + "</h3>" +
@@ -100,7 +99,6 @@
         }
 
         console.log(getFaults("M Atkinson"));
-
         sortInit();
     });
 
