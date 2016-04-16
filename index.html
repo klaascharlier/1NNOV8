@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="filter.css">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.css">
-    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinFlat.css">
+    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinNice.css">
 
 
 </head>
@@ -73,6 +73,19 @@
         max: 2015,
         from: 2011,
         to: 2015,
+        step: 1,
+        onStart: function (data) {
+            console.log(data);
+        },
+        onChange: function (data) {
+            console.log(data);
+        },
+        onFinish: function (data) {
+            console.log(data);
+        },
+        onUpdate: function (data) {
+            console.log(data);
+        },
         prettify_enabled: false
     });
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
