@@ -177,6 +177,17 @@ function drawAvgData(data) {
             circle.append("svg:title").text(function () {
                 return tooltipInfo;
             });
+            /*circle.append("svg:text").text(function(){
+                return "test";
+            });*/
+            svg.append("text")
+                .attr("x", dimensions.width * ratio)
+                .attr("y",(-10+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
+                .attr("fill","white")
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "10px")
+                .text("Average");
+
             circle.transition()
                 .attr("r", lineThickness * 3)
                 .attr("cx", dimensions.width * ratio)
@@ -188,6 +199,7 @@ function drawAvgData(data) {
         }
     }
 }
+
 function drawRefereeData(data){
     clearRefCirclesFromSVG();
     var index = 0;
@@ -229,6 +241,14 @@ function drawRefereeData(data){
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
                 });
+                svg.append("text")
+                    .attr("x", dimensions.width * ratio)
+                    .attr("y",(15+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
+                    .attr("fill","black")
+                    .style("font-weight", "bold")
+                    .attr("font-family", "bold sans-serif")
+                    .attr("font-size", "10px")
+                    .text("Referee");
                 circle.transition()
                     .attr("r", lineThickness * 3)
                     .attr("cx", dimensions.width * ratio)
