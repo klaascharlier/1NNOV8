@@ -23,7 +23,7 @@
     </div>
     <div id="menucolumn" style="background-color: lightgray">
         <div id="sorts" class="button-group">
-            <button class="button is-checked" data-sort-by="original-order" id="one">Referees</button>
+            <button class="button is-checked" data-sort-by="original-order">Referees</button>
             <button class="button" data-sort-by="symbol">Teams</button>
             <button class="button" data-sort-by="name">Alfabetisch</button>
 
@@ -77,17 +77,20 @@
     });
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var div = document.getElementById("isotope");
-
         var referees = getReferees();
+
+
         for (var i = 0; i < referees.length; i++) {
+            drawAvgData(avgFaultsRatio());
             div.innerHTML = div.innerHTML +
-                    "<div class='element-item transition' onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))' data-category='transition'>" +
+                    "<div class='element-item transition' onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))'  data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "<p class='symbol'>R</p>"+
                     "</div>";
         }
 
         console.log(getFaults("M Atkinson"));
+        console.log(avgFaultsRatio());
         drawRefereeData(getFaults("M Atkinson"));
 
         var teams = getTeams();

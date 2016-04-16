@@ -149,6 +149,45 @@ function changeReferee(referee){ //TODO
     //could just be the drawRefereeData() function
 }
 
+function drawAvgData(data) {
+    var index = 0;
+    for (var i in data) {
+        if (index < data.length) {
+            var ratio = Math.round(data[i].ratio * 1000)/1000;
+            var avgRatio = Math.round(data.avgRatio *1000)/1000;
+            var year = data[i].year;
+            var tooltipInfo = "Year: " + year+ "\nRatio: " +ratio +"\navgRatio: " + avgRatio;
+            var circle = svg.append("circle")
+                .attr("cx", dimensions.width * 0.5)
+                .attr("cy", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
+                .attr("r", 0)
+                .attr("stroke", "black")
+                .attr("stroke-width", lineThickness / 4)
+                .attr("fill", "white")
+                .on('mouseover', function () {
+                    d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
+                })
+                .on('mouseout', function () {
+                    d3.select(this).transition().attr("r", lineThickness * 3);
+                })
+                .on('click', function () {
+                    //clearRefCirclesFromSVG();
+                    console.log("Hihi you clicked a circle " + name);
+                });
+            circle.append("svg:title").text(function () {
+                return tooltipInfo;
+            });
+            circle.transition()
+                .attr("r", lineThickness * 3)
+                .attr("cx", dimensions.width * ratio)
+                .duration(3000)
+                .ease("elastic")
+                .delay(0);
+            refereeCircles[index] = circle;
+            index++;
+        }
+    }
+}
 function drawRefereeData(data){
     clearRefCirclesFromSVG();
     var index = 0;

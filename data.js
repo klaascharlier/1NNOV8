@@ -79,6 +79,33 @@ function getDataOfReferee(referee) {
     return data;
 }
 
+function avgFaultsRatio(){
+    var data =[];
+    var averageRatio = 0;
+    var count = 0;
+    selectedData.forEach(function (d){
+        var yearObject = {};
+        yearObject.year = d.year;
+        yearObject.ratio = d3.sum(d.data, function (d) {
+                return parseInt(d.HF);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AF);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HF);
+            }));
+        if(!isNaN(yearObject.ratio)) {
+            averageRatio += yearObject.ratio;
+            count++;
+        }
+        data.push(yearObject);
+    });
+    averageRatio = averageRatio/count;
+    data.avgRatio = averageRatio;
+    return data;
+}
+
+
+
 function getFaults(referee) {
     var data = [];
     var dataOfReferee = getDataOfReferee(referee);
