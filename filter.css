@@ -117,18 +117,19 @@
     font-size: 12px;
 }
 
+
 .element-item.alkali          { background: #006060; }
 .element-item.alkaline-earth  { background: #A04800; }
 .element-item.lanthanoid      { background: #649500; }
 .element-item.actinoid        { background: #008000; }
 .element-item.transition      { background: #004B4B;  cursor: pointer}
-.element-item.transition:active,
-.element-item.transition.is-checked{
+.element-item.post-transition { background: #4D7400; }
+.element-item.metalloid       { background: #C06112; }
+.element-item.diatomic        { background: #E08337; cursor: pointer}
+.element-item.halogen         { background: #7C0000; }
+.element-item.noble-gas       { background: #A00000; }
+
+.element-item:active{
     background-color: #7C0000;
 
 }
-.element-item.post-transition { background: #4D7400; }
-.element-item.metalloid       { background: #C06112; }
-.element-item.diatomic        { background: #E08337; }
-.element-item.halogen         { background: #7C0000; }
-.element-item.noble-gas       { background: #A00000; }
