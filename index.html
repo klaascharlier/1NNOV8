@@ -8,113 +8,99 @@
     <script src="data.js"></script>
     <script src="field.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.js"></script>
-    <script src="ion.rangeSlider-2.1.2/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
+    <script src="jQRangeSlider-5.7.2/jQRangeSlider-min.js"></script>
+    <link rel="stylesheet" href="jQRangeSlider-5.7.2/css/iThing-min.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="filter.css">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.css">
-    <link rel="stylesheet" type="text/css" href="ion.rangeSlider-2.1.2/css/ion.rangeSlider.skinHTML5.css">
 
 
 </head>
 <body bgcolor="gray">
 
-<div id="wrapper">
-    <div id="soccerfield">
-    </div>
-    <div id="menucolumn" style="background-color: lightgray">
-        <div id="sorts" class="button-group">
-            <button class="button is-checked" data-sort-by="original-order">Referees</button>
-            <button class="button" data-sort-by="symbol">Teams</button>
-            <button class="button" data-sort-by="name">Alfabetisch</button>
-
+<div id="container" style="background-color: lavender; padding: 8px; margin: auto">
+    <div id="wrapper">
+        <div id="soccerfield">
         </div>
-        <div id="isotopeWrapper">
-            <div class="isotope" id="isotope">
+        <div id="menucolumn">
+            <div id="sorts" class="button-group">
+                <button class="button is-checked" data-sort-by="name">Alfabetisch</button>
+                <button class="button" data-sort-by="ratio">Ratio</button>
+            </div>
+            <div class="isotopeWrapper">
+                <div class="isotope" id="isotope">
+                </div>
             </div>
         </div>
-
     </div>
-</div>
-<div id="sliderDiv">
-    <input type="text" id="example_id" name="example_name" value="" />
+    <div id="slider">
+    </div>
 </div>
 </body>
 
 <script>
 
     var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
+    var selectedReferee = "";
+    var $container;
+    var $sortBy = "name"
+
 
 
     drawField(window.innerHeight - 80);
-    getData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
+    loadData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
     $(document).ready(function (){
         $(window).trigger('resize');
     });
 
-    $(window).on('resize', function(){
-        drawField(window.innerHeight - 80);
-        $("#isotopeWrapper").css("height", window.innerHeight - 80 - 34 - 8);
-        $("#soccerfield").css("height", window.innerHeight - 80);
-        $("#soccerfield").css("width", (window.innerHeight - 80) * 360/225);
-        $("#wrapper").css("width", (window.innerWidth - 16));
-        var soccerWidth = (window.innerHeight - 80) * 360/225;
-        var wrapperWidth = (window.innerWidth - 16);
-        $("#menucolumn").css("width", wrapperWidth - soccerWidth - 8);
-        $("#menucolumn").css("height", window.innerHeight - 80);
-        $("#isotopeWrapper").css("width", wrapperWidth - soccerWidth - 8);
-        $("#sorts").css("width", wrapperWidth - soccerWidth - 8);
-        drawRefereeData(getFaults("L Mason"));
+    $(window).on('resize', function () {
+        var fieldWidth = $("#soccerfield").width();
+        drawField(fieldWidth);
+        var columnHeight = $("#soccerfield").height();
+        $("#wrapper").css("height", columnHeight);
+        $("#menucolumn").css("height", columnHeight);
+        $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
+        $(".element-item").css("height", $(".element-item").width());
+        drawRefereeData(getFaults(selectedReferee));
+        drawAvgData(avgFaultsRatio());
     });
 
-    $("#example_id").ionRangeSlider({
-        type: "double",
-        min: 2011,
-        max: 2015,
-        from: 2011,
-        to: 2015,
-        step: 1,
-        onStart: function (data) {
-            console.log(data);
-        },
-        onChange: function (data) {
-            console.log(data);
-        },
-        onFinish: function (data) {
-            console.log(data);
-        },
-        onUpdate: function (data) {
-            console.log(data);
-        },
-        prettify_enabled: false
+    $("#slider").rangeSlider({
+        bounds: {min: 2011, max: 2015.99},
+        defaultValues: {min: 2011, max: 2015.99},
+        arrows: false,
+        formatter:function(val){
+            return Math.floor(val);
+        }
     });
+
+    $("#slider").bind("valuesChanged", function (e, data) {
+        var min = data.values.min.toString().slice(2, 4);
+        var max = data.values.max.toString().slice(2, 4);
+        console.log(data.values.min);
+        console.log(min);
+        console.log(parseInt(min));
+        loadData(parseInt(min), parseInt(max));
+    });
+
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
-        var div = document.getElementById("isotope");
-        var referees = getReferees();
 
+        var referees = getReferees();
+        if(selectedReferee == ""){
+            selectedReferee = referees[0];
+        }
+        var div = document.getElementById("isotope");
+        div.innerHTML = "";
 
         for (var i = 0; i < referees.length; i++) {
-            drawAvgData(avgFaultsRatio());
-            div.innerHTML = div.innerHTML +
-                    "<div class='element-item transition' onclick='drawRefereeData(getFaults(\"" + referees[i] + "\"))'  data-category='transition'>" +
+            div.innerHTML = div.innerHTML + "<div class='element-item transition' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
-                    "<p class='symbol'>R</p>"+
                     "</div>";
         }
 
-        console.log(getFaults("M Atkinson"));
-        console.log(avgFaultsRatio());
-        drawRefereeData(getFaults("M Atkinson"));
-
-        var teams = getTeams();
-        for(var i = 0; i< teams.length; i++){
-            div.innerHTML = div.innerHTML + "<div class='element-item diatomic' data-category='diatomic'>" +
-                    "<h3 class='name'>" + teams[i] + "</h3>" +
-                    "<p class='symbol'>T</p>" +
-                    "</div>";
-        }
-
-        console.log(getFaults("M Atkinson"));
+        $(window).trigger('resize');
+        drawRefereeData(getFaults(selectedReferee));
         sortInit();
     });
 
@@ -135,6 +121,11 @@
         for (i = 0; i < options.length; i++) {
             options[i].attr("visibility", "hidden");
         }
+    }
+
+    function changeReferee(newReferee) {
+        selectedReferee = newReferee;
+        drawRefereeData(getFaults(selectedReferee));
     }
 
     var homeText = svg.append("text")
@@ -160,26 +151,33 @@
 
     function sortInit() {
         // init Isotope
-        var $container = $('.isotope').isotope({
+        if($container != null) {
+            $container.isotope('destroy');
+        }
+
+        $container = $('.isotope').isotope({
             itemSelector: '.element-item',
             layoutMode: 'fitRows',
             getSortData: {
                 name: '.name',
-                symbol: '.symbol',
-                category: '[data-category]',
-                weight: function (itemElem) {
-                    var weight = $(itemElem).find('.weight').text();
-                    return parseFloat(weight.replace(/[\(\)]/g, ''));
-                }
-            }
+                ratio: '[ratio] parseFloat'
+            },
+            sortBy: $sortBy
         });
 
         // bind sort button click
         $('#sorts').on('click', 'button', function () {
-            var sortByValue = $(this).attr('data-sort-by');
-            $container.isotope({sortBy: sortByValue});
+            $sortBy = $(this).attr('data-sort-by');
+            $container.isotope({sortBy: $sortBy});
         });
 
+        $('.button-group').each(function (i, buttonGroup) {
+            var $buttonGroup = $(buttonGroup);
+            $buttonGroup.on('click', 'button', function () {
+                $buttonGroup.find('.is-checked').removeClass('is-checked');
+                $(this).addClass('is-checked');
+            });
+        });
     }
 
 </script>

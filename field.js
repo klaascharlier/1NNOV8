@@ -42,12 +42,12 @@ var dimensions = {
 var lineThickness = dimensions.width * 0.005;
 var svg;
 
-function drawField(height) {
+function drawField(width) {
 
     svg.selectAll("*").remove();
 
-    dimensions.height = height;
-    dimensions.width = 360/225*height;
+    dimensions.width = width;
+    dimensions.height = 225/360*width;
 
     svg = d3.select("#svg")
         .attr("width", dimensions.width)
@@ -181,7 +181,7 @@ function drawAvgData(data) {
             var ratio = Math.round(data[i].ratio * 1000)/1000;
             var avgRatio = Math.round(data.avgRatio *1000)/1000;
             var year = data[i].year;
-            var tooltipInfo = "Year: " + year+ "\nRatio: " +ratio +"\navgRatio: " + avgRatio;
+            var tooltipInfo = "Year: " + year+ "\nAverage ratio: " +ratio +"\nAverage ratio (All seasons): " + avgRatio;
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
                 .attr("cy", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
@@ -276,7 +276,7 @@ function drawRefereeData(data){
                     .style("font-weight", "bold")
                     .attr("font-family", "bold sans-serif")
                     .attr("font-size", "10px")
-                    .text("Referee");
+                    .text(name);
                 circle.transition()
                     .attr("r", lineThickness * 3)
                     .attr("cx", dimensions.width * ratio)
