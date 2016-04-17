@@ -31,6 +31,9 @@ var tempData = {
     "referee30": {"name":"Jean", "ratio": 0.49}
 };
 var refereeCircles = [];
+var avgCircles = [];
+var textAverage = [];
+var textReferee = [];
 var body;
 var dimensions = {
     width: 360,
@@ -39,13 +42,12 @@ var dimensions = {
 var lineThickness = dimensions.width * 0.005;
 var svg;
 
-function drawField(width) {
+function drawField(height) {
 
     svg.selectAll("*").remove();
 
-    dimensions.width = width;
-    dimensions.height = 225/360*width;
-    lineThickness = dimensions.width * 0.005;
+    dimensions.height = height;
+    dimensions.width = 360/225*height;
 
     svg = d3.select("#svg")
         .attr("width", dimensions.width)
@@ -144,6 +146,27 @@ function clearRefCirclesFromSVG() {
         });
         refereeCircles = [];
     }
+    if (Object.keys(textReferee).length > 0) {
+        textReferee.forEach(function (obj) {
+            obj.remove();
+        });
+        textReferee = [];
+    }
+}
+
+function clearAvgCirclesFromSVG() {
+    if (Object.keys(avgCircles).length > 0) {
+        avgCircles.forEach(function (obj) {
+            obj.remove();
+        });
+        avgCircles = [];
+    }
+    if (Object.keys(textAverage).length > 0) {
+        textAverage.forEach(function (obj) {
+            obj.remove();
+        });
+        textAverage = [];
+    }
 }
 
 function changeReferee(referee){ //TODO
@@ -151,6 +174,7 @@ function changeReferee(referee){ //TODO
 }
 
 function drawAvgData(data) {
+    clearAvgCirclesFromSVG();
     var index = 0;
     for (var i in data) {
         if (index < data.length) {
@@ -181,7 +205,7 @@ function drawAvgData(data) {
             /*circle.append("svg:text").text(function(){
                 return "test";
             });*/
-            svg.append("text")
+            var text = svg.append("text")
                 .attr("x", dimensions.width * ratio)
                 .attr("y",(-10+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
                 .attr("fill","white")
@@ -195,14 +219,17 @@ function drawAvgData(data) {
                 .duration(3000)
                 .ease("elastic")
                 .delay(0);
-            refereeCircles[index] = circle;
+            avgCircles[index] = circle;
+            textAverage[index] = text;
             index++;
         }
     }
 }
 
 function drawRefereeData(data){
+
     clearRefCirclesFromSVG();
+
     var index = 0;
     for(var i in data){
         if(index < data.length) {
@@ -242,7 +269,7 @@ function drawRefereeData(data){
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
                 });
-                svg.append("text")
+                var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
                     .attr("y",(15+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
                     .attr("fill","black")
@@ -256,6 +283,7 @@ function drawRefereeData(data){
                     .duration(3000)
                     .ease("elastic")
                     .delay(0);
+                textReferee[index] = text;
                 refereeCircles[index] = circle;
             }
             else {
