@@ -1,23 +1,27 @@
 var selectedData = [];
+function loadData(start, end) {
 
-function getData(start, end) {
-    if (start != end + 1) {
-        var j = start + 1;
-        d3.csv("" + start + j + ".csv", function (data) {
-                var dataObject = {};
-                dataObject.data = data;
-                dataObject.year = "" + start + j;
-                selectedData.push(dataObject);
-                getData(j, end);
-            }
-        );
-    }
-    else {
-        var event = new CustomEvent("dataReady");
-        document.dispatchEvent(event);
+    selectedData = [];
+    getData(start,end);
+
+    function getData(start, end) {
+        if (start != end + 1) {
+            var j = start + 1;
+            d3.csv("" + start + j + ".csv", function (data) {
+                    var dataObject = {};
+                    dataObject.data = data;
+                    dataObject.year = "" + start + j;
+                    selectedData.push(dataObject);
+                    getData(j, end);
+                }
+            );
+        }
+        else {
+            var event = new CustomEvent("dataReady");
+            document.dispatchEvent(event);
+        }
     }
 }
-
 function getDataOfYear(season) {
     selectedData.forEach(function (d) {
         if (d.year == season) {
