@@ -39,12 +39,13 @@ var dimensions = {
 var lineThickness = dimensions.width * 0.005;
 var svg;
 
-function drawField(height) {
+function drawField(width) {
 
     svg.selectAll("*").remove();
 
-    dimensions.height = height;
-    dimensions.width = 360/225*height;
+    dimensions.width = width;
+    dimensions.height = 225/360*width;
+    lineThickness = dimensions.width * 0.005;
 
     svg = d3.select("#svg")
         .attr("width", dimensions.width)
