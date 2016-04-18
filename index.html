@@ -94,10 +94,23 @@
         div.innerHTML = "";
 
         for (var i = 0; i < referees.length; i++) {
-            div.innerHTML = div.innerHTML + "<div class='element-item transition' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
+            var color;
+            if(referees[i] == selectedReferee){
+                color = "halogen";
+            }
+            else{
+                color = "transition";
+            }
+            div.innerHTML = div.innerHTML + "<div class='element-item " + color + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "</div>";
         }
+
+        $('#isotope').on('click', 'div', function(){
+            $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
+            $(this).removeClass("transition");
+            $(this).addClass("halogen");
+        })
 
         $(window).trigger('resize');
         drawRefereeData(getFaults(selectedReferee));

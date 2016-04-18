@@ -99,7 +99,3 @@
 .element-item.diatomic        { background: #E08337; cursor: pointer}
 .element-item.halogen         { background: #7C0000; }
 .element-item.noble-gas       { background: #A00000; }
-
-.element-item.transition:active{
-    background: #7C0000;
-}
