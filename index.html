@@ -59,7 +59,7 @@
         $("#menucolumn").css("height", columnHeight);
         $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
         $(".element-item").css("height", $(".element-item").width());
-        drawRefereeData(getFaults(selectedReferee));
+        drawRefereeData(getFaults(selectedReferee),1,0);
         drawAvgData(avgFaultsRatio());
     });
 
@@ -119,9 +119,8 @@
             }
         })
 
-
         $(window).trigger('resize');
-        drawRefereeData(getFaults(selectedReferee));
+        drawRefereeData(getFaults(selectedReferee),1,0);
         sortInit();
 
     });
@@ -141,17 +140,26 @@
     }
 
     function changeReferee(newReferee) {
-         var j;
+        var j;
+        var color;
+        if(selectedReferee.length != 1){
+             color = selectedReferee.length;
+        }else{
+             color = 0;
+        }
         if(event.ctrlKey) {
             j = 0;
+            color = selectedReferee.length;
             selectedReferee.push(newReferee);
+
         }else{
             j = 1;
+            color = 0;
             selectedReferee=[];
             selectedReferee.push(newReferee);
         }
-
-            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j);
+            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
+            console.log(color);
 
     }
 

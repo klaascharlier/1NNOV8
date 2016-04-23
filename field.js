@@ -172,6 +172,15 @@ function clearRefCirclesFromSVG() {
 
 }
 
+function clearRefTextFromSVG(){
+    if (Object.keys(textReferee).length >= 0) {
+        textReferee.forEach(function (obj) {
+            obj.remove();
+        });
+        textReferee = [];
+    }
+}
+
 function clearAvgCirclesFromSVG() {
     if (Object.keys(avgCircles).length > 0) {
         avgCircles.forEach(function (obj) {
@@ -186,6 +195,7 @@ function clearAvgCirclesFromSVG() {
         textAverage = [];
     }
 }
+
 
 function changeReferee(referee){ //TODO
     //could just be the drawRefereeData() function
@@ -253,16 +263,18 @@ function drawAvgData(data) {
 }
 
 
-function drawRefereeData(data, j){
+function drawRefereeData(data, j, color){
     if(j == 1) {
         clearRefCirclesFromSVG();
     }
+
     var index = 0;
     for(var i in data){
         if(index < data.length) {
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
+            var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151"];
             if(!isNaN(ratio)) {
                 var verdict = "";
                 if (ratio > 0.53) {
@@ -290,7 +302,7 @@ function drawRefereeData(data, j){
                     .attr("r", 0)
                     .attr("stroke", "black")
                     .attr("stroke-width", lineThickness / 4)
-                    .attr("fill", "#004B4B")
+                    .attr("fill", dataColor[color])
                     .on('mouseover', function () {
                         d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
                     })
@@ -341,5 +353,8 @@ function drawRefereeData(data, j){
             }
             index++;
         }
+    }
+    if(j == 0){
+        clearRefTextFromSVG();
     }
 }
