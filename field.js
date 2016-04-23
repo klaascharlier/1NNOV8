@@ -42,6 +42,7 @@ var dimensions = {
 var lineThickness = dimensions.width * 0.005;
 var svg;
 
+
 function drawField(width) {
 
     svg.selectAll("*").remove();
@@ -193,8 +194,10 @@ function changeReferee(referee){ //TODO
 function drawAvgData(data) {
     clearAvgCirclesFromSVG();
     var index = 0;
+
     for (var i in data) {
         if (index < data.length) {
+            var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
             var avgRatio = Math.round(data.avgRatio *1000)/1000;
             var year = data[i].year;
@@ -205,8 +208,8 @@ function drawAvgData(data) {
                 dataLengthAvgCircle = dimensions.height*0.5;
                 dataLengthAvgText = (dimensions.height*0.5)-10;
             }else{
-                dataLengthAvgCircle = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
-                dataLengthAvgText = (-10+(data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
+                dataLengthAvgCircle = dataLength;
+                dataLengthAvgText = dataLength-10;
             }
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
@@ -257,6 +260,7 @@ function drawRefereeData(data, j){
     var index = 0;
     for(var i in data){
         if(index < data.length) {
+            var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
             if(!isNaN(ratio)) {
@@ -277,8 +281,8 @@ function drawRefereeData(data, j){
                     dataLengthRef = dimensions.height*0.5;
                     dataLengthText = 15+dimensions.height*0.5;
                 }else{
-                    dataLengthRef = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
-                    dataLengthText = (15+((data.length-1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height);
+                    dataLengthRef = dataLength;
+                    dataLengthText = 15+dataLength;
                 }
                 var circle = svg.append("circle")
                     .attr("cx", dimensions.width * 0.5)
@@ -316,7 +320,7 @@ function drawRefereeData(data, j){
             else {
                 var rect = svg.append("rect")
                     .attr("x", dimensions.width * 0.5 - 1.5*lineThickness)
-                    .attr("y", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height + 1.5*lineThickness )
+                    .attr("y", dataLength-4.5)
                     .attr("width", 3 * lineThickness)
                     .attr("height", 3 * lineThickness)
                     .attr("fill", "red")
@@ -324,7 +328,7 @@ function drawRefereeData(data, j){
                     .attr("stroke-width", lineThickness/4);
                 rect.transition()
                     .attr("x", dimensions.width * 0.5 - 3*lineThickness)
-                    .attr("y", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
+                    .attr("y", dataLength-4.5)
                     .attr("width", 6 * lineThickness)
                     .attr("height", 6 * lineThickness)
                     .duration(3000)
