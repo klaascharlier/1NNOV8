@@ -141,16 +141,23 @@ function drawField(width) {
         .attr("fill", "green")
         .attr("opacity", 0.2);
 
-    /*var compareWindow = svg.append("rect")
-        .attr("width", dimensions.width /2)
-        .attr("height", dimensions.height/2)
-        .attr("x", dimensions.width / 4 - 5 * lineThickness)
-        .attr("y", dimensions.height/4)
+    var compareWindow = svg.append("rect")
+        .attr("width", dimensions.width /4)
+        .attr("height", dimensions.height/6)
+        .attr("x", 5 * lineThickness)
+        .attr("y", 5 * lineThickness)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
         .attr("fill", "black")
-        .attr("opacity", 0.2);*/
+        .attr("opacity", 0.2);
 
+    var text = svg.append("text")
+        .attr("x", 6 * lineThickness)
+        .attr("y", 10 * lineThickness)
+        .attr("fill","white")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "10px")
+        .text(selectedReferee[i]);
 
 }
 
