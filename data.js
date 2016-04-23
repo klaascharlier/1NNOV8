@@ -2,10 +2,12 @@ var selectedData = [];
 
 function loadData(start, end) {
 
+
     selectedData = [];
     getData(start,end);
 
     function getData(start, end) {
+
         if (start != end + 1) {
             var j = start + 1;
             d3.csv("" + start + j + ".csv", function (data) {
@@ -20,6 +22,7 @@ function loadData(start, end) {
         else {
             var event = new CustomEvent("dataReady");
             document.dispatchEvent(event);
+
         }
     }
 }

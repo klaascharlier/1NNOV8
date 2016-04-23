@@ -77,8 +77,10 @@
         var max = data.values.max.toString().slice(2, 4);
         console.log(data.values.min);
         console.log(min);
+        console.log(max);
         console.log(parseInt(min));
         loadData(parseInt(min), parseInt(max));
+
     });
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
@@ -121,12 +123,8 @@
         $(window).trigger('resize');
         drawRefereeData(getFaults(selectedReferee));
         sortInit();
+
     });
-
-
-    var activeMenu = "none";
-    var activeReferee = "none";
-    var menuItems = ["teams", "referees", "something else", "eijfao", "fee", "teams", "referees", "something else", "eijfao", "fee",];
 
     var options = [];
 
@@ -149,7 +147,6 @@
             selectedReferee.push(newReferee);
         }else{
             j = 1;
-           // clearRefCirclesFromSVG();
             selectedReferee=[];
             selectedReferee.push(newReferee);
         }
@@ -181,6 +178,8 @@
 
     function sortInit() {
         // init Isotope
+
+
         if($container != null) {
             $container.isotope('destroy');
         }

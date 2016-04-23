@@ -140,8 +140,15 @@ function drawField(width) {
         .attr("fill", "green")
         .attr("opacity", 0.2);
 
-    var menuItems = ["teams", "referees", "something else"];
-    var options = [];
+    /*var compareWindow = svg.append("rect")
+        .attr("width", dimensions.width /2)
+        .attr("height", dimensions.height/2)
+        .attr("x", dimensions.width / 4 - 5 * lineThickness)
+        .attr("y", dimensions.height/4)
+        .attr("stroke", "white")
+        .attr("stroke-width", lineThickness)
+        .attr("fill", "black")
+        .attr("opacity", 0.2);*/
 
 
 }
@@ -192,9 +199,20 @@ function drawAvgData(data) {
             var avgRatio = Math.round(data.avgRatio *1000)/1000;
             var year = data[i].year;
             var tooltipInfo = "Year: " + year+ "\nAverage ratio: " +ratio +"\nAverage ratio (All seasons): " + avgRatio;
+            var dataLengthAvgCircle;
+            var dataLengthAvgText;
+            if(data.length <= 1){
+                dataLengthAvgCircle = dimensions.height*0.5;
+                dataLengthAvgText = dimensions.height*0.5-10;
+
+            }else{
+                dataLengthAvgCircle = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
+                dataLengthAvgText = (-10+(data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
+
+            }
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
-                .attr("cy", ((data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
+                .attr("cy", dataLengthAvgCircle)
                 .attr("r", 0)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
@@ -204,20 +222,17 @@ function drawAvgData(data) {
                 })
                 .on('mouseout', function () {
                     d3.select(this).transition().attr("r", lineThickness * 3);
-                })
-                .on('click', function () {
-                    //clearRefCirclesFromSVG();
-                    console.log("Hihi you clicked a circle " + name);
                 });
             circle.append("svg:title").text(function () {
                 return tooltipInfo;
             });
             /*circle.append("svg:text").text(function(){
-                return "test";
-            });*/
+             return "test";
+             });*/
+
             var text = svg.append("text")
                 .attr("x", dimensions.width * ratio)
-                .attr("y",(-10+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
+                .attr("y",dataLengthAvgText)
                 .attr("fill","white")
                 .attr("font-family", "sans-serif")
                 .attr("font-size", "10px")
@@ -258,31 +273,34 @@ function drawRefereeData(data, j){
                     verdict = "Reasonably fair";
                 }
                 var tooltipInfo = "Referee: " + name + "\nSeason: " + data[i].year + "\nRatio: " + ratio + "\nPersonal avg: " + Math.round(data.avgRatio * 1000)/1000+ "\nVerdict: " + verdict;
-
-            var circle = svg.append("circle")
-                .attr("cx", dimensions.width * 0.5)
-                .attr("cy", ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height)
-                .attr("r", 0)
-                .attr("stroke", "black")
-                .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "#004B4B")
-                .on('mouseover', function () {
-                    d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
-                })
-                .on('mouseout', function () {
-                    d3.select(this).transition().attr("r", lineThickness * 3);
-                })
-                .on('click', function () {
-                    //clearRefCirclesFromSVG();
-                    console.log("Hihi you clicked a circle " + name);
-                });
-
+                var dataLengthRef;
+                var dataLengthText;
+                if(data.length <= 1){
+                    dataLengthRef = dimensions.height*0.5;
+                    dataLengthText = 15+dimensions.height*0.5;
+                }else{
+                    dataLengthRef = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
+                    dataLengthText = (15+((data.length-1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height);
+                }
+                var circle = svg.append("circle")
+                    .attr("cx", dimensions.width * 0.5)
+                    .attr("cy", dataLengthRef)
+                    .attr("r", 0)
+                    .attr("stroke", "black")
+                    .attr("stroke-width", lineThickness / 4)
+                    .attr("fill", "#004B4B")
+                    .on('mouseover', function () {
+                        d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
+                    })
+                    .on('mouseout', function () {
+                        d3.select(this).transition().attr("r", lineThickness * 3);
+                    });
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
                 });
                 var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
-                    .attr("y",(15+(data.length - 1 - index) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height )
+                    .attr("y",dataLengthText)
                     .attr("fill","black")
                     .style("font-weight", "bold")
                     .attr("font-family", "bold sans-serif")
