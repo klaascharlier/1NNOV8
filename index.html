@@ -41,12 +41,9 @@
 <script>
 
     var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
-    var selectedReferee = "";
+    var selectedReferee = [];
     var $container;
     var $sortBy = "name"
-
-
-
     drawField(window.innerHeight - 80);
     loadData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
@@ -85,10 +82,9 @@
     });
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
-
         var referees = getReferees();
         if(selectedReferee == ""){
-            selectedReferee = referees[0];
+            selectedReferee.push(referees[0]);
         }
         var div = document.getElementById("isotope");
         div.innerHTML = "";
@@ -104,13 +100,23 @@
             div.innerHTML = div.innerHTML + "<div class='element-item " + color + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "</div>";
+           // console.log(selectedReferee);
         }
 
         $('#isotope').on('click', 'div', function(){
-            $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
-            $(this).removeClass("transition");
-            $(this).addClass("halogen");
+            if(event.ctrlKey)
+            {
+                $(this).removeClass("transition");
+                $(this).addClass("halogen");
+            }
+            else
+            {
+                $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
+                $(this).removeClass("transition");
+                $(this).addClass("halogen");
+            }
         })
+
 
         $(window).trigger('resize');
         drawRefereeData(getFaults(selectedReferee));
@@ -137,8 +143,19 @@
     }
 
     function changeReferee(newReferee) {
-        selectedReferee = newReferee;
-        drawRefereeData(getFaults(selectedReferee));
+         var j;
+        if(event.ctrlKey) {
+            j = 0;
+            selectedReferee.push(newReferee);
+        }else{
+            j = 1;
+           // clearRefCirclesFromSVG();
+            selectedReferee=[];
+            selectedReferee.push(newReferee);
+        }
+
+            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j);
+
     }
 
     var homeText = svg.append("text")

@@ -1,7 +1,6 @@
 
 html * {
     font-family: sans-serif !important;
-
 }
 @media screen and (min-width: 1200px){
     #container {
@@ -22,6 +21,7 @@ html * {
 #soccerfield {
     width: 70%;
     float: left;
+
 }
 
 #menucolumn {
@@ -41,6 +41,7 @@ html * {
 #p.serif {
     font-family: "Times New Roman", Times, serif;
 }
+
 
 /*
 body p

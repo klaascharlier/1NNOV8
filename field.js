@@ -61,7 +61,8 @@ function drawField(width) {
     var field = svg.append("rect")
         .attr("width", dimensions.width)
         .attr("height", dimensions.height)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.5);
 
     var fieldRect = svg.append("rect")
         .attr("width", dimensions.width - 10 * lineThickness)
@@ -70,7 +71,8 @@ function drawField(width) {
         .attr("y", 5 * lineThickness)
         .attr("fill", "green")
         .attr("stroke", "white")
-        .attr("stroke-width", lineThickness);
+        .attr("stroke-width", lineThickness)
+        .attr("opacity", 0.5);
 
     var middleLine = svg.append("rect")
         .attr("width", lineThickness)
@@ -85,7 +87,8 @@ function drawField(width) {
         .attr("r", dimensions.width * 0.075)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.3);
 
     var middleStip = svg.append("circle")
         .attr("cx", dimensions.width * 0.5)
@@ -104,7 +107,8 @@ function drawField(width) {
         .attr("y", dimensions.height * 0.25)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.3);
 
     var rightBigBak = svg.append("rect")
         .attr("width", dimensions.width / 6)
@@ -113,7 +117,8 @@ function drawField(width) {
         .attr("y", dimensions.height * 0.25)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.3);
 
     var leftSmallBak = svg.append("rect")
         .attr("width", dimensions.width / 14)
@@ -122,7 +127,8 @@ function drawField(width) {
         .attr("y", dimensions.height * 0.4)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.2);
 
     var rightSmallBak = svg.append("rect")
         .attr("width", dimensions.width / 14)
@@ -131,7 +137,8 @@ function drawField(width) {
         .attr("y", dimensions.height * 0.4)
         .attr("stroke", "white")
         .attr("stroke-width", lineThickness)
-        .attr("fill", "green");
+        .attr("fill", "green")
+        .attr("opacity", 0.2);
 
     var menuItems = ["teams", "referees", "something else"];
     var options = [];
@@ -140,18 +147,21 @@ function drawField(width) {
 }
 
 function clearRefCirclesFromSVG() {
-    if (Object.keys(refereeCircles).length > 0) {
+    if (Object.keys(refereeCircles).length >= 0) {
         refereeCircles.forEach(function (obj) {
             obj.remove();
         });
+        console.log(refereeCircles);
         refereeCircles = [];
+
     }
-    if (Object.keys(textReferee).length > 0) {
+    if (Object.keys(textReferee).length >= 0) {
         textReferee.forEach(function (obj) {
             obj.remove();
         });
         textReferee = [];
     }
+
 }
 
 function clearAvgCirclesFromSVG() {
@@ -226,10 +236,11 @@ function drawAvgData(data) {
     }
 }
 
-function drawRefereeData(data){
 
-    clearRefCirclesFromSVG();
-
+function drawRefereeData(data, j){
+    if(j == 1) {
+        clearRefCirclesFromSVG();
+    }
     var index = 0;
     for(var i in data){
         if(index < data.length) {
@@ -283,8 +294,8 @@ function drawRefereeData(data){
                     .duration(3000)
                     .ease("elastic")
                     .delay(0);
-                textReferee[index] = text;
-                refereeCircles[index] = circle;
+                textReferee.push(text);
+                refereeCircles.push(circle);
             }
             else {
                 var rect = svg.append("rect")
@@ -306,7 +317,7 @@ function drawRefereeData(data){
                 rect.append("svg:title").text(function () {
                     return "Referee: " + name + "\nHas not lead a match in the season " + data[i].year;
                 });
-                refereeCircles[index] = rect;
+                refereeCircles.push(rect);
             }
             index++;
         }
