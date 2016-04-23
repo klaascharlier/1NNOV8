@@ -203,12 +203,10 @@ function drawAvgData(data) {
             var dataLengthAvgText;
             if(data.length <= 1){
                 dataLengthAvgCircle = dimensions.height*0.5;
-                dataLengthAvgText = dimensions.height*0.5-10;
-
+                dataLengthAvgText = (dimensions.height*0.5)-10;
             }else{
                 dataLengthAvgCircle = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
                 dataLengthAvgText = (-10+(data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
-
             }
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * 0.5)
