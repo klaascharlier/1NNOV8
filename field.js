@@ -157,7 +157,7 @@ function drawField(width) {
         .attr("fill","white")
         .attr("font-family", "sans-serif")
         .attr("font-size", "10px")
-        .text(selectedReferee[i]);
+        .text(selectedReferee);
 
 }
 
