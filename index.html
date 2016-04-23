@@ -59,8 +59,19 @@
         $("#menucolumn").css("height", columnHeight);
         $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
         $(".element-item").css("height", $(".element-item").width());
-        drawRefereeData(getFaults(selectedReferee),1,0);
+       // changeReferee(selectedReferee);
         drawAvgData(avgFaultsRatio());
+        if(selectedReferee.length > 1) {
+            for (var i = 0; i < selectedReferee.length; i++) {
+                drawRefereeData(getFaults(selectedReferee[i]), 0, i);
+             //   console.log(selectedReferee[i]);
+            }
+        }else{
+            drawRefereeData(getFaults(selectedReferee), 1, 0);
+            console.log(selectedReferee);
+        }
+
+
     });
 
     $("#slider").rangeSlider({
@@ -108,8 +119,24 @@
         $('#isotope').on('click', 'div', function(){
             if(event.ctrlKey)
             {
-                $(this).removeClass("transition");
-                $(this).addClass("halogen");
+                    $(this).removeClass("transition");
+                    $(this).addClass("halogen");
+                if(selectedReferee.length == 10){
+                    alert("You can not selected more than 10 referees!");
+                    console.log("10: " + selectedReferee.length);
+                }
+                if(selectedReferee.length >10){
+                    console.log("groter dan 10 : " + selectedReferee.length);
+                    $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
+                    $(this).removeClass("transition");
+                    $(this).addClass("halogen");
+                    //TODO
+                    // fix some bug
+                    selectedReferee=[];
+                    clearLegende();
+                    clearRefCirclesFromSVG();
+                }
+
             }
             else
             {
@@ -120,7 +147,9 @@
         })
 
         $(window).trigger('resize');
-        drawRefereeData(getFaults(selectedReferee),1,0);
+
+            drawRefereeData(getFaults(selectedReferee[selectedReferee.length - 1]), 1, 0);
+
         sortInit();
 
     });
@@ -159,8 +188,7 @@
             selectedReferee.push(newReferee);
         }
             drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
-            console.log(color);
-
+            console.log("kleur: " + color);
     }
 
     var homeText = svg.append("text")

@@ -31,9 +31,12 @@ var tempData = {
     "referee30": {"name":"Jean", "ratio": 0.49}
 };
 var refereeCircles = [];
+var textLegende = [];
+var circleLegende = [];
 var avgCircles = [];
 var textAverage = [];
 var textReferee = [];
+
 var body;
 var dimensions = {
     width: 360,
@@ -151,13 +154,6 @@ function drawField(width) {
         .attr("fill", "black")
         .attr("opacity", 0.2);
 
-    var text = svg.append("text")
-        .attr("x", 6 * lineThickness)
-        .attr("y", 10 * lineThickness)
-        .attr("fill","white")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "10px")
-        .text(selectedReferee);
 
 }
 
@@ -185,6 +181,21 @@ function clearRefTextFromSVG(){
             obj.remove();
         });
         textReferee = [];
+    }
+}
+
+function clearLegende(){
+    if (Object.keys(textLegende).length >= 0) {
+        textLegende.forEach(function (obj) {
+            obj.remove();
+        });
+        textLegende = [];
+    }
+    if (Object.keys(circleLegende).length >= 0) {
+        circleLegende.forEach(function (obj) {
+            obj.remove();
+        });
+        circleLegende = [];
     }
 }
 
@@ -273,15 +284,15 @@ function drawAvgData(data) {
 function drawRefereeData(data, j, color){
     if(j == 1) {
         clearRefCirclesFromSVG();
+        clearLegende();
     }
-
     var index = 0;
     for(var i in data){
         if(index < data.length) {
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
-            var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151"];
+            var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151","#CCCC00" , "#66CC00",'#4C0099','#330019','#404040'];
             if(!isNaN(ratio)) {
                 var verdict = "";
                 if (ratio > 0.53) {
@@ -319,6 +330,27 @@ function drawRefereeData(data, j, color){
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
                 });
+
+              //  console.log("test lengte referee: " + selectedReferee.length-1)
+                if(selectedReferee.length-1 <= 4) {
+                    var legendeCircle = svg.append("circle")
+                        .attr("cx", 20)
+                        .attr("cy", (18) + (selectedReferee.length - 1) * 15)
+                        .attr("r", 5)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", lineThickness / 4)
+                        .attr("fill", dataColor[color]);
+                   // console.log("lengte referee: " +selectedReferee.length);
+                }else{
+                    var legendeCircle = svg.append("circle")
+                        .attr("cx", 120)
+                        .attr("cy", 18 + (selectedReferee.length - 6) * 15)
+                        .attr("r", 5)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", lineThickness / 4)
+                        .attr("fill", dataColor[color]);
+                }
+
                 var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
                     .attr("y",dataLengthText)
@@ -327,14 +359,35 @@ function drawRefereeData(data, j, color){
                     .attr("font-family", "bold sans-serif")
                     .attr("font-size", "10px")
                     .text(name);
+
+                if(selectedReferee.length-1 <= 4) {
+                    var legendeText = svg.append("text")
+                        .attr("x", 32)
+                        .attr("y", 22 + (selectedReferee.length - 1) * 15)
+                        .attr("fill", "white")
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "10px")
+                        .text(selectedReferee[selectedReferee.length - 1]);
+                }else{
+                    var legendeText = svg.append("text")
+                        .attr("x", 132)
+                        .attr("y", 22 + (selectedReferee.length - 6) * 15)
+                        .attr("fill", "white")
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "10px")
+                        .text(selectedReferee[selectedReferee.length - 1]);
+                }
+
                 circle.transition()
                     .attr("r", lineThickness * 3)
                     .attr("cx", dimensions.width * ratio)
                     .duration(3000)
                     .ease("elastic")
                     .delay(0);
+                textLegende.push(legendeText);
                 textReferee.push(text);
                 refereeCircles.push(circle);
+                circleLegende.push(legendeCircle);
             }
             else {
                 var rect = svg.append("rect")
