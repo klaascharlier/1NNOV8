@@ -154,6 +154,27 @@ function drawField(width) {
         .attr("fill", "black")
         .attr("opacity", 0.2);
 
+    var homeText = svg.append("text")
+        .attr("x", dimensions.width * 0.05)
+        .attr("y", dimensions.height * 0.95)
+        .text(function(){
+            return "HOME ADV";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "40px")
+        .attr("font-weight", "bold")
+        .attr("fill", "white");
+    var awayText = svg.append("text")
+        .attr("x", dimensions.width * 0.7)
+        .attr("y", dimensions.height * 0.95)
+        .text(function(){
+            return "AWAY ADV";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "40px")
+        .attr("font-weight", "bold")
+        .attr("fill", "white");
+
 
 }
 
@@ -215,9 +236,6 @@ function clearAvgCirclesFromSVG() {
 }
 
 
-function changeReferee(referee){ //TODO
-    //could just be the drawRefereeData() function
-}
 
 function drawAvgData(data) {
     clearAvgCirclesFromSVG();
@@ -392,7 +410,7 @@ function drawRefereeData(data, j, color){
                 }
 
                 circle.transition()
-                    .attr("r", lineThickness * 3)
+                    .attr("r", lineThickness * 5)
                     .attr("cx", dimensions.width * ratio)
                     .duration(3000)
                     .ease("elastic")

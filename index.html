@@ -191,26 +191,7 @@
             console.log("kleur: " + color);
     }
 
-    var homeText = svg.append("text")
-            .attr("x", dimensions.width * 0.05)
-            .attr("y", dimensions.height * 0.1)
-            .text(function(){
-                return "HOME";
-            })
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "40px")
-            .attr("font-weight", "bold")
-            .attr("fill", "white");
-    var awayText = svg.append("text")
-            .attr("x", dimensions.width * 0.83)
-            .attr("y", dimensions.height * 0.1)
-            .text(function(){
-                return "AWAY";
-            })
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "40px")
-            .attr("font-weight", "bold")
-            .attr("fill", "white");
+
 
     function sortInit() {
         // init Isotope
