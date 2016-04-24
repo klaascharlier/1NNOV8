@@ -44,7 +44,7 @@ var dimensions = {
 };
 var lineThickness = dimensions.width * 0.005;
 var svg;
-
+var maxRatio = 0.000;
 
 function drawField(width) {
 
@@ -289,6 +289,19 @@ function drawRefereeData(data, j, color){
     var index = 0;
     for(var i in data){
         if(index < data.length) {
+
+            newArray = [];
+            for (var k = 0; k < selectedReferee.length; k++) {
+                newArray[k] = data.avgRatio;
+            }
+            for(var p = 0; p < newArray.length;p++){
+                if (newArray[p] > maxRatio) {
+                    maxRatio = newArray[p];
+                    console.log(maxRatio);
+                }
+            }
+
+            //console.log("andere arrray+ " + newArray);
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
@@ -331,7 +344,6 @@ function drawRefereeData(data, j, color){
                     return tooltipInfo;
                 });
 
-              //  console.log("test lengte referee: " + selectedReferee.length-1)
                 if(selectedReferee.length-1 <= 4) {
                     var legendeCircle = svg.append("circle")
                         .attr("cx", 20)
@@ -340,7 +352,6 @@ function drawRefereeData(data, j, color){
                         .attr("stroke", "black")
                         .attr("stroke-width", lineThickness / 4)
                         .attr("fill", dataColor[color]);
-                   // console.log("lengte referee: " +selectedReferee.length);
                 }else{
                     var legendeCircle = svg.append("circle")
                         .attr("cx", 120)
@@ -360,6 +371,7 @@ function drawRefereeData(data, j, color){
                     .attr("font-size", "10px")
                     .text(name);
 
+                //TODO: fix bug bij uit/inzoomen
                 if(selectedReferee.length-1 <= 4) {
                     var legendeText = svg.append("text")
                         .attr("x", 32)
@@ -369,6 +381,7 @@ function drawRefereeData(data, j, color){
                         .attr("font-size", "10px")
                         .text(selectedReferee[selectedReferee.length - 1]);
                 }else{
+
                     var legendeText = svg.append("text")
                         .attr("x", 132)
                         .attr("y", 22 + (selectedReferee.length - 6) * 15)
