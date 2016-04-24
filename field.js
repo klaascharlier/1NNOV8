@@ -36,6 +36,7 @@ var circleLegende = [];
 var avgCircles = [];
 var textAverage = [];
 var textReferee = [];
+var yearLabels = [];
 
 var body;
 var dimensions = {
@@ -163,7 +164,9 @@ function drawField(width) {
         .attr("font-family", "sans-serif")
         .attr("font-size", "40px")
         .attr("font-weight", "bold")
-        .attr("fill", "white");
+        .attr("fill", "white")
+        .attr("opacity", 0.65);
+
     var awayText = svg.append("text")
         .attr("x", dimensions.width * 0.7)
         .attr("y", dimensions.height * 0.95)
@@ -173,7 +176,8 @@ function drawField(width) {
         .attr("font-family", "sans-serif")
         .attr("font-size", "40px")
         .attr("font-weight", "bold")
-        .attr("fill", "white");
+        .attr("fill", "white")
+        .attr("opacity", 0.65);
 
 
 }
@@ -232,6 +236,33 @@ function clearAvgCirclesFromSVG() {
             obj.remove();
         });
         textAverage = [];
+    }
+}
+
+function clearYearLabels(){
+    if (Object.keys(yearLabels).length >= 0) {
+        yearLabels.forEach(function (obj) {
+            obj.remove();
+        });
+        yearLabels = [];
+    }
+}
+
+function writeYearLabels(data){
+    clearYearLabels();
+    var index = 0;
+    for(var i in data){
+        var text = svg.append("text")
+            .attr("x", dimensions.width * 0.9)
+            .attr("y", dimensions.height * 0.12 + index * (dimensions.height * 0.8 / (data.length - 1)))
+            .attr("fill","white")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px")
+            .attr("color", "yellow")
+            .text(function () {
+                return data[i].year;
+            });
+        index++;
     }
 }
 
@@ -304,6 +335,7 @@ function drawRefereeData(data, j, color){
         clearRefCirclesFromSVG();
         clearLegende();
     }
+    writeYearLabels(data);
     var index = 0;
     for(var i in data){
         if(index < data.length) {
