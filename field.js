@@ -440,6 +440,8 @@ function drawRefereeData(data, j, color){
                             .attr("font-size", "10px")
                             .text(selectedReferee[n]);
                     }
+                    textLegende.push(legendeText);
+                    circleLegende.push(legendeCircle);
                 }
                 var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
@@ -451,43 +453,16 @@ function drawRefereeData(data, j, color){
                     .text(name);
 
                 //TODO: fix bug bij uit/inzoomen
-                if(selectedReferee.length <= 9) {
-                    var legendeText = svg.append("text")
-                        .attr("x", 32)
-                        .attr("y", 22 + (selectedReferee.length - 1) * 15)
-                        .attr("fill", "white")
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", "10px")
-                        .text(selectedReferee[selectedReferee.length - 1]);
-                }else if(selectedReferee.length > 9 && selectedReferee.length <= 18){
-                    var legendeText = svg.append("text")
-                        .attr("x", 132)
-                        .attr("y", 22 + (selectedReferee.length - 10) * 15)
-                        .attr("fill", "white")
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", "10px")
-                        .text(selectedReferee[selectedReferee.length - 1]);
-                }else if(selectedReferee.length >18 && selectedReferee.length <= 27){
-                    var legendeText = svg.append("text")
-                        .attr("x", 232)
-                        .attr("y", 22 + (selectedReferee.length - 19) * 15)
-                        .attr("fill", "white")
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", "10px")
-                        .text(selectedReferee[selectedReferee.length - 1]);
-
-                }
-
                 circle.transition()
                     .attr("r", lineThickness * 5)
                     .attr("cx", dimensions.width * ratio)
                     .duration(3000)
                     .ease("elastic")
                     .delay(0);
-                textLegende.push(legendeText);
+
                 textReferee.push(text);
                 refereeCircles.push(circle);
-                circleLegende.push(legendeCircle);
+
             }
             else {
                 var rect = svg.append("rect")
