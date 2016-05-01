@@ -182,7 +182,7 @@ function drawField(width) {
 
 }
 
-function    clearRefCirclesFromSVG() {
+function clearRefCirclesFromSVG() {
     if (Object.keys(refereeCircles).length >= 0) {
         refereeCircles.forEach(function (obj) {
             obj.remove();

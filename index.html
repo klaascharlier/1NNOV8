@@ -59,7 +59,6 @@
         $("#menucolumn").css("height", columnHeight);
         $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
         $(".element-item").css("height", $(".element-item").width());
-       // changeReferee(selectedReferee);
         drawAvgData(avgFaultsRatio());
         if(selectedReferee.length > 1) {
             for (var i = 0; i < selectedReferee.length; i++) {
@@ -142,7 +141,6 @@
             }
             else
             {
-                $(window).trigger('resize');
                 $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
                 $(this).removeClass("transition");
                 $(this).addClass("halogen");
@@ -150,7 +148,6 @@
         })
 
         $(window).trigger('resize');
-        // drawRefereeData(getFaults(selectedReferee[selectedReferee.length - 1]), 1, 0);
        sortInit();
 
     });
@@ -187,7 +184,8 @@
             color = 0;
             selectedReferee=[];
             selectedReferee.push(newReferee);
-        }
+            clearLegende();
+         }
             drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
             console.log("kleur: " + color);
     }
@@ -196,8 +194,6 @@
 
     function sortInit() {
         // init Isotope
-
-
         if($container != null) {
             $container.isotope('destroy');
         }
