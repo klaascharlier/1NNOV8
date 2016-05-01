@@ -72,18 +72,22 @@
     margin: 1%;
     background: #888;
     color: #262524;
+    width: 70px;
+    height: 70px;
 }
 
 .element-item > * {
     margin: 0;
     padding: 0;
+    text-align: center;
 }
+
 
 .element-item .name {
     text-transform: none;
     letter-spacing: 0;
-    font-size: 12px;
-    line-height: 90px;
+    font-size: 10px;
+    line-height:70px;
     text-align: center;
     font-weight: normal;
     color: white;

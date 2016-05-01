@@ -146,8 +146,8 @@ function drawField(width) {
         .attr("opacity", 0.2);
 
     var compareWindow = svg.append("rect")
-        .attr("width", dimensions.width /4)
-        .attr("height", dimensions.height/6)
+        .attr("width", dimensions.width /2.9)
+        .attr("height", dimensions.height/3.5)
         .attr("x", 5 * lineThickness)
         .attr("y", 5 * lineThickness)
         .attr("stroke", "white")
@@ -182,7 +182,7 @@ function drawField(width) {
 
 }
 
-function clearRefCirclesFromSVG() {
+function    clearRefCirclesFromSVG() {
     if (Object.keys(refereeCircles).length >= 0) {
         refereeCircles.forEach(function (obj) {
             obj.remove();
@@ -292,9 +292,9 @@ function drawAvgData(data) {
                 .attr("cx", dimensions.width * 0.5)
                 .attr("cy", dataLengthAvgCircle)
                 .attr("r", 0)
-                .attr("stroke", "black")
-                .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "white")
+                .attr("stroke", "white")
+                .attr("stroke-width", lineThickness)
+                .attr("fill", "black")
                 .on('mouseover', function () {
                     d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
                 })
@@ -317,7 +317,7 @@ function drawAvgData(data) {
                 .text("Average");
 
             circle.transition()
-                .attr("r", lineThickness * 3)
+                .attr("r", lineThickness * 5)
                 .attr("cx", dimensions.width * ratio)
                 .duration(3000)
                 .ease("elastic")
@@ -328,7 +328,6 @@ function drawAvgData(data) {
         }
     }
 }
-
 
 function drawRefereeData(data, j, color){
     if(j == 1) {
@@ -350,12 +349,12 @@ function drawRefereeData(data, j, color){
                     console.log(maxRatio);
                 }
             }
-
             //console.log("andere arrray+ " + newArray);
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
-            var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151","#CCCC00" , "#66CC00",'#4C0099','#330019','#404040'];
+            //var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151","#CCCC00" , "#66CC00",'#4C0099','#330019','#404040'];
+            var dataColor = ["Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
             if(!isNaN(ratio)) {
                 var verdict = "";
                 if (ratio > 0.53) {
@@ -394,24 +393,54 @@ function drawRefereeData(data, j, color){
                     return tooltipInfo;
                 });
 
-                if(selectedReferee.length-1 <= 4) {
-                    var legendeCircle = svg.append("circle")
-                        .attr("cx", 20)
-                        .attr("cy", (18) + (selectedReferee.length - 1) * 15)
-                        .attr("r", 5)
-                        .attr("stroke", "black")
-                        .attr("stroke-width", lineThickness / 4)
-                        .attr("fill", dataColor[color]);
-                }else{
-                    var legendeCircle = svg.append("circle")
-                        .attr("cx", 120)
-                        .attr("cy", 18 + (selectedReferee.length - 6) * 15)
-                        .attr("r", 5)
-                        .attr("stroke", "black")
-                        .attr("stroke-width", lineThickness / 4)
-                        .attr("fill", dataColor[color]);
+                for(var n = 0; n < selectedReferee.length; n++) {
+                    if (n <= 8) {
+                        var legendeCircle = svg.append("circle")
+                            .attr("cx", 20)
+                            .attr("cy", 18 + (n) * 15)
+                            .attr("r", 5)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", lineThickness / 4)
+                            .attr("fill", dataColor[n]);
+                        var legendeText = svg.append("text")
+                            .attr("x", 32)
+                            .attr("y", 22 + (n) * 15)
+                            .attr("fill", "white")
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "10px")
+                            .text(selectedReferee[n]);
+                    }else if (n > 8 && n <= 17) {
+                        var legendeCircle = svg.append("circle")
+                            .attr("cx", 120)
+                            .attr("cy", 18 + (n - 9) * 15)
+                            .attr("r", 5)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", lineThickness / 4)
+                            .attr("fill", dataColor[n]);
+                        var legendeText = svg.append("text")
+                            .attr("x", 132)
+                            .attr("y", 22 + (n-9) * 15)
+                            .attr("fill", "white")
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "10px")
+                            .text(selectedReferee[n]);
+                    } else if (n> 17 && n <= 26) {
+                        var legendeCircle = svg.append("circle")
+                            .attr("cx", 220)
+                            .attr("cy", 18 + (n - 18) * 15)
+                            .attr("r", 5)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", lineThickness / 4)
+                            .attr("fill", dataColor[n]);
+                        var legendeText = svg.append("text")
+                            .attr("x", 232)
+                            .attr("y", 22 + (n-18) * 15)
+                            .attr("fill", "white")
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "10px")
+                            .text(selectedReferee[n]);
+                    }
                 }
-
                 var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
                     .attr("y",dataLengthText)
@@ -422,7 +451,7 @@ function drawRefereeData(data, j, color){
                     .text(name);
 
                 //TODO: fix bug bij uit/inzoomen
-                if(selectedReferee.length-1 <= 4) {
+                if(selectedReferee.length <= 9) {
                     var legendeText = svg.append("text")
                         .attr("x", 32)
                         .attr("y", 22 + (selectedReferee.length - 1) * 15)
@@ -430,15 +459,23 @@ function drawRefereeData(data, j, color){
                         .attr("font-family", "sans-serif")
                         .attr("font-size", "10px")
                         .text(selectedReferee[selectedReferee.length - 1]);
-                }else{
-
+                }else if(selectedReferee.length > 9 && selectedReferee.length <= 18){
                     var legendeText = svg.append("text")
                         .attr("x", 132)
-                        .attr("y", 22 + (selectedReferee.length - 6) * 15)
+                        .attr("y", 22 + (selectedReferee.length - 10) * 15)
                         .attr("fill", "white")
                         .attr("font-family", "sans-serif")
                         .attr("font-size", "10px")
                         .text(selectedReferee[selectedReferee.length - 1]);
+                }else if(selectedReferee.length >18 && selectedReferee.length <= 27){
+                    var legendeText = svg.append("text")
+                        .attr("x", 232)
+                        .attr("y", 22 + (selectedReferee.length - 19) * 15)
+                        .attr("fill", "white")
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "10px")
+                        .text(selectedReferee[selectedReferee.length - 1]);
+
                 }
 
                 circle.transition()

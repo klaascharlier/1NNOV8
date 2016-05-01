@@ -96,20 +96,22 @@
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
-        if(selectedReferee == ""){
-            selectedReferee.push(referees[0]);
-        }
+           for(var i = 0; i < referees.length; i++) {
+                selectedReferee.push(referees[i]);
+           }
         var div = document.getElementById("isotope");
         div.innerHTML = "";
-
         for (var i = 0; i < referees.length; i++) {
             var color;
-            if(referees[i] == selectedReferee){
+            if(referees[i] == selectedReferee[i]){
                 color = "halogen";
+                console.log("true");
             }
             else{
                 color = "transition";
+                console.log("false");
             }
+
             div.innerHTML = div.innerHTML + "<div class='element-item " + color + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "</div>";
@@ -121,11 +123,11 @@
             {
                     $(this).removeClass("transition");
                     $(this).addClass("halogen");
-                if(selectedReferee.length == 10){
-                    alert("You can not selected more than 10 referees!");
+                if(selectedReferee.length == 30){
+                    alert("You can not selected more than 30 referees!");
                     console.log("10: " + selectedReferee.length);
                 }
-                if(selectedReferee.length >10){
+                if(selectedReferee.length >30){
                     console.log("groter dan 10 : " + selectedReferee.length);
                     $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
                     $(this).removeClass("transition");
@@ -140,6 +142,7 @@
             }
             else
             {
+                $(window).trigger('resize');
                 $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
                 $(this).removeClass("transition");
                 $(this).addClass("halogen");
@@ -147,10 +150,8 @@
         })
 
         $(window).trigger('resize');
-
-            drawRefereeData(getFaults(selectedReferee[selectedReferee.length - 1]), 1, 0);
-
-        sortInit();
+        // drawRefereeData(getFaults(selectedReferee[selectedReferee.length - 1]), 1, 0);
+       sortInit();
 
     });
 
