@@ -137,13 +137,12 @@
                     clearLegende();
                     clearRefCirclesFromSVG();
                 }
-
             }
             else
             {
-                $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
-                $(this).removeClass("transition");
-                $(this).addClass("halogen");
+                $('#isotope').find('.halogen');
+                $(this).removeClass("halogen");
+                $(this).addClass("transition");
             }
         })
 
@@ -182,12 +181,20 @@
         }else{
             j = 1;
             color = 0;
-            selectedReferee=[];
-            selectedReferee.push(newReferee);
+            var index = selectedReferee.indexOf(newReferee);
+            if(index >=0)
+            selectedReferee.splice(index, 1);
             clearLegende();
-         }
-            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
-            console.log("kleur: " + color);
+            clearRefCirclesFromSVG();
+        }
+
+        for(var i = 0; i <= selectedReferee.length;i++) {
+            drawRefereeData(getFaults(selectedReferee[i]), 0, i);
+            console.log("grootte array: " + selectedReferee.length);
+        }
+      //  console.log("grootte array: " + selectedReferee.length);
+//            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
+//             console.log("kleur: " + color);
     }
 
 
