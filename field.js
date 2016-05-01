@@ -345,11 +345,10 @@ function drawRefereeData(data, j, color){
             }
             for(var p = 0; p < newArray.length;p++){
                 if (newArray[p] > maxRatio) {
-                    maxRatio = newArray[p];
-                    console.log(maxRatio);
+                    maxRatio =  Math.round(newArray[p] * 1000)/1000;
                 }
             }
-            //console.log("andere arrray+ " + newArray);
+
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
@@ -394,6 +393,13 @@ function drawRefereeData(data, j, color){
                 });
 
                 for(var n = 0; n < selectedReferee.length; n++) {
+                    //TODO:Fix this
+                    if(selectedReferee[n].avgRatio >= maxRatio){
+                      //  console.log("found REF");
+                        var colorText =	"#FF0000";
+                    }else{
+                        colorText = "white";
+                    }
                     if (n <= 8) {
                         var legendeCircle = svg.append("circle")
                             .attr("cx", 20)
@@ -405,7 +411,7 @@ function drawRefereeData(data, j, color){
                         var legendeText = svg.append("text")
                             .attr("x", 32)
                             .attr("y", 22 + (n) * 15)
-                            .attr("fill", "white")
+                            .attr("fill", colorText)
                             .attr("font-family", "sans-serif")
                             .attr("font-size", "10px")
                             .text(selectedReferee[n]);
@@ -420,7 +426,7 @@ function drawRefereeData(data, j, color){
                         var legendeText = svg.append("text")
                             .attr("x", 132)
                             .attr("y", 22 + (n-9) * 15)
-                            .attr("fill", "white")
+                            .attr("fill", colorText)
                             .attr("font-family", "sans-serif")
                             .attr("font-size", "10px")
                             .text(selectedReferee[n]);
@@ -435,7 +441,7 @@ function drawRefereeData(data, j, color){
                         var legendeText = svg.append("text")
                             .attr("x", 232)
                             .attr("y", 22 + (n-18) * 15)
-                            .attr("fill", "white")
+                            .attr("fill", colorText)
                             .attr("font-family", "sans-serif")
                             .attr("font-size", "10px")
                             .text(selectedReferee[n]);
