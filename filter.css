@@ -65,15 +65,12 @@
 /* ---- .element-item ---- */
 
 .element-item {
-    position: relative;
+    //position: relative;
     float: left;
-    width: 30%;
-    border-radius: 50%;
     margin: 1%;
-    background: #888;
-    color: #262524;
     width: 70px;
-    height: 70px;
+    height: 40px;
+    border-radius: 10px;
 }
 
 .element-item > * {
@@ -87,7 +84,7 @@
     text-transform: none;
     letter-spacing: 0;
     font-size: 10px;
-    line-height:70px;
+    line-height:40px;
     text-align: center;
     font-weight: normal;
     color: white;

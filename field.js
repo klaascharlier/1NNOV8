@@ -146,16 +146,6 @@ function drawField(width) {
         .attr("fill", "green")
         .attr("opacity", 0.2);
 
-    var compareWindow = svg.append("rect")
-        .attr("width", dimensions.width /2.9)
-        .attr("height", dimensions.height/3.5)
-        .attr("x", 5 * lineThickness)
-        .attr("y", 5 * lineThickness)
-        .attr("stroke", "white")
-        .attr("stroke-width", lineThickness)
-        .attr("fill", "black")
-        .attr("opacity", 0.2);
-
     var homeText = svg.append("text")
         .attr("x", dimensions.width * 0.05)
         .attr("y", dimensions.height * 0.95)
@@ -267,149 +257,6 @@ function writeYearLabels(data){
     }
 }
 
-
-
-function drawAvgData(data) {
-    clearAvgCirclesFromSVG();
-    //drawAVGrectData(data);
-    var index = 0;
-
-/*
-    for (var i in data) {
-        if (index < data.length) {
-            var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
-            var ratio = Math.round(data[i].ratio * 1000)/1000;
-            var avgRatio = Math.round(data.avgRatio *1000)/1000;
-            var year = data[i].year;
-            var tooltipInfo = "Year: " + year+ "\nAverage ratio: " +ratio +"\nAverage ratio (All seasons): " + avgRatio;
-            var dataLengthAvgCircle;
-            var dataLengthAvgText;
-            if(data.length <= 1){
-                dataLengthAvgCircle = dimensions.height*0.5;
-                dataLengthAvgText = (dimensions.height*0.5)-10;
-            }else{
-                dataLengthAvgCircle = dataLength;
-                dataLengthAvgText = dataLength-10;
-            }
-            var circle = svg.append("circle")
-                .attr("cx", dimensions.width * 0.5)
-                .attr("cy", dataLengthAvgCircle)
-                .attr("r", 0)
-                .attr("stroke", "white")
-                .attr("stroke-width", lineThickness)
-                .attr("fill", "black")
-                .on('mouseover', function () {
-                    d3.select(this).transition().attr("r", lineThickness * 4).ease("elastic");
-                })
-                .on('mouseout', function () {
-                    d3.select(this).transition().attr("r", lineThickness * 3);
-                });
-            circle.append("svg:title").text(function () {
-                return tooltipInfo;
-            });
-            //circle.append("svg:text").text(function(){
-             //return "test";
-             //});
-
-            var text = svg.append("text")
-                .attr("x", dimensions.width * ratio)
-                .attr("y",dataLengthAvgText)
-                .attr("fill","white")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "10px")
-                .text("Average");
-
-            circle.transition()
-                .attr("r", lineThickness * 5)
-                .attr("cx", dimensions.width * ratio)
-                .duration(3000)
-                .ease("elastic")
-                .delay(0);
-            avgCircles[index] = circle;
-            textAverage[index] = text;
-            index++;
-        }
-    }*/
-}
-
-/*function clearAvgRectsFromSVG(){
-    if (Object.keys(avgRects).length > 0) {
-        avgRects.forEach(function (obj) {
-            obj.remove();
-        });
-        avgRects = [];
-    }
-    if (Object.keys(textAverage).length > 0) {
-        textAverage.forEach(function (obj) {
-            obj.remove();
-        });
-        textAverage = [];
-    }
-}
-
-function drawAVGrectData(data){
-    clearAvgRectsFromSVG();
-    var index = 0;
-
-    for (var i in data) {
-        if (index < data.length) {
-            var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
-            var ratio = Math.round(data[i].ratio * 1000)/1000;
-            var avgRatio = Math.round(data.avgRatio *1000)/1000;
-            var year = data[i].year;
-            var tooltipInfo = "Year: " + year+ "\nAverage ratio: " +ratio +"\nAverage ratio (All seasons): " + avgRatio;
-            var dataLengthAvgRect;
-            var dataLengthAvgText;
-            if(data.length <= 1){
-                dataLengthAvgRect = dimensions.height*0.5;
-                dataLengthAvgText = (dimensions.height*0.5)-10;
-            }else{
-                dataLengthAvgRect = dataLength;
-                dataLengthAvgText = dataLength-10;
-            }
-            var rect = svg.append("rect")
-                .attr("x", dimensions.width * ratio)
-                .attr("y", dataLengthAvgRect - lineThickness*6)
-                .attr("width", 0)
-                .attr("height", 0)
-                .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "red")
-                .on('mouseover', function () {
-                    d3.select(this).transition().attr("height", lineThickness * 14).ease("elastic");
-                })
-                .on('mouseout', function () {
-                    d3.select(this).transition().attr("height", lineThickness * 12);
-                });
-            rect.append("svg:title").text(function () {
-                return tooltipInfo;
-            });
-            /!*circle.append("svg:text").text(function(){
-             return "test";
-             });*!/
-
-            var text = svg.append("text")
-                .attr("x", dimensions.width * ratio)
-                .attr("y", dataLengthAvgText )
-                .attr("fill","white")
-                .attr("font-family", "sans-serif")
-                .attr("font-size", "10px")
-                .text("");
-
-            rect.transition()
-                .attr("height", lineThickness * 12)
-                .attr("width", dimensions.width * (Math.abs(ratio - 0.5)))
-                .duration(3000)
-                .ease("elastic")
-                .delay(0);
-            avgRects[index] = rect;
-            textAverage[index] = text;
-            index++;
-        }
-    }
-}*/
-
-
-
 function drawRefereeData(data, j, color){
     if(j == 1) {
         clearRefCirclesFromSVG();
@@ -436,8 +283,8 @@ function drawRefereeData(data, j, color){
             var dataLength = ((data.length -1 - index) * (dimensions.height * 0.8) / (data.length-1)) + 0.1 * dimensions.height;
             var name = data.referee;
             var ratio = Math.round(data[i].ratio * 1000)/1000;
-            //var dataColor = ["#004B4B","#B17628", "#2851B1" , "#B12828", "#28B151","#CCCC00" , "#66CC00",'#4C0099','#330019','#404040'];
-            var dataColor = ["Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
+            var dataColor = ["hsla(0, 100%, 10%, 1)","hsla(0, 100%, 14%, 1)","hsla(0, 100%, 18%, 1)","hsla(0, 100%, 22%, 1)","hsla(0, 100%, 26%, 1)","hsla(0, 100%, 30%, 1)","hsla(0, 100%, 34%, 1)","hsla(0, 100%, 38%, 1)","hsla(0, 100%, 42%, 1)","hsla(0, 100%, 46%, 1)","hsla(0, 100%, 48%, 1)","hsla(0, 100%, 50%, 1)","hsla(0, 100%, 54%, 1)","hsla(0, 100%, 58%, 1)","hsla(0, 100%, 62%, 1)","hsla(0, 100%, 68%, 1)","hsla(0, 100%, 72%, 1)","hsla(0, 100%, 76%, 1)","hsla(0, 100%, 80%, 1)",
+                "hsla(0, 100%, 84%, 1)","hsla(0, 100%, 88%, 1)","hsla(0, 100%, 90%, 1)","hsla(0, 100%, 92%, 1)","hsla(0, 100%, 94%, 1)","hsla(0, 100%, 96%, 1)","hsla(0, 100%, 98%, 1)","hsla(0, 100%, 100%, 1)"]
             if(!isNaN(ratio)) {
                 var verdict = "";
                 if (ratio > 0.53) {
@@ -507,63 +354,16 @@ function drawRefereeData(data, j, color){
                     return tooltipInfo;
                 });
 
-                for(var n = 0; n < selectedReferee.length; n++) {
+             /*   for(var n = 0; n < selectedReferee.length; n++) {
                     //TODO:Fix this
+
                     if(selectedReferee[n].avgRatio >= maxRatio){
                       //  console.log("found REF");
                         var colorText =	"#FF0000";
                     }else{
                         colorText = "white";
                     }
-                    if (n <= 8) {
-                        var legendeCircle = svg.append("circle")
-                            .attr("cx", 20)
-                            .attr("cy", 18 + (n) * 15)
-                            .attr("r", 5)
-                            .attr("stroke", "black")
-                            .attr("stroke-width", lineThickness / 4)
-                            .attr("fill", dataColor[n]);
-                        var legendeText = svg.append("text")
-                            .attr("x", 32)
-                            .attr("y", 22 + (n) * 15)
-                            .attr("fill", colorText)
-                            .attr("font-family", "sans-serif")
-                            .attr("font-size", "10px")
-                            .text(selectedReferee[n]);
-                    }else if (n > 8 && n <= 17) {
-                        var legendeCircle = svg.append("circle")
-                            .attr("cx", 120)
-                            .attr("cy", 18 + (n - 9) * 15)
-                            .attr("r", 5)
-                            .attr("stroke", "black")
-                            .attr("stroke-width", lineThickness / 4)
-                            .attr("fill", dataColor[n]);
-                        var legendeText = svg.append("text")
-                            .attr("x", 132)
-                            .attr("y", 22 + (n-9) * 15)
-                            .attr("fill", colorText)
-                            .attr("font-family", "sans-serif")
-                            .attr("font-size", "10px")
-                            .text(selectedReferee[n]);
-                    } else if (n> 17 && n <= 26) {
-                        var legendeCircle = svg.append("circle")
-                            .attr("cx", 220)
-                            .attr("cy", 18 + (n - 18) * 15)
-                            .attr("r", 5)
-                            .attr("stroke", "black")
-                            .attr("stroke-width", lineThickness / 4)
-                            .attr("fill", dataColor[n]);
-                        var legendeText = svg.append("text")
-                            .attr("x", 232)
-                            .attr("y", 22 + (n-18) * 15)
-                            .attr("fill", colorText)
-                            .attr("font-family", "sans-serif")
-                            .attr("font-size", "10px")
-                            .text(selectedReferee[n]);
-                    }
-                    textLegende.push(legendeText);
-                    circleLegende.push(legendeCircle);
-                }
+                }*/
                 var text = svg.append("text")
                     .attr("x", dimensions.width * ratio)
                     .attr("y",dataLengthText)

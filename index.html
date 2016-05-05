@@ -59,8 +59,6 @@
         $("#wrapper").css("height", columnHeight);
         $("#menucolumn").css("height", columnHeight);
         $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
-        $(".element-item").css("height", $(".element-item").width());
-        drawAvgData(avgFaultsRatio());
         if(selectedReferee.length > 1) {
             for (var i = 0; i < selectedReferee.length; i++) {
                 drawRefereeData(getFaults(selectedReferee[i]), 0, i);
@@ -96,26 +94,24 @@
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
-           for(var i = 0; i < referees.length; i++) {
+        var dataColor = ["hsla(0, 100%, 10%, 1)","hsla(0, 100%, 14%, 1)","hsla(0, 100%, 18%, 1)","hsla(0, 100%, 22%, 1)","hsla(0, 100%, 26%, 1)","hsla(0, 100%, 30%, 1)","hsla(0, 100%, 34%, 1)","hsla(0, 100%, 38%, 1)","hsla(0, 100%, 42%, 1)","hsla(0, 100%, 46%, 1)","hsla(0, 100%, 48%, 1)","hsla(0, 100%, 50%, 1)","hsla(0, 100%, 54%, 1)","hsla(0, 100%, 58%, 1)","hsla(0, 100%, 62%, 1)","hsla(0, 100%, 68%, 1)","hsla(0, 100%, 72%, 1)","hsla(0, 100%, 76%, 1)","hsla(0, 100%, 80%, 1)",
+            "hsla(0, 100%, 84%, 1)","hsla(0, 100%, 88%, 1)","hsla(0, 100%, 90%, 1)","hsla(0, 100%, 92%, 1)","hsla(0, 100%, 94%, 1)","hsla(0, 100%, 96%, 1)","hsla(0, 100%, 98%, 1)","hsla(0, 100%, 100%, 1)"];
+        for(var i = 0; i < referees.length; i++) {
                 selectedReferee.push(referees[i]);
            }
         var div = document.getElementById("isotope");
         div.innerHTML = "";
         for (var i = 0; i < referees.length; i++) {
-            var color;
-            if(referees[i] == selectedReferee[i]){
-                color = "halogen";
-                console.log("true");
-            }
-            else{
-                color = "transition";
-                console.log("false");
-            }
-
-            div.innerHTML = div.innerHTML + "<div class='element-item " + color + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
+//            var color;
+//            if(referees[i] == selectedReferee[i]){
+//                color = "halogen";
+//            }
+//            else{
+//                color = "transition";
+//            }
+            div.innerHTML = div.innerHTML + "<div style = 'background-color: "+dataColor[i]+"' class='element-item " + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "</div>";
-           // console.log(selectedReferee);
         }
 
         $('#isotope').on('click', 'div', function(){
@@ -143,7 +139,7 @@
             {
                 $('#isotope').find('.halogen');
                 $(this).removeClass("halogen");
-                $(this).addClass("transition");
+                $(this).addClass("txransition");
             }
         })
 
@@ -182,15 +178,14 @@
         }else{
             j = 1;
             color = 0;
-            var index = selectedReferee.indexOf(newReferee);
-            if(index >=0)
+        var index = selectedReferee.indexOf(newReferee);
+        if (index >= 0)
             selectedReferee.splice(index, 1);
-            clearLegende();
-            clearRefCirclesFromSVG();
-        }
-
+        clearLegende();
+        clearRefCirclesFromSVG();
+    }
         for(var i = 0; i <= selectedReferee.length;i++) {
-            drawRefereeData(getFaults(selectedReferee[i]), 0, i);
+            drawRefereeData(getFaults(selectedReferee[i]), 0, color);
             console.log("grootte array: " + selectedReferee.length);
         }
       //  console.log("grootte array: " + selectedReferee.length);
