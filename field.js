@@ -453,6 +453,9 @@ function drawRefereeData(data, j, color){
                 var tip_div = d3.select("body").append("div")
                     .attr("class", "tooltip")
                     .style("opacity", 0);
+                var comp_div = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
                 var dataLengthRef;
                 var dataLengthText;
                 if(data.length <= 1){
@@ -476,7 +479,7 @@ function drawRefereeData(data, j, color){
                             .style("opacity", 0.9);
                         tip_div.html("Referee: " + name + "<br>Season: " + data[i].year + "<br>Ratio: " + ratio + "<br>Personal avg: " + Math.round(data.avgRatio * 1000)/1000)
                             .style("left", (dimensions.width / 8) + "px")
-                            .style("top", (dimensions.height / 2) + "px")
+                            .style("top", (dimensions.height / 2 - 17) + "px")
                             .style("height", "65px")
                             .style("width", "130px");
                     })
@@ -485,6 +488,20 @@ function drawRefereeData(data, j, color){
                         tip_div.transition()
                             .duration(500)
                             .style("opacity", 0);
+                    })
+                    .on('click', function () {
+                        d3.select(this).transition().attr("r", dimensions.width / 65).ease("elastic");
+                        comp_div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                        comp_div.transition()
+                            .duration(200)
+                            .style("opacity", 0.9);
+                        comp_div.html("Referee: " + name + "<br>Season: " + data[i].year + "<br>Ratio: " + ratio + "<br>Personal avg: " + Math.round(data.avgRatio * 1000)/1000)
+                            .style("left", (7*dimensions.width / 8 + 50) + "px")
+                            .style("top", (dimensions.height / 2 - 17) + "px")
+                            .style("height", "65px")
+                            .style("width", "130px");
                     });
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
