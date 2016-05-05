@@ -271,7 +271,7 @@ function writeYearLabels(data){
 
 function drawAvgData(data) {
     clearAvgCirclesFromSVG();
-    drawAVGrectData(data);
+    //drawAVGrectData(data);
     var index = 0;
 
 /*
@@ -332,7 +332,7 @@ function drawAvgData(data) {
     }*/
 }
 
-function clearAvgRectsFromSVG(){
+/*function clearAvgRectsFromSVG(){
     if (Object.keys(avgRects).length > 0) {
         avgRects.forEach(function (obj) {
             obj.remove();
@@ -369,23 +369,23 @@ function drawAVGrectData(data){
             }
             var rect = svg.append("rect")
                 .attr("x", dimensions.width * ratio)
-                .attr("y", dataLengthAvgRect - lineThickness*3.5)
+                .attr("y", dataLengthAvgRect - lineThickness*6)
                 .attr("width", 0)
                 .attr("height", 0)
                 .attr("stroke-width", lineThickness / 4)
                 .attr("fill", "red")
                 .on('mouseover', function () {
-                    d3.select(this).transition().attr("height", lineThickness * 9).ease("elastic");
+                    d3.select(this).transition().attr("height", lineThickness * 14).ease("elastic");
                 })
                 .on('mouseout', function () {
-                    d3.select(this).transition().attr("height", lineThickness * 7);
+                    d3.select(this).transition().attr("height", lineThickness * 12);
                 });
             rect.append("svg:title").text(function () {
                 return tooltipInfo;
             });
-            /*circle.append("svg:text").text(function(){
+            /!*circle.append("svg:text").text(function(){
              return "test";
-             });*/
+             });*!/
 
             var text = svg.append("text")
                 .attr("x", dimensions.width * ratio)
@@ -396,7 +396,7 @@ function drawAVGrectData(data){
                 .text("");
 
             rect.transition()
-                .attr("height", lineThickness * 7)
+                .attr("height", lineThickness * 12)
                 .attr("width", dimensions.width * (Math.abs(ratio - 0.5)))
                 .duration(3000)
                 .ease("elastic")
@@ -406,7 +406,9 @@ function drawAVGrectData(data){
             index++;
         }
     }
-}
+}*/
+
+
 
 function drawRefereeData(data, j, color){
     if(j == 1) {
@@ -415,6 +417,9 @@ function drawRefereeData(data, j, color){
     }
     writeYearLabels(data);
     var index = 0;
+
+
+
     for(var i in data){
         if(index < data.length) {
 
@@ -445,6 +450,9 @@ function drawRefereeData(data, j, color){
                     verdict = "Reasonably fair";
                 }
                 var tooltipInfo = "Referee: " + name + "\nSeason: " + data[i].year + "\nRatio: " + ratio + "\nPersonal avg: " + Math.round(data.avgRatio * 1000)/1000+ "\nVerdict: " + verdict;
+                var tip_div = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
                 var dataLengthRef;
                 var dataLengthText;
                 if(data.length <= 1){
@@ -462,10 +470,21 @@ function drawRefereeData(data, j, color){
                     .attr("stroke-width", lineThickness / 4)
                     .attr("fill", dataColor[color])
                     .on('mouseover', function () {
-                        d3.select(this).transition().attr("r", lineThickness * 6).ease("elastic");
+                        d3.select(this).transition().attr("r", dimensions.width / 65).ease("elastic");
+                        tip_div.transition()
+                            .duration(200)
+                            .style("opacity", 0.9);
+                        tip_div.html("Referee: " + name + "<br>Season: " + data[i].year + "<br>Ratio: " + ratio + "<br>Personal avg: " + Math.round(data.avgRatio * 1000)/1000)
+                            .style("left", (dimensions.width / 8) + "px")
+                            .style("top", (dimensions.height / 2) + "px")
+                            .style("height", "65px")
+                            .style("width", "130px");
                     })
                     .on('mouseout', function () {
-                        d3.select(this).transition().attr("r", lineThickness * 5);
+                        d3.select(this).transition().attr("r", dimensions.width / 85);
+                        tip_div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
                     });
                 circle.append("svg:title").text(function () {
                     return tooltipInfo;
@@ -539,7 +558,7 @@ function drawRefereeData(data, j, color){
 
                 //TODO: fix bug bij uit/inzoomen
                 circle.transition()
-                    .attr("r", lineThickness * 5)
+                    .attr("r", dimensions.width / 85)
                     .attr("cx", dimensions.width * ratio)
                     .duration(3000)
                     .ease("elastic")
@@ -548,28 +567,6 @@ function drawRefereeData(data, j, color){
                 textReferee.push(text);
                 refereeCircles.push(circle);
 
-            }
-            else {
-                var rect = svg.append("rect")
-                    .attr("x", dimensions.width * 0.5 - 1.5*lineThickness)
-                    .attr("y", dataLength-4.5)
-                    .attr("width", 3 * lineThickness)
-                    .attr("height", 3 * lineThickness)
-                    .attr("fill", "red")
-                    .attr("stroke", "yellow")
-                    .attr("stroke-width", lineThickness/4);
-                rect.transition()
-                    .attr("x", dimensions.width * 0.5 - 3*lineThickness)
-                    .attr("y", dataLength-4.5)
-                    .attr("width", 6 * lineThickness)
-                    .attr("height", 6 * lineThickness)
-                    .duration(3000)
-                    .ease("elastic")
-                    .delay(0);
-                rect.append("svg:title").text(function () {
-                    return "Referee: " + name + "\nHas not lead a match in the season " + data[i].year;
-                });
-                refereeCircles.push(rect);
             }
             index++;
         }
