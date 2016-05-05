@@ -1,35 +1,3 @@
-var tempData = {
-    "referee1": {"name":"John", "ratio": 0.5},
-    "referee2": {"name":"Hugh", "ratio": 0.6},
-    "referee3": {"name":"Victor", "ratio": 0.45},
-    "referee4": {"name":"Klaas", "ratio": 0.8},
-    "referee5": {"name":"Jean", "ratio": 0.55},
-    "referee6": {"name":"John", "ratio": 0.4},
-    "referee7": {"name":"Hugh", "ratio": 0.44},
-    "referee8": {"name":"Victor", "ratio": 0.59},
-    "referee9": {"name":"Klaas", "ratio": 0.42},
-    "referee10": {"name":"Jean", "ratio": 0.49},
-    "referee11": {"name":"John", "ratio": 0.35},
-    "referee12": {"name":"Hugh", "ratio": 0.6},
-    "referee13": {"name":"Victor", "ratio": 0.1},
-    "referee14": {"name":"Klaas", "ratio": 0.8},
-    "referee15": {"name":"Jean", "ratio": 0.55},
-    "referee16": {"name":"John", "ratio": 0.4},
-    "referee17": {"name":"Hugh", "ratio": 0.44},
-    "referee18": {"name":"Victor", "ratio": 0.59},
-    "referee19": {"name":"Klaas", "ratio": 0.42},
-    "referee20": {"name":"Jean", "ratio": 0.49},
-    "referee21": {"name":"John", "ratio": 0.35},
-    "referee22": {"name":"Hugh", "ratio": 0.6},
-    "referee23": {"name":"Victor", "ratio": 0.1},
-    "referee24": {"name":"Klaas", "ratio": 0.8},
-    "referee25": {"name":"Jean", "ratio": 0.55},
-    "referee26": {"name":"John", "ratio": 0.4},
-    "referee27": {"name":"Hugh", "ratio": 0.44},
-    "referee28": {"name":"Victor", "ratio": 0.59},
-    "referee29": {"name":"Klaas", "ratio": 0.42},
-    "referee30": {"name":"Jean", "ratio": 0.49}
-};
 var refereeCircles = [];
 var textLegende = [];
 var circleLegende = [];
@@ -48,16 +16,9 @@ var lineThickness = dimensions.width * 0.005;
 var svg;
 var maxRatio = 0.000;
 
-function drawField(width) {
-
-    svg.selectAll("*").remove();
-
-    dimensions.width = width;
-    dimensions.height = 225/360*width;
+function drawField() {
 
     svg = d3.select("#svg")
-        .attr("width", dimensions.width)
-        .attr("height", dimensions.height)
         .attr("align", "center");
 
     var body = d3.select("#soccerfield")
@@ -65,6 +26,7 @@ function drawField(width) {
     this.body = body;
 
     var field = svg.append("rect")
+        .attr("id", "fieldRect")
         .attr("width", dimensions.width)
         .attr("height", dimensions.height)
         .attr("fill", "green")
@@ -189,45 +151,6 @@ function clearRefCirclesFromSVG() {
         textReferee = [];
     }
 
-}
-
-function clearRefTextFromSVG(){
-    if (Object.keys(textReferee).length >= 0) {
-        textReferee.forEach(function (obj) {
-            obj.remove();
-        });
-        textReferee = [];
-    }
-}
-
-function clearLegende(){
-    if (Object.keys(textLegende).length >= 0) {
-        textLegende.forEach(function (obj) {
-            obj.remove();
-        });
-        textLegende = [];
-    }
-    if (Object.keys(circleLegende).length >= 0) {
-        circleLegende.forEach(function (obj) {
-            obj.remove();
-        });
-        circleLegende = [];
-    }
-}
-
-function clearAvgCirclesFromSVG() {
-    if (Object.keys(avgCircles).length > 0) {
-        avgCircles.forEach(function (obj) {
-            obj.remove();
-        });
-        avgCircles = [];
-    }
-    if (Object.keys(textAverage).length > 0) {
-        textAverage.forEach(function (obj) {
-            obj.remove();
-        });
-        textAverage = [];
-    }
 }
 
 function clearYearLabels(){

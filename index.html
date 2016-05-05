@@ -41,34 +41,22 @@
 
 <script>
 
-    var svg = d3.select("#soccerfield").append("svg").attr("id", "svg");
+    var svg = d3.select("#soccerfield").append("svg").attr("id", "svg").attr("viewBox", "0 0 360 255").attr("keepAspectRatio", "xMaxYMax meet").attr("width", "100%");
     var selectedReferee = [];
     var $container;
     var $sortBy = "name"
-    drawField(window.innerHeight - 80);
+    drawField();
     loadData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
-    $(document).ready(function (){
-        $(window).trigger('resize');
-    });
-
     $(window).on('resize', function () {
+        var svg = document.getElementsByTagName("svg")[0];
         var fieldWidth = $("#soccerfield").width();
-        drawField(fieldWidth);
+        $("#soccerfield").css("height", fieldWidth*225/360);
         var columnHeight = $("#soccerfield").height();
         $("#wrapper").css("height", columnHeight);
         $("#menucolumn").css("height", columnHeight);
         $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
-        if(selectedReferee.length > 1) {
-            for (var i = 0; i < selectedReferee.length; i++) {
-                drawRefereeData(getFaults(selectedReferee[i]), 0, i);
-             //   console.log(selectedReferee[i]);
-            }
-        }else{
-            drawRefereeData(getFaults(selectedReferee), 1, 0);
-            console.log(selectedReferee);
-        }
-
+        $(".element-item").css("height", $(".element-item").width());
 
     });
 
@@ -112,6 +100,7 @@
             div.innerHTML = div.innerHTML + "<div style = 'background-color: "+dataColor[i]+"' class='element-item " + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
                     "<h3 class='name'>" + referees[i] + "</h3>" +
                     "</div>";
+           // console.log(selectedReferee);
         }
 
         $('#isotope').on('click', 'div', function(){
@@ -139,7 +128,7 @@
             {
                 $('#isotope').find('.halogen');
                 $(this).removeClass("halogen");
-                $(this).addClass("txransition");
+                $(this).addClass("transition");
             }
         })
 
@@ -178,19 +167,17 @@
         }else{
             j = 1;
             color = 0;
-        var index = selectedReferee.indexOf(newReferee);
-        if (index >= 0)
+            var index = selectedReferee.indexOf(newReferee);
+            if(index >=0)
             selectedReferee.splice(index, 1);
-        clearLegende();
-        clearRefCirclesFromSVG();
-    }
+            clearLegende();
+            clearRefCirclesFromSVG();
+        }
+
         for(var i = 0; i <= selectedReferee.length;i++) {
-            drawRefereeData(getFaults(selectedReferee[i]), 0, color);
+            drawRefereeData(getFaults(selectedReferee[i]), 0, i);
             console.log("grootte array: " + selectedReferee.length);
         }
-      //  console.log("grootte array: " + selectedReferee.length);
-//            drawRefereeData(getFaults(selectedReferee[selectedReferee.length-1]),j, color);
-//             console.log("kleur: " + color);
     }
 
 
@@ -208,7 +195,8 @@
                 name: '.name',
                 ratio: '[ratio] parseFloat'
             },
-            sortBy: $sortBy
+            sortBy: $sortBy,
+            transitionDuration: '1.5s'
         });
 
         // bind sort button click
