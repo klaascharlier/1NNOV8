@@ -22,6 +22,7 @@
 <div id="container" style="background-color: lavender; padding: 8px; margin: auto">
     <div id="wrapper">
         <div id="soccerfield">
+
         </div>
         <div id="menucolumn">
             <div id="sorts" class="button-group">
@@ -32,39 +33,47 @@
                 <div class="isotope" id="isotope">
                 </div>
             </div>
+            <div class="toggle-button">
+                <button></button>
+            </div>
+
         </div>
     </div>
-    <div id="slider">
-    </div>
+</div>
+<div id="slider">
+</div>
 </div>
 </body>
 
 <script>
 
     var svg = d3.select("#soccerfield").append("svg").attr("id", "svg").attr("viewBox", "0 0 360 255").attr("keepAspectRatio", "xMaxYMax meet").attr("width", "100%");
-    var selectedReferee = [];
+    var refereeData = [];
+    var averageRefereeData = {};
     var $container;
-    var $sortBy = "name"
+    var $sortBy = "name";
     drawField();
     loadData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
+
+    $(document).ready(function () {
+        $(window).trigger('resize');
+    });
 
     $(window).on('resize', function () {
         var svg = document.getElementsByTagName("svg")[0];
         var fieldWidth = $("#soccerfield").width();
-        $("#soccerfield").css("height", fieldWidth*225/360);
+        $("#soccerfield").css("height", fieldWidth * 225 / 360);
         var columnHeight = $("#soccerfield").height();
         $("#wrapper").css("height", columnHeight);
         $("#menucolumn").css("height", columnHeight);
-        $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
-        $(".element-item").css("height", $(".element-item").width());
-
+//        $(".isotopeWrapper").css("height", columnHeight - $("#sorts").height());
     });
 
     $("#slider").rangeSlider({
         bounds: {min: 2011, max: 2015.99},
         defaultValues: {min: 2011, max: 2015.99},
         arrows: false,
-        formatter:function(val){
+        formatter: function (val) {
             return Math.floor(val);
         }
     });
@@ -72,119 +81,78 @@
     $("#slider").bind("valuesChanged", function (e, data) {
         var min = data.values.min.toString().slice(2, 4);
         var max = data.values.max.toString().slice(2, 4);
-        console.log(data.values.min);
-        console.log(min);
-        console.log(max);
-        console.log(parseInt(min));
-        loadData(parseInt(min), parseInt(max));
+        updateYears(min, max);
 
+    });
+
+    $(document).on('click', '.toggle-button', function () {
+        if ($(this).hasClass('toggle-button-selected')) {
+            hideAverage();
+        } else {
+            showAverage();
+        }
+        $(this).toggleClass('toggle-button-selected');
     });
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
         var referees = getReferees();
-        var dataColor = ["hsla(0, 100%, 10%, 1)","hsla(0, 100%, 14%, 1)","hsla(0, 100%, 18%, 1)","hsla(0, 100%, 22%, 1)","hsla(0, 100%, 26%, 1)","hsla(0, 100%, 30%, 1)","hsla(0, 100%, 34%, 1)","hsla(0, 100%, 38%, 1)","hsla(0, 100%, 42%, 1)","hsla(0, 100%, 46%, 1)","hsla(0, 100%, 48%, 1)","hsla(0, 100%, 50%, 1)","hsla(0, 100%, 54%, 1)","hsla(0, 100%, 58%, 1)","hsla(0, 100%, 62%, 1)","hsla(0, 100%, 68%, 1)","hsla(0, 100%, 72%, 1)","hsla(0, 100%, 76%, 1)","hsla(0, 100%, 80%, 1)",
-            "hsla(0, 100%, 84%, 1)","hsla(0, 100%, 88%, 1)","hsla(0, 100%, 90%, 1)","hsla(0, 100%, 92%, 1)","hsla(0, 100%, 94%, 1)","hsla(0, 100%, 96%, 1)","hsla(0, 100%, 98%, 1)","hsla(0, 100%, 100%, 1)"];
-        for(var i = 0; i < referees.length; i++) {
-                selectedReferee.push(referees[i]);
-           }
-        var div = document.getElementById("isotope");
-        div.innerHTML = "";
         for (var i = 0; i < referees.length; i++) {
-//            var color;
-//            if(referees[i] == selectedReferee[i]){
-//                color = "halogen";
-//            }
-//            else{
-//                color = "transition";
-//            }
-            div.innerHTML = div.innerHTML + "<div style = 'background-color: "+dataColor[i]+"' class='element-item " + "' ratio='" + getFaults(referees[i]).avgRatio.toString().slice(0, 4) + "' onclick='changeReferee(\"" + referees[i] + "\")' data-category='transition'>" +
-                    "<h3 class='name'>" + referees[i] + "</h3>" +
-                    "</div>";
-           // console.log(selectedReferee);
+            var refereeObject = {};
+            refereeObject.referee = referees[i];
+            refereeObject.data = getRefereeRatios(referees[i]);
+            refereeObject.circles = drawCirclesOfReferee(refereeObject);
+            refereeObject.button = drawButton(refereeObject, "#7a0000");
+            refereeData.push(refereeObject);
         }
 
-        $('#isotope').on('click', 'div', function(){
-            if(event.ctrlKey)
-            {
-                    $(this).removeClass("transition");
-                    $(this).addClass("halogen");
-                if(selectedReferee.length == 30){
-                    alert("You can not selected more than 30 referees!");
-                    console.log("10: " + selectedReferee.length);
-                }
-                if(selectedReferee.length >30){
-                    console.log("groter dan 10 : " + selectedReferee.length);
-                    $('#isotope').find('.halogen').removeClass('halogen').addClass('transition');
-                    $(this).removeClass("transition");
-                    $(this).addClass("halogen");
-                    //TODO
-                    // fix some bug
-                    selectedReferee=[];
-                    clearLegende();
-                    clearRefCirclesFromSVG();
-                }
-            }
-            else
-            {
-                $('#isotope').find('.halogen');
-                $(this).removeClass("halogen");
-                $(this).addClass("transition");
-            }
-        })
+        averageRefereeData.data = avgFaultsRatio();
+        averageRefereeData.circles = drawAverageCircles(averageRefereeData.data);
 
-        $(window).trigger('resize');
-       sortInit();
+        console.log(refereeData);
 
+
+        /* RESPECT GRAAG
+
+         var dataColor = ["hsla(0, 100%, 10%, 1)","hsla(0, 100%, 14%, 1)","hsla(0, 100%, 18%, 1)","hsla(0, 100%, 22%, 1)","hsla(0, 100%, 26%, 1)","hsla(0, 100%, 30%, 1)","hsla(0, 100%, 34%, 1)","hsla(0, 100%, 38%, 1)","hsla(0, 100%, 42%, 1)","hsla(0, 100%, 46%, 1)","hsla(0, 100%, 48%, 1)","hsla(0, 100%, 50%, 1)","hsla(0, 100%, 54%, 1)","hsla(0, 100%, 58%, 1)","hsla(0, 100%, 62%, 1)","hsla(0, 100%, 68%, 1)","hsla(0, 100%, 72%, 1)","hsla(0, 100%, 76%, 1)","hsla(0, 100%, 80%, 1)",
+         "hsla(0, 100%, 84%, 1)","hsla(0, 100%, 88%, 1)","hsla(0, 100%, 90%, 1)","hsla(0, 100%, 92%, 1)","hsla(0, 100%, 94%, 1)","hsla(0, 100%, 96%, 1)","hsla(0, 100%, 98%, 1)","hsla(0, 100%, 100%, 1)"];
+         for(var i = 0; i < referees.length; i++) {
+         selectedReferee.push(referees[i]);
+         }
+
+         */
+
+
+        $('#isotope').on('click', 'div', function () {
+            $('#isotope').find('.halogen');
+            $(this).removeClass("halogen");
+            $(this).addClass("transition");
+        });
+        sortInit();
     });
 
-    var options = [];
-
-    function showOptions() {
-        for (i = 0; i < options.length; i++) {
-            options[i].attr("visibility", "visible");
-        }
+    function drawButton(refereeData, color) {
+        var h3 = $(document.createElement('h3'))
+                .text(refereeData.data.referee)
+                .addClass("name");
+        var div = $(document.createElement('div'))
+                .css("background-color", color)
+                .addClass("element-item")
+                .attr("ratio", refereeData.data.avgRatioFaults.toString().slice(0, 4))
+                .append(h3)
+                .mouseover(function () {
+                    highLight(refereeData);
+                    div.css("cursor", "pointer");
+                })
+                .mouseout(function () {
+                    unHighLight(refereeData);
+                });
+        $("#isotope").append(div);
+        return div;
     }
-
-    function hideOptions() {
-        for (i = 0; i < options.length; i++) {
-            options[i].attr("visibility", "hidden");
-        }
-    }
-
-    function changeReferee(newReferee) {
-        var j;
-        var color;
-        if(selectedReferee.length != 1){
-             color = selectedReferee.length;
-        }else{
-             color = 0;
-        }
-        if(event.ctrlKey) {
-            j = 0;
-            color = selectedReferee.length;
-            selectedReferee.push(newReferee);
-
-        }else{
-            j = 1;
-            color = 0;
-            var index = selectedReferee.indexOf(newReferee);
-            if(index >=0)
-            selectedReferee.splice(index, 1);
-            clearLegende();
-            clearRefCirclesFromSVG();
-        }
-
-        for(var i = 0; i <= selectedReferee.length;i++) {
-            drawRefereeData(getFaults(selectedReferee[i]), 0, i);
-            console.log("grootte array: " + selectedReferee.length);
-        }
-    }
-
-
 
     function sortInit() {
         // init Isotope
-        if($container != null) {
+        if ($container != null) {
             $container.isotope('destroy');
         }
 

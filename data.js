@@ -120,50 +120,60 @@ function avgFaultsRatio(){
     return data;
 }
 
-
-
-function getFaults(referee) {
+function getRefereeRatios(referee) {
     var data = [];
     var dataOfReferee = getDataOfReferee(referee);
-    var averageRatio = 0;
-    var count = 0;
+    var averageRatioFaults = 0;
+    var averageRatioYellow = 0;
+    var averageRatioRed = 0;
+    var countFaults = 0;
+    var countYellow = 0;
+    var countRed = 0;
     data.referee = referee;
     dataOfReferee.forEach(function (d) {
         var yearObject = {};
         yearObject.year = d.year;
-        yearObject.ratio = d3.sum(d.data, function (d) {
+        yearObject.ratioFaults = d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }) / (d3.sum(d.data, function (d) {
                 return parseInt(d.AF);
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }));
-        yearObject.maxHome = d3.max(d.data, function (d) {
-            return parseInt(d.HF);
-        });
-        yearObject.maxAway = d3.max(d.data, function (d) {
-            return parseInt(d.AF);
-        });
-        yearObject.minHome = d3.min(d.data, function (d) {
-            return parseInt(d.HF);
-        });
-        yearObject.minAway = d3.min(d.data, function (d) {
-            return parseInt(d.AF);
-        });
-        yearObject.avgHome = d3.mean(d.data, function (d) {
-            return parseInt(d.HF);
-        });
-        yearObject.avgAway = d3.mean(d.data, function (d) {
-            return parseInt(d.AF);
-        });
-        if(!isNaN(yearObject.ratio)) {
-            averageRatio += yearObject.ratio;
-            count++;
+        if(!isNaN(yearObject.ratioFaults)) {
+            averageRatioFaults += yearObject.ratioFaults;
+            countFaults++;
+        }
+        yearObject.ratioYellow = d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AY);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }));
+        if(!isNaN(yearObject.ratioYellow)) {
+            averageRatioYellow += yearObject.ratioYellow;
+            countYellow++;
+        }
+        yearObject.ratioRed = d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AR);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }));
+        if(!isNaN(yearObject.ratioRed)) {
+            averageRatioRed += yearObject.ratioRed;
+            countRed++;
         }
         data.push(yearObject);
     });
-    averageRatio = averageRatio/count;
-    data.avgRatio = averageRatio;
+    averageRatioFaults = averageRatioFaults/countFaults;
+    data.avgRatioFaults = averageRatioFaults;
+    averageRatioYellow = averageRatioYellow/countYellow;
+    data.avgRatioYellow = averageRatioYellow;
+    averageRatioRed = averageRatioRed/countRed;
+    data.avgRatioRed = averageRatioRed;
     return data;
 }
 
