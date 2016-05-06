@@ -22,7 +22,6 @@
 <div id="container" style="background-color: lavender; padding: 8px; margin: auto">
     <div id="wrapper">
         <div id="soccerfield">
-
         </div>
         <div id="menucolumn">
             <div id="sorts" class="button-group">
@@ -33,10 +32,12 @@
                 <div class="isotope" id="isotope">
                 </div>
             </div>
-            <div class="toggle-button">
-                <button></button>
+            <div id = "button1" class="toggle-button">
+                <button class = "average"></button>
             </div>
-
+            <div id = "button2" class="toggle-button">
+                <button class= "age"></button>
+            </div>
         </div>
     </div>
 </div>
@@ -85,13 +86,22 @@
 
     });
 
-    $(document).on('click', '.toggle-button', function () {
-        if ($(this).hasClass('toggle-button-selected')) {
+    $(document).on('click', '.average', function () {
+        if ($('#button1.toggle-button').hasClass('toggle-button-selected')) {
             hideAverage();
         } else {
             showAverage();
         }
-        $(this).toggleClass('toggle-button-selected');
+        $('#button1.toggle-button').toggleClass('toggle-button-selected');
+    });
+
+    $(document).on('click', '.age', function () {
+        if ($('#button2.toggle-button').hasClass('toggle-button-selected')) {
+          //FUNCTION
+        } else {
+            //FUNCTION
+        }
+        $('#button2.toggle-button').toggleClass('toggle-button-selected');
     });
 
     document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
@@ -103,12 +113,13 @@
             refereeObject.circles = drawCirclesOfReferee(refereeObject);
             refereeObject.button = drawButton(refereeObject, "#7a0000");
             refereeData.push(refereeObject);
+            console.log(refereeObject);
         }
 
         averageRefereeData.data = avgFaultsRatio();
         averageRefereeData.circles = drawAverageCircles(averageRefereeData.data);
 
-        console.log(refereeData);
+        console.log(refereeData);snip
 
 
         /* RESPECT GRAAG

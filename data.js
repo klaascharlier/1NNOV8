@@ -133,6 +133,7 @@ function getRefereeRatios(referee) {
     dataOfReferee.forEach(function (d) {
         var yearObject = {};
         yearObject.year = d.year;
+        yearObject.age = d.age;
         yearObject.ratioFaults = d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }) / (d3.sum(d.data, function (d) {
