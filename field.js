@@ -4,6 +4,7 @@ var dimensions = {
 };
 var lineThickness = dimensions.width * 0.002;
 var svg;
+var deselectedReferees = [];
 
 function drawField() {
 
@@ -152,7 +153,8 @@ function drawCirclesOfReferee(dataOfReferee) {
     var circleArray = [];
     for (var i = 0; i < dataOfReferee.data.length; i++) {
         var dataHeight = ((dataOfReferee.data.length - 1 - i) * (dimensions.height * 0.8) / (dataOfReferee.data.length - 1)) + 0.1 * dimensions.height;
-        if (!isNaN(dataOfReferee.data[i].ratioFaults)) {
+        if (!isNaN(dataOfReferee.data[i].ratioFaults)){
+            console.log("test");
             var circle = svg.append("circle")
                 .attr("cx", dimensions.width * ((dataOfReferee.data[i].ratioFaults - 0.5) * 2 + 0.5))
                 .attr("cy", dataHeight)
@@ -173,18 +175,35 @@ function drawCirclesOfReferee(dataOfReferee) {
     return circleArray;
 }
 
-function highLight(dataOfReferee) {
-    dataOfReferee.button.css("background-color", "white");
+
+function deSelectReferee(dataOfReferee){
+    deselectedReferees.push(dataOfReferee);
     $.each(dataOfReferee.circles, function (index, circle) {
-        circle.transition().attr("r", dimensions.width / 65).attr("fill","black").ease("elastic");
+        circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
     });
 }
 
+function selectReferee(dataOfReferee){
+    var index = deselectedReferees.indexOf(dataOfReferee);
+    deselectedReferees.splice(index, 1);
+}
+
+function highLight(dataOfReferee) {
+    if(deselectedReferees.indexOf(dataOfReferee) == -1) {
+        dataOfReferee.button.css("background-color", "white");
+        $.each(dataOfReferee.circles, function (index, circle) {
+            circle.transition().attr("r", dimensions.width / 65).attr("fill", "black").ease("elastic");
+        });
+    }
+}
+
 function unHighLight(dataOfReferee) {
-    dataOfReferee.button.css("background-color", "#7a0000");
-    $.each(dataOfReferee.circles, function (index, circle) {
-        circle.transition().attr("r", 2).ease("elastic");
-    });
+    if(deselectedReferees.indexOf(dataOfReferee) == -1) {
+        dataOfReferee.button.css("background-color", "#7a0000");
+        $.each(dataOfReferee.circles, function (index, circle) {
+            circle.transition().attr("r", 2).ease("elastic");
+        });
+    }
 }
 
 function drawAverageCircles(data) {
@@ -278,11 +297,6 @@ function updateYears(start, end) {
     }
 }
 
-function deSelectReferee(dataOfReferee){
-    $.each(dataOfReferee.circles, function (index, circle) {
-        circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
-    });
-}
 
 /*
 function drawRefereeData(data, j, color) {

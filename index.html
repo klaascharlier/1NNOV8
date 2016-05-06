@@ -32,11 +32,11 @@
                 <div class="isotope" id="isotope">
                 </div>
             </div>
-            <div id = "button1" class="toggle-button">
-                <button class = "average"></button>
+            <div id="button1" class="toggle-button">
+                <button class="average"></button>
             </div>
-            <div id = "button2" class="toggle-button">
-                <button class= "age"></button>
+            <div id="button2" class="toggle-button">
+                <button class="age"></button>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@
 
     $(document).on('click', '.age', function () {
         if ($('#button2.toggle-button').hasClass('toggle-button-selected')) {
-          //FUNCTION
+            //FUNCTION
         } else {
             //FUNCTION
         }
@@ -119,7 +119,7 @@
         averageRefereeData.data = avgFaultsRatio();
         averageRefereeData.circles = drawAverageCircles(averageRefereeData.data);
 
-        console.log(refereeData);snip
+        console.log(refereeData);
 
 
         /* RESPECT GRAAG
@@ -164,11 +164,11 @@
                     if (i == 1) deSelectReferee(refereeData);
                     else {
                         i = 0;
+                        selectReferee(refereeData);
                         highLight(refereeData);
                     }
-//                    i == 1 ? deSelectReferee(refereeData) : highLight(refereeData);
-
                 });
+
         $("#isotope").append(div);
         return div;
     }
