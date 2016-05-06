@@ -102,15 +102,37 @@ function avgFaultsRatio(){
     selectedData.forEach(function (d){
         var yearObject = {};
         yearObject.year = d.year;
-        yearObject.ratio = d3.sum(d.data, function (d) {
+        yearObject.ratioFaults = d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }) / (d3.sum(d.data, function (d) {
                 return parseInt(d.AF);
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }));
-        if(!isNaN(yearObject.ratio)) {
-            averageRatio += yearObject.ratio;
+        if(!isNaN(yearObject.ratioFaults)) {
+            averageRatio += yearObject.ratioFaults;
+            count++;
+        }
+        yearObject.ratioYellow = d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AY);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HY);
+            }));
+        if(!isNaN(yearObject.ratioYellow)) {
+            averageRatio += yearObject.ratioYellow;
+            count++;
+        }
+        yearObject.ratioRed = d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }) / (d3.sum(d.data, function (d) {
+                return parseInt(d.AR);
+            }) + d3.sum(d.data, function (d) {
+                return parseInt(d.HR);
+            }));
+        if(!isNaN(yearObject.ratioRed)) {
+            averageRatio += yearObject.ratioRed;
             count++;
         }
         data.push(yearObject);

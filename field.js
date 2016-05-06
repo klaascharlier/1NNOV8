@@ -7,8 +7,8 @@ var svg;
 var deselectedReferees = [];
 
 var faultWeight = 2;
-var yellowWeight = 2;
-var redWeight = 2;
+var yellowWeight = 0;
+var redWeight = 0;
 
 function drawField() {
 
@@ -191,6 +191,9 @@ function updateRatio(dataOfReferee) {
             }
         }
     });
+    $.each(averageRefereeData.circles, function (index, circle){
+        circle.transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(averageRefereeData.data[index]) - 0.5) * 1.2 + 0.5)).ease("sin-in-out");
+    })
 }
 
 function calculateRatio(ratioData) {
@@ -210,6 +213,9 @@ function calculateRatio(ratioData) {
         localRedWeight = redWeight;
     }
     ratio = (faultWeight*ratioData.ratioFaults + localYellowWeight*NaNToZero(ratioData.ratioYellow) + localRedWeight*NaNToZero(ratioData.ratioRed)) / (faultWeight + localYellowWeight + localRedWeight);
+    if(isNaN(ratio)){
+        ratio = 0.5;
+    }
     return ratio;
 }
 
@@ -252,9 +258,9 @@ function drawAverageCircles(data) {
     var circleArray = [];
     for (var i = 0; i < data.length; i++) {
         var dataHeight = ((data.length - 1 - i) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height;
-        if (!isNaN(data[i].ratio)) {
+        if (!isNaN(calculateRatio(data[i]))) {
             var circle = svg.append("circle")
-                .attr("cx", dimensions.width * ((data[i].ratio - 0.5) * 2 + 0.5))
+                .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) * 2 + 0.5))
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("stroke", "black")
@@ -269,11 +275,12 @@ function drawAverageCircles(data) {
 
 function showAverage() {
     var ratios = avgFaultsRatio();
+    console.log(ratios);
     $.each(refereeData, function (index, referee) {
         var min = 0;
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
-                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((ratios[i].ratio - 0.5) * 1.2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
+                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(ratios[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
             }
             else {
                 min++;
@@ -291,6 +298,7 @@ function hideAverage() {
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
                 referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(referee.data[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 1).ease("sin-in-out");
+                console.log(referee.data[i]);
             }
             else {
                 min++;
