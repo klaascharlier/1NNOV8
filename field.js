@@ -176,7 +176,7 @@ function drawCirclesOfReferee(dataOfReferee) {
 function highLight(dataOfReferee) {
     dataOfReferee.button.css("background-color", "white");
     $.each(dataOfReferee.circles, function (index, circle) {
-        circle.transition().attr("r", dimensions.width / 65).ease("elastic");
+        circle.transition().attr("r", dimensions.width / 65).attr("fill","black").ease("elastic");
     });
 }
 
@@ -278,6 +278,12 @@ function updateYears(start, end) {
     }
 }
 
+function deSelectReferee(dataOfReferee){
+    $.each(dataOfReferee.circles, function (index, circle) {
+        circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
+    });
+}
+
 /*
 function drawRefereeData(data, j, color) {
     if (j == 1) {
@@ -287,6 +293,8 @@ function drawRefereeData(data, j, color) {
     writeYearLabels(data);
     var index = 0;
 
+    for(var i in data){
+        if(index < data.length) {
 
     for (var i in data) {
         if (index < data.length) {
