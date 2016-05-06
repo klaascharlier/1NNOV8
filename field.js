@@ -6,6 +6,10 @@ var lineThickness = dimensions.width * 0.002;
 var svg;
 var deselectedReferees = [];
 
+var faultWeight = 2;
+var yellowWeight = 2;
+var redWeight = 2;
+
 function drawField() {
 
     svg = d3.select("#svg")
@@ -156,7 +160,7 @@ function drawCirclesOfReferee(dataOfReferee) {
         if (!isNaN(dataOfReferee.data[i].ratioFaults)){
             console.log("test");
             var circle = svg.append("circle")
-                .attr("cx", dimensions.width * ((dataOfReferee.data[i].ratioFaults - 0.5) * 2 + 0.5))
+                .attr("cx", dimensions.width * ((dataOfReferee.data[i].ratioFaults - 0.5) * 1.2 + 0.5))
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("stroke", "black")
@@ -173,6 +177,44 @@ function drawCirclesOfReferee(dataOfReferee) {
         }
     }
     return circleArray;
+}
+
+function updateRatio(dataOfReferee) {
+    $.each(dataOfReferee, function (index, referee) {
+        var min = 0;
+        for (var i = 0; i < referee.data.length; i++) {
+            if (!isNaN(referee.data[i].ratioFaults)) {
+                    referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(referee.data[i]) - 0.5) * 1.2 + 0.5)).ease("sin-in-out");
+            }
+            else {
+                min++;
+            }
+        }
+    });
+}
+
+function calculateRatio(ratioData) {
+    var ratio = 0;
+    var localYellowWeight;
+    var localRedWeight;
+    if(isNaN(ratioData.ratioYellow) || ratioData.ratioYellow == 0){
+        localYellowWeight = 0;
+    }
+    else{
+        localYellowWeight = yellowWeight;
+    }
+    if(isNaN(ratioData.ratioRed) || ratioData.ratioRed == 0){
+        localRedWeight = 0;
+    }
+    else{
+        localRedWeight = redWeight;
+    }
+    ratio = (faultWeight*ratioData.ratioFaults + localYellowWeight*NaNToZero(ratioData.ratioYellow) + localRedWeight*NaNToZero(ratioData.ratioRed)) / (faultWeight + localYellowWeight + localRedWeight);
+    return ratio;
+}
+
+function NaNToZero (number){
+    return isNaN( number ) ? 0 : number;
 }
 
 
@@ -231,7 +273,7 @@ function showAverage() {
         var min = 0;
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
-                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((ratios[i].ratio - 0.5) * 2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
+                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((ratios[i].ratio - 0.5) * 1.2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
             }
             else {
                 min++;
@@ -248,7 +290,7 @@ function hideAverage() {
         var min = 0;
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
-                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((referee.data[i].ratioFaults - 0.5) * 2 + 0.5)).attr('opacity', 1).ease("sin-in-out");
+                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(referee.data[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 1).ease("sin-in-out");
             }
             else {
                 min++;
@@ -256,7 +298,7 @@ function hideAverage() {
         }
     });
     $.each(averageRefereeData.circles, function (index, circle) {
-        circle.attr("visibility", "visible");
+        circle.attr("visibility", "hidden");
     });
 
 }
