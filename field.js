@@ -123,6 +123,110 @@ function drawField() {
         .attr("fill", "white")
         .attr("opacity", 0.65);
 
+    var percentage_10 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.6 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "10%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage10 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.4 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "10%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage20 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.3 + 10 * lineThickness )
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "20%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage_20 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.7 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "20%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage_30 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.8 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "30%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage30 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.2 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "30%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage40 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.9 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "40%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
+    var percentage_40 = svg.append("text")
+        .attr("x", (dimensions.width - 20 * lineThickness) * 0.1 + 10 * lineThickness)
+        .attr("y", dimensions.height * 0.97)
+        .text(function () {
+            return "40%";
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", dimensions.width / 65)
+        .attr("font-weight", "bold")
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("opacity", 0.65);
+
 
 }
 
@@ -173,6 +277,9 @@ function drawCirclesOfReferee(dataOfReferee) {
                 .on('mouseout', function () {
                     unHighLight(dataOfReferee);
                 });
+            circle.append("svg:title").text(function () {
+                return "Referee: " + dataOfReferee.data.referee + "\nSeason: " + dataOfReferee.data[i].year;
+            });
             circleArray.push(circle);
         }
     }
