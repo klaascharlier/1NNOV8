@@ -339,13 +339,13 @@ function deSelectReferee(dataOfReferee){
     deselectedReferees.push(dataOfReferee);
     dataOfReferee.button.css("background-color", "grey");
     $.each(dataOfReferee.circles, function (index, circle) {
-        circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
+        circle.transition().attr("r", 1).attr("fill","grey").ease("sin-in-out");
     });
 }
 
 function drawHueCircles(dataOfReferee) {
     $.each(dataOfReferee.circles, function(index, circle){
-        circle.transition().attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("elastic");
+        circle.transition().duration(700).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("sin-in-out");
     });
     inHueState=1;
 }

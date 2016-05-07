@@ -142,10 +142,14 @@
 
     $(document).on('click', '.age', function () {
         if ($('#button2.toggle-button').hasClass('toggle-button-selected')) {
-            disableHue(refereeData);
+            for(var i = 0; i < refereeData.length; i++) {
+                disableHue(refereeData[i]);
+            }
         } else {
             //Werkt hier niet
-            drawHueCircles(refereeData);
+            for(var i = 0; i < refereeData.length; i++) {
+                drawHueCircles(refereeData[i]);
+            }
         }
         $('#button2.toggle-button').toggleClass('toggle-button-selected');
     });
