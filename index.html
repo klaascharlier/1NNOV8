@@ -75,8 +75,6 @@
             refereeObject.data = getRefereeRatios(referees[i]);
             refereeObject.circles = drawCirclesOfReferee(refereeObject);
             refereeObject.button = drawButton(refereeObject, "#7a0000");
-            //Werkt hier
-            // drawHueCircles(refereeObject);
             refereeData.push(refereeObject);
             console.log(refereeObject);
         }
@@ -146,7 +144,6 @@
                 disableHue(refereeData[i]);
             }
         } else {
-            //Werkt hier niet
             for(var i = 0; i < refereeData.length; i++) {
                 drawHueCircles(refereeData[i]);
             }

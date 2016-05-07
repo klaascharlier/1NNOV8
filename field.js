@@ -344,16 +344,16 @@ function deSelectReferee(dataOfReferee){
 }
 
 function drawHueCircles(dataOfReferee) {
+    inHueState=1;
     $.each(dataOfReferee.circles, function(index, circle){
         circle.transition().duration(700).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("sin-in-out");
     });
-    inHueState=1;
 }
 
 function disableHue(dataOfReferee){
     inHueState=0;
     $.each(dataOfReferee.circles, function(index, circle){
-        circle.transition().attr("fill", "black").ease("elastic");
+        circle.transition().duration(700).attr("fill", "black").ease("elastic");
     });
 
 }
