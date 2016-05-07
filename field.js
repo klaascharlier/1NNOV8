@@ -100,25 +100,25 @@ function drawField() {
         .attr("opacity", 0.2);
 
     var homeText = svg.append("text")
-        .attr("x", dimensions.width * 0.05)
-        .attr("y", dimensions.height * 0.95)
+        .attr("x", dimensions.width * 0.09)
+        .attr("y", dimensions.height * 0.065)
         .text(function () {
-            return "HOME ADV";
+            return "HOME ADVANTAGE";
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", dimensions.width / 50)
+        .attr("font-size", dimensions.width / 30)
         .attr("font-weight", "bold")
         .attr("fill", "white")
         .attr("opacity", 0.65);
 
     var awayText = svg.append("text")
-        .attr("x", dimensions.width * 0.84)
-        .attr("y", dimensions.height * 0.95)
+        .attr("x", dimensions.width * 0.6)
+        .attr("y", dimensions.height * 0.065)
         .text(function () {
-            return "AWAY ADV";
+            return "AWAY ADVANTAGE";
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", dimensions.width / 50)
+        .attr("font-size", dimensions.width / 30)
         .attr("font-weight", "bold")
         .attr("fill", "white")
         .attr("opacity", 0.65);
@@ -226,6 +226,7 @@ function NaNToZero (number){
 
 function deSelectReferee(dataOfReferee){
     deselectedReferees.push(dataOfReferee);
+    dataOfReferee.button.css("background-color", "grey");
     $.each(dataOfReferee.circles, function (index, circle) {
         circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
     });
@@ -238,9 +239,9 @@ function selectReferee(dataOfReferee){
 
 function highLight(dataOfReferee) {
     if(deselectedReferees.indexOf(dataOfReferee) == -1) {
-        dataOfReferee.button.css("background-color", "white");
+        dataOfReferee.button.css("background-color", "#FFB90F");
         $.each(dataOfReferee.circles, function (index, circle) {
-            circle.transition().attr("r", dimensions.width / 65).attr("fill", "black").ease("elastic");
+            circle.transition().attr("r", dimensions.width / 65).attr("fill", "#FFB90F").ease("elastic");
         });
     }
 }
@@ -249,7 +250,7 @@ function unHighLight(dataOfReferee) {
     if(deselectedReferees.indexOf(dataOfReferee) == -1) {
         dataOfReferee.button.css("background-color", "#7a0000");
         $.each(dataOfReferee.circles, function (index, circle) {
-            circle.transition().attr("r", 2).ease("elastic");
+            circle.transition().attr("r", 2).attr("fill", "black").ease("elastic");
         });
     }
 }
