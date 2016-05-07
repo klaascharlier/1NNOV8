@@ -4,8 +4,9 @@ function loadData(start, end) {
 
 
     selectedData = [];
-    getData(start,end);
-
+    ageReferees = [];
+    getData(start, end);
+    getAgeReferee();
     function getData(start, end) {
 
         if (start != end + 1) {
@@ -25,7 +26,18 @@ function loadData(start, end) {
 
         }
     }
+
+    function getAgeReferee() {
+        d3.csv("ageReferees.csv", function (data) {
+                var ageObject = {};
+                ageObject.data = data;
+                ageReferees.push(ageObject);
+            }
+        );
+        console.log(ageReferees);
+    }
 }
+
 
 function getDataOfYear(season) {
     selectedData.forEach(function (d) {
@@ -69,9 +81,9 @@ function getReferees() {
             }
         });
     });
-    referees.sort(function(a,b){
-        if(a < b) return -1;
-        if(a > b) return 1;
+    referees.sort(function (a, b) {
+        if (a < b) return -1;
+        if (a > b) return 1;
         return 0;
     });
     console.log(referees);
@@ -95,11 +107,11 @@ function getDataOfReferee(referee) {
     return data;
 }
 
-function avgFaultsRatio(){
-    var data =[];
+function avgFaultsRatio() {
+    var data = [];
     var averageRatio = 0;
     var count = 0;
-    selectedData.forEach(function (d){
+    selectedData.forEach(function (d) {
         var yearObject = {};
         yearObject.year = d.year;
         yearObject.ratioFaults = d3.sum(d.data, function (d) {
@@ -109,7 +121,7 @@ function avgFaultsRatio(){
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }));
-        if(!isNaN(yearObject.ratioFaults)) {
+        if (!isNaN(yearObject.ratioFaults)) {
             averageRatio += yearObject.ratioFaults;
             count++;
         }
@@ -120,7 +132,7 @@ function avgFaultsRatio(){
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HY);
             }));
-        if(!isNaN(yearObject.ratioYellow)) {
+        if (!isNaN(yearObject.ratioYellow)) {
             averageRatio += yearObject.ratioYellow;
             count++;
         }
@@ -131,19 +143,20 @@ function avgFaultsRatio(){
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HR);
             }));
-        if(!isNaN(yearObject.ratioRed)) {
+        if (!isNaN(yearObject.ratioRed)) {
             averageRatio += yearObject.ratioRed;
             count++;
         }
         data.push(yearObject);
     });
-    averageRatio = averageRatio/count;
+    averageRatio = averageRatio / count;
     data.avgRatio = averageRatio;
     return data;
 }
 
 function getRefereeRatios(referee) {
     var data = [];
+    var referees = getReferees();
     var dataOfReferee = getDataOfReferee(referee);
     var averageRatioFaults = 0;
     var averageRatioYellow = 0;
@@ -155,7 +168,15 @@ function getRefereeRatios(referee) {
     dataOfReferee.forEach(function (d) {
         var yearObject = {};
         yearObject.year = d.year;
-        yearObject.age = d.age;
+        ageReferees.forEach(function (d) {
+            d.data.forEach(function (e) {
+                for (var i = 0; i < referees.length; i++) {
+                    if (referee == e.Referee) {
+                        data.age = e.Age;
+                    }
+                }
+            })
+        });
         yearObject.ratioFaults = d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }) / (d3.sum(d.data, function (d) {
@@ -163,7 +184,7 @@ function getRefereeRatios(referee) {
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HF);
             }));
-        if(!isNaN(yearObject.ratioFaults)) {
+        if (!isNaN(yearObject.ratioFaults)) {
             averageRatioFaults += yearObject.ratioFaults;
             countFaults++;
         }
@@ -174,7 +195,7 @@ function getRefereeRatios(referee) {
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HY);
             }));
-        if(!isNaN(yearObject.ratioYellow)) {
+        if (!isNaN(yearObject.ratioYellow)) {
             averageRatioYellow += yearObject.ratioYellow;
             countYellow++;
         }
@@ -185,17 +206,17 @@ function getRefereeRatios(referee) {
             }) + d3.sum(d.data, function (d) {
                 return parseInt(d.HR);
             }));
-        if(!isNaN(yearObject.ratioRed)) {
+        if (!isNaN(yearObject.ratioRed)) {
             averageRatioRed += yearObject.ratioRed;
             countRed++;
         }
         data.push(yearObject);
     });
-    averageRatioFaults = averageRatioFaults/countFaults;
+    averageRatioFaults = averageRatioFaults / countFaults;
     data.avgRatioFaults = averageRatioFaults;
-    averageRatioYellow = averageRatioYellow/countYellow;
+    averageRatioYellow = averageRatioYellow / countYellow;
     data.avgRatioYellow = averageRatioYellow;
-    averageRatioRed = averageRatioRed/countRed;
+    averageRatioRed = averageRatioRed / countRed;
     data.avgRatioRed = averageRatioRed;
     return data;
 }

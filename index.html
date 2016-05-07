@@ -49,7 +49,6 @@
 </div>
 <div id="slider">
 </div>
-</div>
 </body>
 
 <script>
@@ -62,8 +61,37 @@
     drawField();
     loadData(11, 15);    //This method must be executed, otherwise things that depend on data will not be executed
 
+
     $(document).ready(function () {
         $(window).trigger('resize');
+    });
+
+    document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
+
+        var referees = getReferees();
+        for (var i = 0; i < referees.length; i++) {
+            var refereeObject = {};
+            refereeObject.referee = referees[i];
+            refereeObject.data = getRefereeRatios(referees[i]);
+            refereeObject.circles = drawCirclesOfReferee(refereeObject);
+            refereeObject.button = drawButton(refereeObject, "#7a0000");
+            //Werkt hier
+            // drawHueCircles(refereeObject);
+            refereeData.push(refereeObject);
+            console.log(refereeObject);
+        }
+
+        averageRefereeData.data = avgFaultsRatio();
+        averageRefereeData.data = avgFaultsRatio();
+        averageRefereeData.circles = drawAverageCircles(averageRefereeData.data);
+        console.log(refereeData);
+
+        $('#isotope').on('click', 'div', function () {
+            $('#isotope').find('.halogen');
+            $(this).removeClass("halogen");
+            $(this).addClass("transition");
+        });
+        sortInit();
     });
 
     $(window).on('resize', function () {
@@ -114,47 +142,15 @@
 
     $(document).on('click', '.age', function () {
         if ($('#button2.toggle-button').hasClass('toggle-button-selected')) {
-            //FUNCTION
+
         } else {
-            //FUNCTION
+            //Werkt hier niet
+            drawHueCircles(refereeData);
         }
         $('#button2.toggle-button').toggleClass('toggle-button-selected');
     });
 
-    document.addEventListener("dataReady", function (e) {   //All things that depend on data should be called from here;
-        var referees = getReferees();
-        for (var i = 0; i < referees.length; i++) {
-            var refereeObject = {};
-            refereeObject.referee = referees[i];
-            refereeObject.data = getRefereeRatios(referees[i]);
-            refereeObject.circles = drawCirclesOfReferee(refereeObject);
-            refereeObject.button = drawButton(refereeObject, "#7a0000");
-            refereeData.push(refereeObject);
-            console.log(refereeObject);
-        }
 
-        averageRefereeData.data = avgFaultsRatio();
-        averageRefereeData.circles = drawAverageCircles(averageRefereeData.data);
-
-        console.log(refereeData);
-
-
-        /* RESPECT GRAAG
-         var dataColor = ["hsla(0, 100%, 10%, 1)","hsla(0, 100%, 14%, 1)","hsla(0, 100%, 18%, 1)","hsla(0, 100%, 22%, 1)","hsla(0, 100%, 26%, 1)","hsla(0, 100%, 30%, 1)","hsla(0, 100%, 34%, 1)","hsla(0, 100%, 38%, 1)","hsla(0, 100%, 42%, 1)","hsla(0, 100%, 46%, 1)","hsla(0, 100%, 48%, 1)","hsla(0, 100%, 50%, 1)","hsla(0, 100%, 54%, 1)","hsla(0, 100%, 58%, 1)","hsla(0, 100%, 62%, 1)","hsla(0, 100%, 68%, 1)","hsla(0, 100%, 72%, 1)","hsla(0, 100%, 76%, 1)","hsla(0, 100%, 80%, 1)",
-         "hsla(0, 100%, 84%, 1)","hsla(0, 100%, 88%, 1)","hsla(0, 100%, 90%, 1)","hsla(0, 100%, 92%, 1)","hsla(0, 100%, 94%, 1)","hsla(0, 100%, 96%, 1)","hsla(0, 100%, 98%, 1)","hsla(0, 100%, 100%, 1)"];
-         for(var i = 0; i < referees.length; i++) {
-         selectedReferee.push(referees[i]);
-         }
-         */
-
-
-        $('#isotope').on('click', 'div', function () {
-            $('#isotope').find('.halogen');
-            $(this).removeClass("halogen");
-            $(this).addClass("transition");
-        });
-        sortInit();
-    });
 
     function drawButton(refereeData, color) {
         var i = 0;

@@ -5,10 +5,12 @@ var dimensions = {
 var lineThickness = dimensions.width * 0.002;
 var svg;
 var deselectedReferees = [];
-
+var inHueState = 0;
 var faultWeight = 2;
 var yellowWeight = 0;
 var redWeight = 0;
+var dataColor = ["hsla(0, 100%, 0%, 1)","hsla(0, 100%, 2%, 1)","hsla(0, 100%, 4%, 1)","hsla(0, 100%, 6%, 1)","hsla(0, 100%, 8%, 1)","hsla(0, 100%, 10%, 1)", "hsla(0, 100%, 12%, 1)","hsla(0, 100%, 14%, 1)", "hsla(0, 100%, 18%, 1)", "hsla(0, 100%, 22%, 1)", "hsla(0, 100%, 26%, 1)", "hsla(0, 100%, 30%, 1)", "hsla(0, 100%, 34%, 1)", "hsla(0, 100%, 38%, 1)", "hsla(0, 100%, 42%, 1)", "hsla(0, 100%, 46%, 1)", "hsla(0, 100%, 48%, 1)", "hsla(0, 100%, 50%, 1)", "hsla(0, 100%, 54%, 1)", "hsla(0, 100%, 58%, 1)", "hsla(0, 100%, 62%, 1)", "hsla(0, 100%, 68%, 1)", "hsla(0, 100%, 72%, 1)", "hsla(0, 100%, 76%, 1)", "hsla(0, 100%, 80%, 1)",
+    "hsla(0, 100%, 84%, 1)", "hsla(0, 100%, 88%, 1)", "hsla(0, 100%, 90%, 1)", "hsla(0, 100%, 92%, 1)", "hsla(0, 100%, 94%, 1)", "hsla(0, 100%, 96%, 1)", "hsla(0, 100%, 98%, 1)", "hsla(0, 100%, 100%, 1)"]
 
 function drawField() {
 
@@ -257,6 +259,7 @@ function writeYearLabels(data) {
     }
 }*/
 
+
 function drawCirclesOfReferee(dataOfReferee) {
     var circleArray = [];
     for (var i = 0; i < dataOfReferee.data.length; i++) {
@@ -285,7 +288,6 @@ function drawCirclesOfReferee(dataOfReferee) {
     }
     return circleArray;
 }
-
 function updateRatio(dataOfReferee) {
     $.each(dataOfReferee, function (index, referee) {
         var min = 0;
@@ -331,12 +333,21 @@ function NaNToZero (number){
 }
 
 
+
+
 function deSelectReferee(dataOfReferee){
     deselectedReferees.push(dataOfReferee);
     dataOfReferee.button.css("background-color", "grey");
     $.each(dataOfReferee.circles, function (index, circle) {
         circle.transition().attr("r", 1).attr("fill","grey").ease("elastic");
     });
+}
+
+function drawHueCircles(dataOfReferee) {
+    $.each(dataOfReferee.circles, function(index, circle){
+        circle.transition().attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]);
+    });
+    inHueState=1;
 }
 
 function selectReferee(dataOfReferee){
@@ -347,20 +358,34 @@ function selectReferee(dataOfReferee){
 function highLight(dataOfReferee) {
     if(deselectedReferees.indexOf(dataOfReferee) == -1) {
         dataOfReferee.button.css("background-color", "#FFB90F");
-        $.each(dataOfReferee.circles, function (index, circle) {
-            circle.transition().attr("r", dimensions.width / 65).attr("fill", "#FFB90F").ease("elastic");
-        });
+        if(inHueState == 0) {
+            $.each(dataOfReferee.circles, function (index, circle) {
+                circle.transition().attr("r", dimensions.width / 65).attr("fill", "black").ease("elastic");
+            });
+        }else{
+            $.each(dataOfReferee.circles, function (index, circle) {
+                circle.transition().attr("r", dimensions.width / 65).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("elastic");
+            });
+        }
     }
 }
+
 
 function unHighLight(dataOfReferee) {
     if(deselectedReferees.indexOf(dataOfReferee) == -1) {
         dataOfReferee.button.css("background-color", "#7a0000");
-        $.each(dataOfReferee.circles, function (index, circle) {
-            circle.transition().attr("r", 2).attr("fill", "black").ease("elastic");
-        });
+        if(inHueState == 0) {
+            $.each(dataOfReferee.circles, function (index, circle) {
+                circle.transition().attr("r", 2).attr("fill", "black").ease("elastic");
+            });
+        }else{
+            $.each(dataOfReferee.circles, function (index, circle) {
+                circle.transition().attr("r", 2).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("elastic");
+            });
+        }
     }
 }
+
 
 function drawAverageCircles(data) {
     var circleArray = [];
@@ -380,6 +405,8 @@ function drawAverageCircles(data) {
     }
     return circleArray;
 }
+
+
 
 function showAverage() {
     var ratios = avgFaultsRatio();
@@ -453,6 +480,20 @@ function updateYears(start, end) {
         }
         averageRefereeData.circles[i].transition().duration(700).attr("cy", dataHeight).ease("sin-in-out");
     }
+}
+
+function calculateIndexAgeReferee(dataOfReferee){
+    var birthYearReferees;
+    for(var i = 0; i < dataOfReferee.data.length; i ++){
+        birthYearReferees = dataOfReferee.data.age.toString().slice(6,10);
+    }
+    var currentTime = new Date();
+    var year = currentTime.getFullYear();
+
+    var ageReferees = year - birthYearReferees;
+    var indexAgeRefs = 60-ageReferees;
+
+    return indexAgeRefs;
 }
 
 
