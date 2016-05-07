@@ -345,9 +345,17 @@ function deSelectReferee(dataOfReferee){
 
 function drawHueCircles(dataOfReferee) {
     $.each(dataOfReferee.circles, function(index, circle){
-        circle.transition().attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]);
+        circle.transition().attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("elastic");
     });
     inHueState=1;
+}
+
+function disableHue(dataOfReferee){
+    inHueState=0;
+    $.each(dataOfReferee.circles, function(index, circle){
+        circle.transition().attr("fill", "black").ease("elastic");
+    });
+
 }
 
 function selectReferee(dataOfReferee){
@@ -369,7 +377,6 @@ function highLight(dataOfReferee) {
         }
     }
 }
-
 
 function unHighLight(dataOfReferee) {
     if(deselectedReferees.indexOf(dataOfReferee) == -1) {
