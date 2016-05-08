@@ -281,7 +281,9 @@ function drawCirclesOfReferee(dataOfReferee) {
                     unHighLight(dataOfReferee);
                 });
             circle.append("svg:title").text(function () {
-                return "Referee: " + dataOfReferee.data.referee + "\nSeason: " + dataOfReferee.data[i].year;
+                var year = dataOfReferee.data[i].year;
+                var year_arr = year.split("");
+                return "Referee: " + dataOfReferee.data.referee + "\nSeason: 20" + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3];
             });
             circleArray.push(circle);
         }
