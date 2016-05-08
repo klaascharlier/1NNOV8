@@ -283,7 +283,15 @@ function drawCirclesOfReferee(dataOfReferee) {
             circle.append("svg:title").text(function () {
                 var year = dataOfReferee.data[i].year;
                 var year_arr = year.split("");
-                return "Referee: " + dataOfReferee.data.referee + "\nSeason: 20" + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3];
+                var ratio = Math.round(dataOfReferee.data[i].ratioFaults * 1000)/1000;
+                if(ratio >= 0.5){
+                    ratio = Math.round((dataOfReferee.data[i].ratioFaults - 0.5)*10000)/100;
+                } else {
+                    ratio = Math.round((0.5 - dataOfReferee.data[i].ratioFaults)*10000)/100;
+                }
+                return "Referee: " + dataOfReferee.data.referee + "\nSeason: 20"
+                    + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
+                    + "\nRatio: " + ratio + "%";
             });
             circleArray.push(circle);
         }
