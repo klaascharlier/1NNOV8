@@ -442,7 +442,7 @@ function drawAverageCircles(data) {
                 .attr("r", 2)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "black")
+                .attr("fill", "#7a0000")
                 .attr("visibility", "hidden")
                 .on('mouseover', function () {
                     d3.select(this).transition().attr("r", 5).ease("elastic");
