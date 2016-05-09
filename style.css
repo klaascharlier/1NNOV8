@@ -2,16 +2,15 @@
 html * {
     font-family: sans-serif !important;
 }
-@media screen and (min-width: 1200px){
-    #container {
-        width: 1200px;
-    }
+
+#container{
+    padding-top: 20px;
+    width: 90%;
 }
 
-@media screen and (max-width: 1200px){
-    #container {
-        width: 100%;
-    }
+#slider{
+    width: 90%;
+    margin: auto;
 }
 
 #wrapper {
