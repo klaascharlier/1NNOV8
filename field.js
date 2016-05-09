@@ -270,9 +270,10 @@ function drawCirclesOfReferee(dataOfReferee) {
                 .attr("cx", dimensions.width * dataOfReferee.data[i].ratioFaults )
                 .attr("cy", dataHeight)
                 .attr("r", 2)
+                .attr("z-index",1)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "black")
+                .attr("fill", "#7a0000")
                 .attr("opacity", 1)
                 .on('mouseover', function () {
                     highLight(dataOfReferee);
@@ -404,11 +405,11 @@ function highLight(dataOfReferee) {
         dataOfReferee.button.css("background-color", "#FFB90F");
         if(inHueState == 0) {
             $.each(dataOfReferee.circles, function (index, circle) {
-                circle.transition().attr("r", dimensions.width / 65).attr("fill", "black").ease("elastic");
+                circle.transition().attr("r", dimensions.width / 65).attr("fill", "#FFB90F").attr("z-index", 0).ease("elastic");
             });
         }else{
             $.each(dataOfReferee.circles, function (index, circle) {
-                circle.transition().attr("r", dimensions.width / 65).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).ease("elastic");
+                circle.transition().attr("r", dimensions.width / 65).attr("fill", dataColor[calculateIndexAgeReferee(dataOfReferee)]).attr("z-index", 3000);
             });
         }
     }
@@ -419,7 +420,7 @@ function unHighLight(dataOfReferee) {
         dataOfReferee.button.css("background-color", "#7a0000");
         if(inHueState == 0) {
             $.each(dataOfReferee.circles, function (index, circle) {
-                circle.transition().attr("r", 2).attr("fill", "black").ease("elastic");
+                circle.transition().attr("r", 2).attr("fill", "#7a0000").ease("elastic");
             });
         }else{
             $.each(dataOfReferee.circles, function (index, circle) {
