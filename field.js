@@ -129,7 +129,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.6 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "10%";
+            return "60%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -142,7 +142,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.4 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "10%";
+            return "60%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -155,7 +155,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.3 + 10 * lineThickness )
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "20%";
+            return "70%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -168,7 +168,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.7 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "20%";
+            return "70%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -181,7 +181,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.8 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "30%";
+            return "80%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -194,7 +194,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.2 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "30%";
+            return "80%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -207,7 +207,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.9 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "40%";
+            return "90%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -220,7 +220,7 @@ function drawField() {
         .attr("x", (dimensions.width - 20 * lineThickness) * 0.1 + 10 * lineThickness)
         .attr("y", dimensions.height * 0.97)
         .text(function () {
-            return "40%";
+            return "90%";
         })
         .attr("font-family", "sans-serif")
         .attr("font-size", dimensions.width / 65)
@@ -286,9 +286,9 @@ function drawCirclesOfReferee(dataOfReferee) {
                 var year_arr = year.split("");
                 var ratio = Math.round(dataOfReferee.data[i].ratioFaults * 1000)/1000;
                 if(ratio >= 0.5){
-                    ratio = Math.round((dataOfReferee.data[i].ratioFaults - 0.5)*10000)/100;
+                    ratio = Math.round((dataOfReferee.data[i].ratioFaults)*10000)/100;
                 } else {
-                    ratio = Math.round((0.5 - dataOfReferee.data[i].ratioFaults)*10000)/100;
+                    ratio = Math.round((1 - dataOfReferee.data[i].ratioFaults)*10000)/100;
                 }
                 return "Referee: " + dataOfReferee.data.referee + "\nSeason: 20"
                     + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
@@ -310,9 +310,9 @@ function updateRatio(dataOfReferee) {
                         var year_arr = year.split("");
                         var ratio = Math.round(calculateRatio(referee.data[i]) * 1000)/1000;
                         if(ratio >= 0.5){
-                            ratio = Math.round((calculateRatio(referee.data[i]) - 0.5)*10000)/100;
+                            ratio = Math.round((calculateRatio(referee.data[i]))*10000)/100;
                         } else {
-                            ratio = Math.round((0.5 - calculateRatio(referee.data[i]))*10000)/100;
+                            ratio = Math.round((1 - calculateRatio(referee.data[i]))*10000)/100;
                         }
                         return "Referee: " + referee.data.referee + "\nSeason: 20"
                             + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
@@ -331,9 +331,9 @@ function updateRatio(dataOfReferee) {
             var year_arr = year.split("");
             var ratio = Math.round(calculateRatio(averageRefereeData.data[index]) * 1000)/1000;
             if(ratio >= 0.5){
-                ratio = Math.round((calculateRatio(averageRefereeData.data[index]) - 0.5)*10000)/100;
+                ratio = Math.round((calculateRatio(averageRefereeData.data[index]))*10000)/100;
             } else {
-                ratio = Math.round((0.5 - calculateRatio(averageRefereeData.data[index]))*10000)/100;
+                ratio = Math.round((1 - calculateRatio(averageRefereeData.data[index]))*10000)/100;
             }
             return "Referee: " + averageRefereeData.data[index].referee + "\nSeason: 20"
                 + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
@@ -455,9 +455,9 @@ function drawAverageCircles(data) {
                 var year_arr = year.split("");
                 var ratio = Math.round(calculateRatio(data[i]) * 1000)/1000;
                 if(ratio >= 0.5){
-                    ratio = Math.round((calculateRatio(data[i]) - 0.5)*10000)/100;
+                    ratio = Math.round((calculateRatio(data[i]))*10000)/100;
                 } else {
-                    ratio = Math.round((0.5 - calculateRatio(data[i]))*10000)/100;
+                    ratio = Math.round((1 - calculateRatio(data[i]))*10000)/100;
                 }
                 return "Season: 20" + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
                     + "\nRatio: " + ratio + "%";
@@ -484,9 +484,9 @@ function showAverage() {
                     var year_arr = year.split("");
                     var ratio = Math.round(calculateRatio(referee.data[i]) * 1000)/1000;
                     if(ratio >= 0.5){
-                        ratio = Math.round((calculateRatio(referee.data[i]) - 0.5)*10000)/100;
+                        ratio = Math.round((calculateRatio(referee.data[i]))*10000)/100;
                     } else {
-                        ratio = Math.round((0.5 - calculateRatio(referee.data[i]))*10000)/100;
+                        ratio = Math.round((1 - calculateRatio(referee.data[i]))*10000)/100;
                     }
                     return "Referee: " + referee.data.referee + "\nSeason: 20"
                         + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
