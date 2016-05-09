@@ -271,7 +271,7 @@ function drawCirclesOfReferee(dataOfReferee) {
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("z-index",1)
-                .attr("stroke", "black")
+                .attr("stroke", "#7a0000")
                 .attr("stroke-width", lineThickness / 4)
                 .attr("fill", "#7a0000")
                 .attr("opacity", 1)
@@ -440,9 +440,9 @@ function drawAverageCircles(data) {
                 .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) + 0.5))
                 .attr("cy", dataHeight)
                 .attr("r", 2)
-                .attr("stroke", "black")
+                .attr("stroke", "#7a0000")
                 .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "black")
+                .attr("fill", " #7a0000")
                 .attr("visibility", "hidden")
                 .on('mouseover', function () {
                     d3.select(this).transition().attr("r", 5).ease("elastic");
