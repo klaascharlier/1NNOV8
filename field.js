@@ -390,7 +390,7 @@ function drawHueCircles(dataOfReferee) {
 function disableHue(dataOfReferee){
     inHueState=0;
     $.each(dataOfReferee.circles, function(index, circle){
-        circle.transition().duration(700).attr("fill", "black").ease("elastic");
+        circle.transition().duration(700).attr("fill", "#7a0000").ease("elastic");
     });
 
 }
@@ -442,7 +442,7 @@ function drawAverageCircles(data) {
                 .attr("r", 2)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
-                .attr("fill", "#7a0000")
+                .attr("fill", "black")
                 .attr("visibility", "hidden")
                 .on('mouseover', function () {
                     d3.select(this).transition().attr("r", 5).ease("elastic");
