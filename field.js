@@ -324,7 +324,20 @@ function updateRatio(dataOfReferee) {
         }
     });
     $.each(averageRefereeData.circles, function (index, circle){
-        circle.transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(averageRefereeData.data[index]) - 0.5) * 1.2 + 0.5)).ease("sin-in-out");
+        circle.transition().duration(700).attr("cx", dimensions.width * calculateRatio(averageRefereeData.data[index])).ease("sin-in-out");
+        circle.select("title").text(function () {
+            var year = averageRefereeData.data[index].year;
+            var year_arr = year.split("");
+            var ratio = Math.round(calculateRatio(averageRefereeData.data[index]) * 1000)/1000;
+            if(ratio >= 0.5){
+                ratio = Math.round((calculateRatio(averageRefereeData.data[index]) - 0.5)*10000)/100;
+            } else {
+                ratio = Math.round((0.5 - calculateRatio(averageRefereeData.data[index]))*10000)/100;
+            }
+            return "Referee: " + averageRefereeData.data[index].referee + "\nSeason: 20"
+                + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
+                + "\nRatio: " + ratio + "%";
+        });
     })
 }
 
