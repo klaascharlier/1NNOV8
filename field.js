@@ -477,7 +477,7 @@ function showAverage() {
         var min = 0;
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
-                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(ratios[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
+                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(ratios[i]) - 0.5) * 1 + 0.5)).attr('opacity', 0).ease("sin-in-out");
                 referee.circles[i - min].select("title").text(function () {
                     console.log("showAvg");
                     var year = referee.data[i].year;
@@ -508,7 +508,7 @@ function hideAverage() {
         var min = 0;
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
-                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(referee.data[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 1).ease("sin-in-out");
+                referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(referee.data[i]) - 0.5) * 1 + 0.5)).attr('opacity', 1).ease("sin-in-out");
                 console.log(referee.data[i]);
             }
             else {
