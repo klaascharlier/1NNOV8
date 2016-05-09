@@ -267,7 +267,7 @@ function drawCirclesOfReferee(dataOfReferee) {
         if (!isNaN(dataOfReferee.data[i].ratioFaults)){
             console.log("test");
             var circle = svg.append("circle")
-                .attr("cx", dimensions.width * ((dataOfReferee.data[i].ratioFaults - 0.5) * 1.2 + 0.5))
+                .attr("cx", dimensions.width * dataOfReferee.data[i].ratioFaults )
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("stroke", "black")
@@ -423,7 +423,7 @@ function drawAverageCircles(data) {
         var dataHeight = ((data.length - 1 - i) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height;
         if (!isNaN(calculateRatio(data[i]))) {
             var circle = svg.append("circle")
-                .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) * 2 + 0.5)) //TODO was dees?
+                .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) + 0.5))
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("stroke", "black")
@@ -464,6 +464,20 @@ function showAverage() {
         for (var i = 0; i < referee.data.length; i++) {
             if (!isNaN(referee.data[i].ratioFaults)) {
                 referee.circles[i - min].transition().duration(700).attr("cx", dimensions.width * ((calculateRatio(ratios[i]) - 0.5) * 1.2 + 0.5)).attr('opacity', 0).ease("sin-in-out");
+                referee.circles[i - min].select("title").text(function () {
+                    console.log("showAvg");
+                    var year = referee.data[i].year;
+                    var year_arr = year.split("");
+                    var ratio = Math.round(calculateRatio(referee.data[i]) * 1000)/1000;
+                    if(ratio >= 0.5){
+                        ratio = Math.round((calculateRatio(referee.data[i]) - 0.5)*10000)/100;
+                    } else {
+                        ratio = Math.round((0.5 - calculateRatio(referee.data[i]))*10000)/100;
+                    }
+                    return "Referee: " + referee.data.referee + "\nSeason: 20"
+                        + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
+                        + "\nRatio: " + ratio + "%";
+                });
             }
             else {
                 min++;
