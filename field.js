@@ -410,13 +410,31 @@ function drawAverageCircles(data) {
         var dataHeight = ((data.length - 1 - i) * (dimensions.height * 0.8) / (data.length - 1)) + 0.1 * dimensions.height;
         if (!isNaN(calculateRatio(data[i]))) {
             var circle = svg.append("circle")
-                .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) * 2 + 0.5))
+                .attr("cx", dimensions.width * ((calculateRatio(data[i]) - 0.5) * 2 + 0.5)) //TODO was dees?
                 .attr("cy", dataHeight)
                 .attr("r", 2)
                 .attr("stroke", "black")
                 .attr("stroke-width", lineThickness / 4)
                 .attr("fill", "black")
-                .attr("visibility", "hidden");
+                .attr("visibility", "hidden")
+                .on('mouseover', function () {
+                    d3.select(this).transition().attr("r", 5).ease("elastic");
+                })
+                .on('mouseout', function () {
+                    d3.select(this).transition().attr("r", 2);
+                });
+            circle.append("svg:title").text(function () {
+                var year = data[i].year;
+                var year_arr = year.split("");
+                var ratio = Math.round(calculateRatio(data[i]) * 1000)/1000;
+                if(ratio >= 0.5){
+                    ratio = Math.round((calculateRatio(data[i]) - 0.5)*10000)/100;
+                } else {
+                    ratio = Math.round((0.5 - calculateRatio(data[i]))*10000)/100;
+                }
+                return "Season: 20" + year_arr[0] + year_arr[1] + "-20" + year_arr[2] + year_arr[3]
+                    + "\nRatio: " + ratio + "%";
+            });
             circleArray.push(circle);
         }
     }
